@@ -37,6 +37,8 @@ ko.bindingHandlers['flashWhen'] = {
 				setTimeout( () => $( element ).slideUp( 600 ), 2000 );
 			});
 		}
+
+		return null;
 	}
 };
 
@@ -44,6 +46,7 @@ ko.bindingHandlers['jqButton'] = {
 	init: e => {
 		$(e).button();
 		ko.utils.domNodeDisposal.addDisposeCallback( e, () => $( e ).button( "destroy" ) );
+		return null;
 	}
 };
 
@@ -66,6 +69,7 @@ ko.bindingHandlers['hasFocus'] = {
 			e.on(evts);
 			ko.utils.domNodeDisposal.addDisposeCallback(e, () => e.off(evts));
 		}
+		return null;
 	},
 	update: (element, valueAccessor) => u(valueAccessor()) && $(element).focus()
 };
@@ -74,6 +78,7 @@ ko.bindingHandlers['assignTo'] = {
 	init: (element, valueAccessor) => {
 		var v = valueAccessor();
 		if (ko.isObservable(v)) v(element);
+		return null;
 	}
 };
 

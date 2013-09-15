@@ -45,6 +45,8 @@ else
                     }, 2000);
                 });
             }
+
+            return null;
         }
     };
 
@@ -54,6 +56,7 @@ else
             ko.utils.domNodeDisposal.addDisposeCallback(e, function () {
                 return $(e).button("destroy");
             });
+            return null;
         }
     };
 
@@ -83,6 +86,7 @@ else
                     return e.off(evts);
                 });
             }
+            return null;
         },
         update: function (element, valueAccessor) {
             return u(valueAccessor()) && $(element).focus();
@@ -94,6 +98,7 @@ else
             var v = valueAccessor();
             if (ko.isObservable(v))
                 v(element);
+            return null;
         }
     };
 
@@ -204,3 +209,4 @@ else
         };
     })();
 });
+//# sourceMappingURL=koBindings.js.map

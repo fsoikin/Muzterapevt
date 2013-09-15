@@ -9,7 +9,6 @@ namespace Mut.Controllers
 	public class BBCodeController : Controller
 	{
 		[Import] public BBCodeUI UI { get; set; }
-		[Import] public ILog Log { get; set; }
 
 		public IJsonResponse<string> ToHtml( string bbText )
 		{

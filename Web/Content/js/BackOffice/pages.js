@@ -4,7 +4,7 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery"], function(require, exports, __c__, __ko__, __map__, __$__) {
+define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery", "text!./Templates/pages.html"], function(require, exports, __c__, __ko__, __map__, __$__, ___tpl__) {
     var c = __c__;
     var ko = __ko__;
     var map = __map__;
@@ -22,6 +22,8 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery"], functi
             var _this = this;
             _super.call(this);
             this.Pages = ko.observableArray();
+            this.OnLoaded = _onLoaded;
+            this.ControlsDescendantBindings = true;
             c.Api.Get(Ajax.Load, null, this.IsLoading, this.Error, function (ps) {
                 return _this.Pages(ps.map(function (p) {
                     return new PageVm(_this, p);
@@ -78,5 +80,7 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery"], functi
         return PageVm;
     })();
     exports.PageVm = PageVm;
+
+    var _tpl = ___tpl__;
+    var _onLoaded = c.ApplyTemplate(_tpl);
 });
-//# sourceMappingURL=pages.js.map

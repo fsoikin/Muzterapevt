@@ -4,16 +4,16 @@
 /// <reference path="../../../tsd/rx-ko.d.ts" />
 require.config({
     map: {
-        'app/External/Rx/rx.time.min': {
-            rx: 'app/External/Rx/rx.min'
+        'External/Rx/rx.time.min': {
+            rx: 'External/Rx/rx.min'
         }
     }
 });
 
 define([
-    'app/External/Rx/rx.min',
+    'External/Rx/rx.min',
     'ko',
-    'app/External/Rx/rx.time.min'
+    'External/Rx/rx.time.min'
 ], function (rx, ko) {
     extend(rx, ko);
     return rx;
@@ -34,3 +34,4 @@ function extend(rx, ko) {
         });
     };
 }
+//# sourceMappingURL=main.js.map

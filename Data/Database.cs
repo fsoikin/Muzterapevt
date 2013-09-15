@@ -24,6 +24,7 @@ namespace Mut.Data
 			[Import] public Database Db { get; set; }
 
 			public T Find( object key ) { return Db.Set<T>().Find( key ); }
+			public T Add( T t ) { return Db.Set<T>().Add( t ); }
 			public IQueryable<T> All { get { return Db.Set<T>(); } }
 		}
 
@@ -47,6 +48,7 @@ namespace Mut.Data
 	public interface IRepository<T> where T : class
 	{
 		T Find( object key );
+		T Add( T t );
 		IQueryable<T> All { get; }
 	}
 

@@ -6,9 +6,10 @@
 /// <reference path="../tsd/knockout.mapping-2.0.d.ts"/>
 /// <reference path="../tsd/rx.d.ts" />
 /// <reference path="../tsd/rx-ko.d.ts" />
-define(["require", "exports", "rx", "ko", "./Base/api", "./Base/seq"], function(require, exports, __rx__, __ko__, ___api__, ___seq__) {
+define(["require", "exports", "rx", "ko", "jQuery", "./Base/api", "./Base/seq"], function(require, exports, __rx__, __ko__, __$__, ___api__, ___seq__) {
     var rx = __rx__;
     var ko = __ko__;
+    var $ = __$__;
     var _api = ___api__;
     exports._api = _api;
     var _seq = ___seq__;
@@ -214,5 +215,19 @@ define(["require", "exports", "rx", "ko", "./Base/api", "./Base/seq"], function(
         return _f;
     }
     exports.bindClass = bindClass;
+
+    function ApplyTemplate(template) {
+        var t = typeof template == "string" ? $(template) : template;
+
+        return function (element) {
+            if ($.makeArray(ko.virtualElements.childNodes(element)).every(function (e) {
+                return e.nodeType != 1;
+            })) {
+                ko.virtualElements.setDomNodeChildren(element, t.clone());
+            }
+            ko.applyBindingsToDescendants(this, element);
+        };
+    }
+    exports.ApplyTemplate = ApplyTemplate;
 });
 //# sourceMappingURL=common.js.map

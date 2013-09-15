@@ -9,6 +9,7 @@
 
 import rx = require( "rx" );
 import ko = require( "ko" );
+import $ = require( "jQuery" );
 export import _api = require( "./Base/api" );
 export import _seq = require( "./Base/seq" );
 export var Seq = _seq;
@@ -30,7 +31,7 @@ export interface IHaveNameAndId<TId> extends IHaveId<TId>, IHaveName { }
 
 export interface IControl {
 	OnLoaded(element: Element): void;
-	ControlsDescendantBinidngs: boolean;
+	ControlsDescendantBindings: boolean;
 }
 
 export interface IUnloadableControl extends IControl {
@@ -211,4 +212,22 @@ export function bindClass<TArgs, TClass>(
 	}
 	_f.prototype = theClass.prototype;
 	return <any>_f;
+}
+
+export function ApplyTemplate( template: string ): ( e: Element ) => void;
+export function ApplyTemplate( template: JQuery ): ( e: Element ) => void;
+
+export function ApplyTemplate( template: any ) {
+
+	var t = typeof template == "string" ? $( template ) : template;
+
+	return function ( element: Element ) {
+		if ( $.makeArray(
+			ko.virtualElements.childNodes( element ) )
+			.every( e => e.nodeType != 1 ) ) {
+			ko.virtualElements.setDomNodeChildren( element, t.clone() );
+		}
+		ko.applyBindingsToDescendants( this, element );
+	};
+
 }

@@ -5,16 +5,16 @@
 
 require.config( {
 	map: {
-		'app/External/Rx/rx.time.min': {
-			rx: 'app/External/Rx/rx.min'
+		'External/Rx/rx.time.min': {
+			rx: 'External/Rx/rx.min'
 		}
 	}
 });
 
 define( [
-	'app/External/Rx/rx.min',
+	'External/Rx/rx.min',
 	'ko',
-	'app/External/Rx/rx.time.min'],
+	'External/Rx/rx.time.min'],
 ( rx, ko ) => {
 	extend( rx, ko );
 	return rx;

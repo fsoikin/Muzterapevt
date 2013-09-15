@@ -1,4 +1,4 @@
-﻿import c = require("../common");
+﻿import c = require( "../common" );
 import ko = require("ko");
 import map = require("ko.mapping");
 import $ = require( "jQuery" );
@@ -9,12 +9,13 @@ var Ajax = {
 	Create: "BackOffice/Pages/Create"
 };
 
+// Defined in UI/JS/Page.cs
 export interface Page {
 	Id: number;
 	Path: string;
 }
 
-export class PagesVm extends c.VmBase {
+export class PagesVm extends c.VmBase implements c.IControl {
 	Pages = ko.observableArray<PageVm>();
 	
 	constructor() {
@@ -28,6 +29,9 @@ export class PagesVm extends c.VmBase {
 		this.Pages.push(p);
 		p.Edit();
 	}
+
+	OnLoaded = _onLoaded;
+	ControlsDescendantBindings = true;
 }
 
 export class PageVm {
@@ -65,3 +69,7 @@ export class PageVm {
 		map.fromJS(this.Page, {}, this);
 	}
 }
+
+declare module "text!./Templates/pages.html" { }
+import _tpl = require( "text!./Templates/pages.html" );
+var _onLoaded = c.ApplyTemplate( <string>_tpl );
