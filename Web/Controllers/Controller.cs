@@ -13,5 +13,20 @@ namespace Mut.Controllers
 	{
 		[Import]
 		public ILog Log { get; set; }
+
+		protected override void OnException( ExceptionContext filterContext ) {
+			this.Log.Error( filterContext.Exception );
+			base.OnException( filterContext );
+		}
+
+		protected override void OnActionExecuting( ActionExecutingContext filterContext ) {
+			Log.DebugFormat( "START: {0}", filterContext.ActionDescriptor.ActionName );
+			base.OnActionExecuting( filterContext );
+		}
+
+		protected override void OnActionExecuted( ActionExecutedContext filterContext ) {
+			Log.DebugFormat( "END:   {0}, result = {1}", filterContext.ActionDescriptor.ActionName, filterContext.Result );
+			base.OnActionExecuted( filterContext );
+		}
 	}
 }

@@ -3,5 +3,11 @@
     var $ = __$__;
     var pages = __pages__;
 
-    new pages.PagesVm().OnLoaded($("body")[0]);
+    
+
+    function init(root) {
+        new pages.PagesVm().OnLoaded(root[0]);
+    }
+    ;
+    return init;
 });

@@ -2,4 +2,8 @@
 import $ = require( "jQuery" );
 import pages = require( "./pages" );
 
-new pages.PagesVm().OnLoaded( $( "body" )[0] );
+export = init;
+
+function init( root: JQuery ) {
+	new pages.PagesVm().OnLoaded( root[0] );
+};

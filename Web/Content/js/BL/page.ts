@@ -47,7 +47,7 @@ class PageVm implements c.IControl {
 		e.Show();
 	}
 
-	ControlsDescendantBinidngs = true;
+	ControlsDescendantBindings = true;
 }
 
 class EditorVm {

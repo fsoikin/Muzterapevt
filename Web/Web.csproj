@@ -186,6 +186,7 @@
       <DependentUpon>Page.less</DependentUpon>
     </Content>
     <Content Include="Content\img\spinner.gif" />
+    <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
     <Content Include="Content\js\Base\api.ts" />
     <Content Include="Content\js\Base\koBindings.ts" />

@@ -1,3 +1,4 @@
 ﻿<script type="text/javascript">
-	require(['BackOffice/main']);
+	require(['jQuery','BackOffice/main'], function ($,init) { init($("#root")); });
 </script>
+<div id="root"></div>

@@ -17,4 +17,3 @@
     }
     exports.copy = copy;
 });
-//# sourceMappingURL=seq.js.map

@@ -30,7 +30,7 @@ export function Call( method: string, url: string, data: any,
 {
 	inProgress && inProgress( true );
 	return $
-		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data } ) )
+		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' } ) )
 		.fail( e => error && error.notifySubscribers( e.statusText ) )
 		.done( ( e: JsonResponse ) => e.Success
 			? ( onSuccess && onSuccess( e.Result ) )
@@ -46,7 +46,7 @@ export function AbsoluteUrl( url: string ) {
 declare module "RootUrl" { };
 import _root = require( "RootUrl" );
 
-export var RootUrl = _root =>
-	typeof _root !== "string" || !_root.length
+export var RootUrl = ((r: string) =>
+	typeof r !== "string" || !r.length
 		? "/"
-		: _root[_root.length] == '/' ? _root : _root + '/';
+		: r[r.length-1] == '/' ? r : r + '/')(<string>_root);

@@ -1,4 +1,4 @@
-﻿define(["require", "exports", "jQuery"], function(require, exports, __$__) {
+﻿define(["require", "exports", "jQuery", "RootUrl"], function(require, exports, __$__, ___root__) {
     /// <reference path="../../tsd/jquery.amd.d.ts"/>
     /// <reference path="../../tsd/knockout-2.2.d.ts"/>
     var $ = __$__;
@@ -15,7 +15,7 @@
 
     function Call(method, url, data, inProgress, error, onSuccess, options) {
         inProgress && inProgress(true);
-        return $.ajax($.extend(options || {}, { type: method, url: exports.AbsoluteUrl(url), data: data })).fail(function (e) {
+        return $.ajax($.extend(options || {}, { type: method, url: exports.AbsoluteUrl(url), data: data, contentType: 'application/json' })).fail(function (e) {
             return error && error.notifySubscribers(e.statusText);
         }).done(function (e) {
             return e.Success ? (onSuccess && onSuccess(e.Result)) : (error && error.notifySubscribers((e.Messages || []).join()));
@@ -33,10 +33,9 @@
     exports.AbsoluteUrl = AbsoluteUrl;
 
     ;
-    
+    var _root = ___root__;
 
-    exports.RootUrl = function (_root) {
-        return typeof _root !== "string" || !_root.length ? "/" : _root[_root.length] == '/' ? _root : _root + '/';
-    };
+    exports.RootUrl = (function (r) {
+        return typeof r !== "string" || !r.length ? "/" : r[r.length - 1] == '/' ? r : r + '/';
+    })(_root);
 });
-//# sourceMappingURL=api.js.map

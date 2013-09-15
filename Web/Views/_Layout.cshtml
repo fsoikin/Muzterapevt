@@ -2,7 +2,9 @@
 <html>
 	<head>
 		<title>@ViewBag.Title</title>
-		<script type="text/javascript" data-main="@Url.Content("~/Content/js/amd-config")" src="@Url.Content("~/Content/require/require.js")"></script>
+		<script type="text/javascript" data-main="@Url.Content("~/Content/js/amd-base-url-marker")" src="@Url.Content("~/Content/require/require.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/Content/js/amd-config.js")"></script>
+		<script type="text/javascript">define('RootUrl', [], function () { return '@Url.Content("~/")'; });</script>
 	</head>
 	<body>
 		@RenderBody()

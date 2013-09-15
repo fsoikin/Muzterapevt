@@ -10,9 +10,9 @@ var Ajax = {
 };
 
 // Defined in UI/JS/Page.cs
-export interface Page {
-	Id: number;
-	Path: string;
+export class Page {
+	Id = 0;
+	Path = "";
 }
 
 export class PagesVm extends c.VmBase implements c.IControl {
@@ -41,11 +41,9 @@ export class PageVm {
 	Path = ko.observable("");
 	Id = ko.observable(0);
 
-	constructor(public Parent: PagesVm, public Page: Page) {
-		if (Page) {
-			map.fromJS(Page, {}, this);
-			this.IsNew(false);
-		}
+	constructor(public Parent: PagesVm, public Model: Page) {
+		map.fromJS( Model || new Page(), {}, this);
+		this.IsNew( !Model);
 		this.IsEditing.subscribe(e => {
 			if (e) this.Parent.Pages().forEach(p => p == this || p.IsEditing(false));
 		});
@@ -56,17 +54,18 @@ export class PageVm {
 	}
 
 	CommitEdit() {
-		this.Page = map.toJS(this);
-		c.Api.Post(this.IsNew() ? Ajax.Create : Ajax.Update,
-			null, this.IsSaving, this.Parent.Error, () => {
-				this.IsEditing(false);
-				this.IsNew(false);
+		this.Model = map.toJS( this );
+		c.Api.Post( this.IsNew() ? Ajax.Create : Ajax.Update, JSON.stringify( this.Model ),
+			this.IsSaving, this.Parent.Error, r => {
+				map.fromJS( this.Model = r, {}, this );
+				this.IsEditing( false );
+				this.IsNew( false );
 			});
 	}
 
-	CandelEdit() {
+	CancelEdit() {
 		this.IsEditing(false);
-		map.fromJS(this.Page, {}, this);
+		map.fromJS(this.Model, {}, this);
 	}
 }
 

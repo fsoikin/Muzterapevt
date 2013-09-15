@@ -18,7 +18,9 @@ namespace Mut.Controllers
 			var p = Pages.All.FirstOrDefault( x => x.Url == url );
 			if ( p == null ) return HttpNotFound();
 
-			return View( "~/Views/Page", new PageModel { Page = p, AllowEdit = Auth.CurrentActor.IsAdmin } );
+			return View( "~/Views/Page.cshtml", new PageModel { Page = p, AllowEdit = true
+				//Auth.CurrentActor.IsAdmin 
+			} );
 		}
 	}
 }

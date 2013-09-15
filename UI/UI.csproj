@@ -69,6 +69,7 @@
     <Compile Include="BBCodeUI.cs" />
     <Compile Include="Infrastructure\JsonRequestBodyAttribute.cs" />
     <Compile Include="Infrastructure\JsonResponse.cs" />
+    <Compile Include="Infrastructure\LoggingModule.cs" />
     <Compile Include="JS\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

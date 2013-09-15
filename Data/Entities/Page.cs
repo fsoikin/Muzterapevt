@@ -17,5 +17,10 @@ namespace Mut.Data
 		public DateTime Modified { get; set; }
 
 		[Export] class Mapping : IModelMapping { public void Map( DbModelBuilder b ) { b.Entity<Page>(); } }
+
+		public Page() {
+			this.Created = DateTime.Now;
+			this.Modified = DateTime.Now;
+		}
 	}
 }

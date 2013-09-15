@@ -230,4 +230,3 @@ define(["require", "exports", "rx", "ko", "jQuery", "./Base/api", "./Base/seq"],
     }
     exports.ApplyTemplate = ApplyTemplate;
 });
-//# sourceMappingURL=common.js.map

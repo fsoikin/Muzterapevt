@@ -34,4 +34,3 @@ function extend(rx, ko) {
         });
     };
 }
-//# sourceMappingURL=main.js.map

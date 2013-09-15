@@ -16,7 +16,7 @@
 
     var PageVm = (function () {
         function PageVm(args) {
-            this.ControlsDescendantBinidngs = true;
+            this.ControlsDescendantBindings = true;
             this.PageId = args.id;
         }
         PageVm.prototype.OnLoaded = function (element) {

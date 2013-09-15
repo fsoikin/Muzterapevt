@@ -10,11 +10,12 @@
 		<tr>
 			<td data-bind="text: Id"></td>
 			<td>
-				<span data-bind="text: Url, visible: !IsEditing(), click: Edit"></span>
-				<input type="text" data-bind="value: Url, valueUpdate: 'keyup', visible: IsEditing" />
+				<span data-bind="text: Path, visible: !IsEditing(), click: Edit"></span>
+				<input type="text" data-bind="value: Path, valueUpdate: 'keyup', visible: IsEditing" />
 				<button data-bind="click: CommitEdit, visible: IsEditing">Save</button>
 				<button data-bind="click: CancelEdit, visible: IsEditing">Cancel</button>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<button data-bind="click: Create">Create</button>

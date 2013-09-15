@@ -16,6 +16,16 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery", "text!.
         Create: "BackOffice/Pages/Create"
     };
 
+    // Defined in UI/JS/Page.cs
+    var Page = (function () {
+        function Page() {
+            this.Id = 0;
+            this.Path = "";
+        }
+        return Page;
+    })();
+    exports.Page = Page;
+
     var PagesVm = (function (_super) {
         __extends(PagesVm, _super);
         function PagesVm() {
@@ -40,19 +50,17 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery", "text!.
     exports.PagesVm = PagesVm;
 
     var PageVm = (function () {
-        function PageVm(Parent, Page) {
+        function PageVm(Parent, Model) {
             var _this = this;
             this.Parent = Parent;
-            this.Page = Page;
+            this.Model = Model;
             this.IsNew = ko.observable(true);
             this.IsSaving = ko.observable(false);
             this.IsEditing = ko.observable(false);
             this.Path = ko.observable("");
             this.Id = ko.observable(0);
-            if (Page) {
-                map.fromJS(Page, {}, this);
-                this.IsNew(false);
-            }
+            map.fromJS(Model || new Page(), {}, this);
+            this.IsNew(!Model);
             this.IsEditing.subscribe(function (e) {
                 if (e)
                     _this.Parent.Pages().forEach(function (p) {
@@ -66,16 +74,17 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery", "text!.
 
         PageVm.prototype.CommitEdit = function () {
             var _this = this;
-            this.Page = map.toJS(this);
-            c.Api.Post(this.IsNew() ? Ajax.Create : Ajax.Update, null, this.IsSaving, this.Parent.Error, function () {
+            this.Model = map.toJS(this);
+            c.Api.Post(this.IsNew() ? Ajax.Create : Ajax.Update, JSON.stringify(this.Model), this.IsSaving, this.Parent.Error, function (r) {
+                map.fromJS(_this.Model = r, {}, _this);
                 _this.IsEditing(false);
                 _this.IsNew(false);
             });
         };
 
-        PageVm.prototype.CandelEdit = function () {
+        PageVm.prototype.CancelEdit = function () {
             this.IsEditing(false);
-            map.fromJS(this.Page, {}, this);
+            map.fromJS(this.Model, {}, this);
         };
         return PageVm;
     })();

@@ -31,6 +31,7 @@ namespace Mut.Controllers.BackOffice
 				var p = Pages.Find( page.Id );
 				if ( p == null ) return JsonResponse<Unit>.NotFound;
 				p.Url = page.Path;
+				p.Modified = DateTime.Now;
 				UnitOfWork.Commit();
 				return JsonResponse<Unit>.Void;
 			}, Log );
