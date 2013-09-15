@@ -1,0 +1,15 @@
+﻿@model PageModel
+
+@{
+	ViewBag.Title = Model.Page.Title;
+}
+
+@if ( Model.AllowEdit ) {
+	<div class="autobind" data-controller="app/page" data-args="{ id: @Model.Page.Id }">
+		<h2>@Model.Page.Title</h2>
+		@Html.Raw( Model.Page.HtmlText )
+	</div>
+}
+else {
+	@Html.Raw( Model.Page.HtmlText )
+}

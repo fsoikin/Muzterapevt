@@ -1,0 +1,10 @@
+﻿<div class="page-menu">
+	<div class="item" data-bind="click: OnEdit" />
+</div>
+
+<div class="page-editor" data-bind="loadingWhen: IsLoading">
+	<input type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
+	<textarea data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
+	<button data-bind="click: Save">Save</button>
+	<button data-bind="click: Cancel">Cancel</button>
+</div>

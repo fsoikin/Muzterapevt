@@ -1,0 +1,27 @@
+﻿.page-menu {
+  border: 1px solid gray;
+  background: white;
+  padding: 5px;
+}
+.page-menu .item {
+  cursor: pointer;
+  font-weight: bold;
+}
+.page-menu .item:hover {
+  background: #8576ff;
+  color: white;
+}
+.page-editor {
+  position: fixed;
+  top: 15%;
+  left: 15%;
+  bottom: 15%;
+  right: 15%;
+  border: 1px solid black;
+  background: white;
+  padding: 20px;
+}
+.page-editor > textarea {
+  width: 80%;
+  margin: 0 auto;
+}
