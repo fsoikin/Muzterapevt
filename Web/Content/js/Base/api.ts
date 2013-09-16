@@ -21,7 +21,7 @@ export function Post( url: string, data: any,
 	inProgress: Ko.Observable<boolean>, error: Ko.Subscribable<string>,
 	onSuccess: ( result: any ) => void, options?: {} )
 {
-	return Call( "POST", url, data, inProgress, error, onSuccess, options );
+	return Call( "POST", url, JSON.stringify( data ), inProgress, error, onSuccess, options );
 }
 
 export function Call( method: string, url: string, data: any,
@@ -30,12 +30,12 @@ export function Call( method: string, url: string, data: any,
 {
 	inProgress && inProgress( true );
 	return $
-		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' } ) )
+		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' }) )
 		.fail( e => error && error.notifySubscribers( e.statusText ) )
+		.always( () => inProgress && inProgress( false ) )
 		.done( ( e: JsonResponse ) => e.Success
 			? ( onSuccess && onSuccess( e.Result ) )
-			: ( error && error.notifySubscribers( ( e.Messages || [] ).join() ) ) )
-		.always( () => inProgress && inProgress( false ) );
+			: ( error && error.notifySubscribers( ( e.Messages || [] ).join() ) ) );
 }
 
 export function AbsoluteUrl( url: string ) {

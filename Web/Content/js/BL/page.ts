@@ -14,8 +14,8 @@ var Ajax = {
 };
 
 class PageVm implements c.IControl {
-	private PageElement: JQuery;
-	private MenuElement: JQuery;
+	PageElement: JQuery;
+	MenuElement: JQuery;
 	private Editor: EditorVm;
 	PageId: number;
 
@@ -25,14 +25,14 @@ class PageVm implements c.IControl {
 	
 	OnLoaded( element: Element ) {
 		this.PageElement = $( element );
-		if( !this.PageElement.html() ) {
+		if( !this.PageElement.text().trim() ) {
 			this.PageElement.text( "Right-click here" );
 		}
 
 		this.MenuElement = Template.Menu.clone().appendTo( "body" ).hide();
 		ko.applyBindings( this, this.MenuElement[0] );
 
-		this.PageElement.click( e => {
+		this.PageElement.on("contextmenu", e => {
 			if( e.which == 3 ) // right click
 			{
 				this.MenuElement.css( { top: e.pageY, left: e.pageY }).fadeIn(100);
@@ -50,6 +50,7 @@ class PageVm implements c.IControl {
 	ControlsDescendantBindings = true;
 }
 
+// Defined in JS/PageEditor.cs
 class EditorVm {
 	private Element: JQuery;
 	IsLoading = ko.observable( false );
@@ -58,14 +59,18 @@ class EditorVm {
 	Title = ko.observable( "" );
 
 	constructor( public Page: PageVm ) {
-		c.Api.Get( Ajax.Load, Page.PageId, this.IsLoading, this.Error,
+		c.Api.Get( Ajax.Load, { id: Page.PageId }, this.IsLoading, this.Error,
 			r => map.fromJS( r, {}, this ) );
 	}
 
 	Save() {
 		var page = map.toJS( this );
 		page.Id = this.Page.PageId;
-		c.Api.Post( Ajax.Update, page, this.IsLoading, this.Error, () => this.Close() );
+		c.Api.Post( Ajax.Update, page, this.IsLoading, this.Error, (html:string) => {
+			this.Close();
+			this.Page.PageElement.html( html ).prepend(
+				$( "<h2>" ).text( this.Title() ) );
+		} );
 	}
 
 	Cancel() { this.Close(); }
@@ -75,8 +80,13 @@ class EditorVm {
 	}
 
 	Show() {
-		var e = this.Element || ( this.Element = Template.Editor.clone().appendTo( 'body' ) );
-		e.fadeIn();
+		(this.Element || ( this.Element = this.CreateElement() )).fadeIn();
+	}
+
+	CreateElement() {
+		var e = Template.Editor.clone().appendTo( 'body' );
+		ko.applyBindings( this, e[0] );
+		return e;
 	}
 }
 

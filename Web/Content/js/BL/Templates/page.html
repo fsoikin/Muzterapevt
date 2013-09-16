@@ -1,8 +1,8 @@
 ﻿<div class="page-menu">
-	<div class="item" data-bind="click: OnEdit" />
+	<div class="item" data-bind="click: OnEdit">Edit</div>
 </div>
 
-<div class="page-editor" data-bind="loadingWhen: IsLoading">
+<div class="page-editor" data-bind="loadingWhen: IsLoading, overlayLoadingMode: true">
 	<input type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
 	<textarea data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
 	<button data-bind="click: Save">Save</button>

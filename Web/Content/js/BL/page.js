@@ -22,14 +22,14 @@
         PageVm.prototype.OnLoaded = function (element) {
             var _this = this;
             this.PageElement = $(element);
-            if (!this.PageElement.html()) {
+            if (!this.PageElement.text().trim()) {
                 this.PageElement.text("Right-click here");
             }
 
             this.MenuElement = Template.Menu.clone().appendTo("body").hide();
             ko.applyBindings(this, this.MenuElement[0]);
 
-            this.PageElement.click(function (e) {
+            this.PageElement.on("contextmenu", function (e) {
                 if (e.which == 3) {
                     _this.MenuElement.css({ top: e.pageY, left: e.pageY }).fadeIn(100);
                     $(document).one("click", function () {
@@ -47,6 +47,7 @@
         return PageVm;
     })();
 
+    // Defined in JS/PageEditor.cs
     var EditorVm = (function () {
         function EditorVm(Page) {
             var _this = this;
@@ -55,7 +56,7 @@
             this.Error = ko.observable();
             this.Text = ko.observable("");
             this.Title = ko.observable("");
-            c.Api.Get(Ajax.Load, Page.PageId, this.IsLoading, this.Error, function (r) {
+            c.Api.Get(Ajax.Load, { id: Page.PageId }, this.IsLoading, this.Error, function (r) {
                 return map.fromJS(r, {}, _this);
             });
         }
@@ -63,8 +64,9 @@
             var _this = this;
             var page = map.toJS(this);
             page.Id = this.Page.PageId;
-            c.Api.Post(Ajax.Update, page, this.IsLoading, this.Error, function () {
-                return _this.Close();
+            c.Api.Post(Ajax.Update, page, this.IsLoading, this.Error, function (html) {
+                _this.Close();
+                _this.Page.PageElement.html(html).prepend($("<h2>").text(_this.Title()));
             });
         };
 
@@ -77,8 +79,13 @@
         };
 
         EditorVm.prototype.Show = function () {
-            var e = this.Element || (this.Element = Template.Editor.clone().appendTo('body'));
-            e.fadeIn();
+            (this.Element || (this.Element = this.CreateElement())).fadeIn();
+        };
+
+        EditorVm.prototype.CreateElement = function () {
+            var e = Template.Editor.clone().appendTo('body');
+            ko.applyBindings(this, e[0]);
+            return e;
         };
         return EditorVm;
     })();

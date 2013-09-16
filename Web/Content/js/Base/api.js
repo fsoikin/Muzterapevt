@@ -9,7 +9,7 @@
     exports.Get = Get;
 
     function Post(url, data, inProgress, error, onSuccess, options) {
-        return exports.Call("POST", url, data, inProgress, error, onSuccess, options);
+        return exports.Call("POST", url, JSON.stringify(data), inProgress, error, onSuccess, options);
     }
     exports.Post = Post;
 
@@ -17,10 +17,10 @@
         inProgress && inProgress(true);
         return $.ajax($.extend(options || {}, { type: method, url: exports.AbsoluteUrl(url), data: data, contentType: 'application/json' })).fail(function (e) {
             return error && error.notifySubscribers(e.statusText);
-        }).done(function (e) {
-            return e.Success ? (onSuccess && onSuccess(e.Result)) : (error && error.notifySubscribers((e.Messages || []).join()));
         }).always(function () {
             return inProgress && inProgress(false);
+        }).done(function (e) {
+            return e.Success ? (onSuccess && onSuccess(e.Result)) : (error && error.notifySubscribers((e.Messages || []).join()));
         });
     }
     exports.Call = Call;

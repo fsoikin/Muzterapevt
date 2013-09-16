@@ -75,7 +75,7 @@ define(["require", "exports", "../common", "ko", "ko.mapping", "jQuery", "text!.
         PageVm.prototype.CommitEdit = function () {
             var _this = this;
             this.Model = map.toJS(this);
-            c.Api.Post(this.IsNew() ? Ajax.Create : Ajax.Update, JSON.stringify(this.Model), this.IsSaving, this.Parent.Error, function (r) {
+            c.Api.Post(this.IsNew() ? Ajax.Create : Ajax.Update, this.Model, this.IsSaving, this.Parent.Error, function (r) {
                 map.fromJS(_this.Model = r, {}, _this);
                 _this.IsEditing(false);
                 _this.IsNew(false);

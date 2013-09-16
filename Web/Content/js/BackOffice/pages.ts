@@ -55,7 +55,7 @@ export class PageVm {
 
 	CommitEdit() {
 		this.Model = map.toJS( this );
-		c.Api.Post( this.IsNew() ? Ajax.Create : Ajax.Update, JSON.stringify( this.Model ),
+		c.Api.Post( this.IsNew() ? Ajax.Create : Ajax.Update, this.Model,
 			this.IsSaving, this.Parent.Error, r => {
 				map.fromJS( this.Model = r, {}, this );
 				this.IsEditing( false );
