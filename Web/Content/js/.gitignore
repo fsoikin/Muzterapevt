@@ -1,0 +1,10 @@
+*.js
+*.min.js
+*.map
+
+!amd-config.js
+!amd-base-url-marker.js
+
+!External/
+External/jQuery/main.*
+External/Rx/main.*

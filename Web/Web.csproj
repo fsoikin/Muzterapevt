@@ -163,9 +163,6 @@
     </Content>
     <Content Include="Content\css\common.less" />
     <None Include="Content\css\Page.less" />
-    <Content Include="Content\css\Copy of Page.css">
-      <DependentUpon>common.less</DependentUpon>
-    </Content>
     <Content Include="Content\css\jQuery\images\animated-overlay.gif" />
     <Content Include="Content\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\css\jQuery\images\ui-bg_flat_75_ffffff_40x100.png" />
