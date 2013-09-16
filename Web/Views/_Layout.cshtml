@@ -5,8 +5,63 @@
 		<script type="text/javascript" data-main="@Url.Content("~/Content/js/amd-base-url-marker")" src="@Url.Content("~/Content/require/require.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/Content/js/amd-config.js")"></script>
 		<script type="text/javascript">define('RootUrl', [], function () { return '@Url.Content("~/")'; });</script>
+		<link type="text/css" rel="stylesheet" href="@Url.Content("~/css/template/template-style.css")" />
 	</head>
 	<body>
-		@RenderBody()
+		<div id="container">
+			<div id="banner"> <img src="img/template/banner.jpg" alt="banner" title="banner" /> </div>
+			<div id="bannerb">
+				<h1>Muzterapevt<span class="orange">.RU</span></h1>
+				<div class="scroll">
+					<h2>Jan 01 2006</h2>
+					<p class="news"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
+					<h2>Dec 02 2005</h2>
+					<p class="news">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante.</p>
+				</div>
+				<p>You could have a news flash here or a mini blog maybe?</p>
+			</div>
+			<div class="topnav">
+				<div id="navcontainer">
+					<ul id="navlist">
+						<li id="active"><a href="http://www.free-css.com/" id="current">Item one</a></li>
+						<li><a href="http://www.free-css.com/">Item two</a></li>
+						<li><a href="http://www.free-css.com/">Item three</a></li>
+						<li><a href="http://www.free-css.com/">Item four</a></li>
+						<li><a href="http://www.free-css.com/">Item five</a></li>
+					</ul>
+				</div>
+				<div class="clear">&nbsp; </div>
+			</div>
+			<div id="sidebar">
+				<h1>Navigation</h1>
+				<div id="menu">
+					<ul>
+						<li><a href="http://www.free-css.com/">Snapp Happy</a></li>
+						<li><a href="http://www.free-css.com/">TODC</a></li>
+						<li><a href="http://www.free-css.com/">Andreas Viklund</a></li>
+						<li><a href="http://www.free-css.com/">James Koster</a> </li>
+						<li><a href="http://www.free-css.com/">OSWD</a></li>
+						<li><a href="http://www.free-css.com/">CSS play</a></li>
+						<li><a href="http://www.free-css.com/">Listamatic </a></li>
+					</ul>
+				</div>
+				<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
+			</div>
+			<div id="sidebar-b">
+				<h1>More Info</h1>
+				<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
+				<ul>
+					<li><a href="http://www.free-css.com/">Link 1</a></li>
+					<li><a href="http://www.free-css.com/">Link 2</a></li>
+					<li><a href="http://www.free-css.com/">Link 3</a></li>
+				</ul>
+				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+			</div>
+			<div id="content">
+				@RenderBody()
+			</div>
+			<div id="footer"> <a href="http://www.free-css.com/">homepage</a> | <a href="mailto:denise@mitchinson.net">contact</a> | <a href="http://validator.w3.org/check?uri=referer">html</a> | <a href="http://jigsaw.w3.org/css-validator">css</a> | &copy; 2007 Anyone | Design by <a href="http://www.mitchinson.net"> www.mitchinson.net</a><br/>
+				This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a> </div>
+		</div>
 	</body>
 </html>

@@ -182,7 +182,10 @@
     <Content Include="Content\css\Page.css">
       <DependentUpon>Page.less</DependentUpon>
     </Content>
+    <Content Include="Content\css\template-style.css" />
     <Content Include="Content\img\spinner.gif" />
+    <Content Include="Content\img\template\banner.jpg" />
+    <Content Include="Content\img\template\bgd.png" />
     <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
     <Content Include="Content\js\Base\api.ts" />
