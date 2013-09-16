@@ -231,6 +231,8 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\BackOffice\Index.cshtml" />
+    <Content Include="web_connStrings.config" />
+    <Content Include="web_smtp.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

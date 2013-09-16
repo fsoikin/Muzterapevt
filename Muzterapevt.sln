@@ -16,6 +16,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CCB985
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prod", "Prod", "{236784BD-89D3-4B58-864B-6FDE66C2DA9E}"
+	ProjectSection(SolutionItems) = preProject
+		Config\Prod\Web_connStrings.config = Config\Prod\Web_connStrings.config
+		Config\Prod\web_smtp.config = Config\Prod\web_smtp.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{7A2B4FD1-C5A8-4504-A6A9-93251EDAFD2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +45,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{236784BD-89D3-4B58-864B-6FDE66C2DA9E} = {7A2B4FD1-C5A8-4504-A6A9-93251EDAFD2D}
 	EndGlobalSection
 EndGlobal
