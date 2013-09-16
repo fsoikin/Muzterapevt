@@ -3,7 +3,7 @@ margin : 0;
 padding : 0;
 font : 75% "Trebuchet MS", verdana, arial, sans-serif;
 color : #666;
-background : #003250 url(../../img/template/bgd.png) center repeat;
+background : #003250 url(../img/template/bgd.png) center repeat;
 }
 #container {
 width : 740px;
