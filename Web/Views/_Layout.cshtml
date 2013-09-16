@@ -5,11 +5,11 @@
 		<script type="text/javascript" data-main="@Url.Content("~/Content/js/amd-base-url-marker")" src="@Url.Content("~/Content/require/require.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/Content/js/amd-config.js")"></script>
 		<script type="text/javascript">define('RootUrl', [], function () { return '@Url.Content("~/")'; });</script>
-		<link type="text/css" rel="stylesheet" href="@Url.Content("~/css/template/template-style.css")" />
+		<link type="text/css" rel="stylesheet" href="@Url.Content("~/css/template-style.css")" />
 	</head>
 	<body>
 		<div id="container">
-			<div id="banner"> <img src="img/template/banner.jpg" alt="banner" title="banner" /> </div>
+			<div id="banner"> <img src="@Url.Content( "~/img/template/banner.jpg" )" alt="banner" title="banner" /> </div>
 			<div id="bannerb">
 				<h1>Muzterapevt<span class="orange">.RU</span></h1>
 				<div class="scroll">
