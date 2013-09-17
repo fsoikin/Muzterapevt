@@ -33,12 +33,9 @@ class PageVm implements c.IControl {
 		ko.applyBindings( this, this.MenuElement[0] );
 
 		this.PageElement.on("contextmenu", e => {
-			if( e.which == 3 ) // right click
-			{
-				this.MenuElement.css( { top: e.pageY, left: e.pageY }).fadeIn(100);
-				$( document ).one( "click", () => this.MenuElement.fadeOut(100) );
-				return false;
-			}
+			this.MenuElement.css( { top: e.pageY, left: e.pageX }).fadeIn(100);
+			$( document ).one( "click", () => this.MenuElement.fadeOut(100) );
+			return false;
 		});
 	}
 
