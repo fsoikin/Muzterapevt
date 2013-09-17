@@ -3,8 +3,10 @@
 </div>
 
 <div class="page-editor" data-bind="loadingWhen: IsLoading, overlayLoadingMode: true">
+	<label>Title</label>
 	<input type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
+	<label>Text</label>
 	<textarea data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
-	<button data-bind="click: Save">Save</button>
 	<button data-bind="click: Cancel">Cancel</button>
+	<button data-bind="click: Save">Save</button>
 </div>
