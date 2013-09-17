@@ -2,6 +2,8 @@
   border: 1px solid gray;
   background: white;
   padding: 5px;
+  position: absolute;
+  min-width: 200px;
 }
 .page-menu .item {
   cursor: pointer;
