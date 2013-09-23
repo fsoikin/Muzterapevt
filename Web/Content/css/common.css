@@ -1,4 +1,11 @@
-﻿.Loading {
+﻿.content {
+  border: 2px solid black;
+  zoom: 1.4;
+}
+body {
+  background: #DDDDDD !important;
+}
+.Loading {
   background: white;
   opacity: 0.7;
 }
