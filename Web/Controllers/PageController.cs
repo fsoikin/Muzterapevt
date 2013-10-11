@@ -13,17 +13,21 @@ namespace Mut.Controllers
 	public class PageController : Controller
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
+		[Import] public PagesService PagesService { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public TopMenuUI TopMenu { get; set; }
 
 		public ActionResult Page( string url )
 		{
-			var p = Pages.All.FirstOrDefault( x => x.Url == url );
-			if ( p == null ) return HttpNotFound();
-
-			return View( "~/Views/Page.cshtml", new PageModel { Page = p, AllowEdit = true
-				//Auth.CurrentActor.IsAdmin 
+			var p = PagesService.GetPage( url, Auth.CurrentActor.IsAdmin );
+			if ( p == null ) return RedirectToAction( "Page", new { url = "" } );
+			else return View( "~/Views/Page.cshtml", new PageModel { 
+				Page = p, 
+				AllowEdit = Auth.CurrentActor.IsAdmin, 
+				TopMenu = TopMenu.GetTopMenu(),
+				ChildPages = PagesService.GetChildPages( p )
 			} );
 		}
 

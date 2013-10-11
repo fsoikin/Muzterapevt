@@ -25,6 +25,7 @@ namespace Mut.Data
 
 			public T Find( object key ) { return Db.Set<T>().Find( key ); }
 			public T Add( T t ) { return Db.Set<T>().Add( t ); }
+			public void Remove( T t ) { Db.Set<T>().Remove( t ); }
 			public IQueryable<T> All { get { return Db.Set<T>(); } }
 		}
 
@@ -49,6 +50,7 @@ namespace Mut.Data
 	{
 		T Find( object key );
 		T Add( T t );
+		void Remove( T t );
 		IQueryable<T> All { get; }
 	}
 

@@ -53,8 +53,9 @@
     <Reference Include="erecruit.Utils">
       <HintPath>..\External\erecruit.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -146,6 +147,7 @@
     <Compile Include="Controllers\BackOffice\PagesController.cs" />
     <Compile Include="Controllers\BBCodeController.cs" />
     <Compile Include="Controllers\BackOfficeController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,15 +155,22 @@
     <Compile Include="Models\PageListModel.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AuthService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\css\bl.css">
+      <DependentUpon>bl.less</DependentUpon>
+    </Content>
     <Content Include="Content\css\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
     <Content Include="Content\css\common.less" />
+    <Content Include="Content\css\bl.less" />
+    <Content Include="Content\css\Menu.css">
+      <DependentUpon>Menu.less</DependentUpon>
+    </Content>
+    <Content Include="Content\css\Menu.less" />
     <None Include="Content\css\Page.less" />
     <Content Include="Content\css\jQuery\images\animated-overlay.gif" />
     <Content Include="Content\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -192,10 +201,14 @@
     <Content Include="Content\js\Base\koBindings.ts" />
     <Content Include="Content\js\Base\seq.ts" />
     <Content Include="Content\js\BL\bbCode.ts" />
+    <Content Include="Content\js\BL\base.ts" />
+    <Content Include="Content\js\BL\menu.ts" />
     <Content Include="Content\js\BL\page.ts" />
+    <Content Include="Content\js\BL\Templates\menu.html" />
     <Content Include="Content\js\BL\Templates\page.html" />
     <Content Include="Content\js\common.ts" />
     <Content Include="Content\js\bootstrap.ts" />
+    <Content Include="Content\js\Controls\ContextMenu.ts" />
     <Content Include="Content\js\External\jQuery\jquery-1.9.1.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.min.js" />
@@ -204,8 +217,11 @@
     <Content Include="Content\js\External\Knockout\knockout-2.2.1.js" />
     <Content Include="Content\js\External\Knockout\knockout.mapping-latest.debug.js" />
     <Content Include="Content\js\External\Knockout\knockout.mapping-latest.js" />
+    <Content Include="Content\js\External\LinqJS\linq.js" />
+    <Content Include="Content\js\External\LinqJS\linq.min.js" />
     <Content Include="Content\js\External\polyfill\polyfill.js" />
     <Content Include="Content\js\lib\autobind.ts" />
+    <Content Include="Content\js\lib\template.ts" />
     <Content Include="Content\js\lib\dynamic.ts" />
     <Content Include="Content\require\css.js" />
     <Content Include="Content\require\normalize.js" />
@@ -220,6 +236,8 @@
     <Content Include="Content\tsd\jqueryui.d.ts" />
     <Content Include="Content\tsd\knockout-2.2.d.ts" />
     <Content Include="Content\tsd\knockout.mapping-2.0.d.ts" />
+    <Content Include="Content\tsd\linq.amd.d.ts" />
+    <Content Include="Content\tsd\linq.d.ts" />
     <Content Include="Content\tsd\polyfill.d.ts" />
     <Content Include="Content\tsd\require.d.ts" />
     <Content Include="Content\tsd\rx-ko.d.ts" />
@@ -236,9 +254,11 @@
     <Content Include="Views\BackOffice\Index.cshtml" />
     <Content Include="web_connStrings.config" />
     <Content Include="web_smtp.config" />
+    <Content Include="Views\TopMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

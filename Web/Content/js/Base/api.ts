@@ -49,4 +49,4 @@ import _root = require( "RootUrl" );
 export var RootUrl = ((r: string) =>
 	typeof r !== "string" || !r.length
 		? "/"
-		: r[r.length-1] == '/' ? r : r + '/')(<string>_root);
+		: r[r.length-1] == '/' ? r : r + '/')(<string>_root) + '-/';

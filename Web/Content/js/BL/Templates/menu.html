@@ -1,0 +1,28 @@
+﻿<ul class="menu" data-bind="
+	foreach: Items,
+	assignTo: UIRoot,
+	control: CtxMenu,
+	jqWidget: { sortable: {
+		items: '.menu-item',
+		update: OnItemsSorted
+	} }">
+	<li>
+		<a data-bind="attr: { href: Link }, text: Text, control: $parent.CtxMenu"></a>
+		<div class="sub-menu" data-bind="control: Children"></div>
+	</li>
+</ul>
+
+<div class="menu-main-ctx-menu context-menu" data-bind="assignTo: CtxMenu.MenuElement">
+	<div class="item" data-bind="click: Add">Add Item</div>
+	<div class="item" data-bind="click: Edit, visible: CtxMenuItemRowsVisible">Edit</div>
+	<div class="item" data-bind="click: Delete, visible: CtxMenuItemRowsVisible">Delete</div>
+</div>
+
+<div class="menu-item-editor" data-bind="template: { data: EditingItem, if: EditingItem }, visible: { flag: EditingItem, effect: 'fade' }, assignTo: Editor">
+	<label>Name</label>
+	<input type="text" data-bind="value: Text, valueUpdate: 'keyup'" />
+	<label>Link</label>
+	<input type="text" data-bind="value: Link, valueUpdate: 'keyup'" />
+	<button data-bind="click: Cancel">Cancel</button>
+	<button data-bind="click: Save">Save</button>
+</div>

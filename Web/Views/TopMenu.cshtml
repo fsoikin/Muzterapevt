@@ -1,0 +1,15 @@
+﻿@model TopMenuModel
+
+@if ( Model.AllowEdit ) { 
+	<div 	
+		class="autobind" 
+		data-controller="MenuVm, BL/menu" 
+		data-args='@Html.Raw( Json.Encode( new { rootItemId = Model.ParentId, items = Model.Items } ) )'
+	></div>
+} else {
+	<ul>
+		@foreach( var i in Model.Items ) {
+			<li class="@( i.Id == Model.CurrentItemId ? "active" : "" )"><a href="@i.Link">@i.Text</a></li>
+		}
+	</ul>
+}

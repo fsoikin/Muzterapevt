@@ -1,5 +1,7 @@
 ﻿import er = require( "../common" );
 import ko = require( "ko" );
+import linq = require( "linq" );
+import $ = require( "jQuery" );
 
 export interface ClassRef {
 	// TODO: [fs] currently this definition assumes that the module ID
@@ -30,58 +32,66 @@ export function bind( ref: ClassRef ) {
 	return bindMany( [ref] )[0];
 }
 
-export function bindMany( refs: ClassRef[] ): Ko.Observable<any>[] {
-	refs = refs || [];
-	return refs.map( cr => {
-		var r = ko.observable(null);
-		if ( cr ) req( [cr.Module], m => r( instantiate( m, cr ) ) );
+export function bindMany( refs: linqjs.IEnumerable<ClassRef> ): Ko.Observable<any>[];
+export function bindMany( refs: ClassRef[] ): Ko.Observable<any>[];
+export function bindMany( _refs ): Ko.Observable<any>[] {
+	if( !_refs ) return [];
+	var refs = linq.from( _refs );
+	return refs.select( cr => {
+		var r = ko.observable( null );
+		if( cr ) req( linq.make( cr.Module ), m => r( instantiate( m, cr ) ) );
 		return r;
-	} );
+	})
+		.toArray();
 }
 
-export function bindAll( refs: ClassRef[] ) {
-	if( !refs ) return ko.observableArray();
+export function bindAll( refs: ClassRef[] ): Ko.Observable<any[]>;
+export function bindAll( refs: linqjs.IEnumerable<ClassRef> ): Ko.Observable<any[]>;
+export function bindAll( _refs ) {
+	if( !_refs ) return ko.observableArray();
+	var refs = linq.from( _refs );
 
 	var result = ko.observableArray();
-	req( refs.map( r => r.Module ), function () {
-		result(
-			ko.utils.makeArray( arguments )
-			.map( ( m, idx ) => instantiate( m, refs[idx] ) )
-		);
-	} );
+	req( refs.select( r => r.Module ), function () {
+		result( linq.from( arguments ).zip( refs, instantiate ).toArray() );
+	});
 	return result;
 }
 
 function instantiate( mod, ref: ClassRef ) {
-	var ctor = ref.Class ? getClass(mod, ref.Class) : mod;
+	var ctor = ref.Class ? getClass( mod, ref.Class ) : mod;
 
 	// TODO: [fs] this probably shouldn't throw, but should return the error up the chain so that the caller can handle it
-	if( !ctor ) throw new Error( "Cannot find class '" + ref.Class + "' in module '" + ref.Module + "'." );
+	if( !ctor ) throw new Error( "Cannot find '" + ( ref.Class || '[export]' ) + "' in module '" + ref.Module + "'." );
+	if( typeof ( ctor ) != "function" ) throw new Error( "Cannot instantiate '" + ( ref.Class || '[export]' ) + "' from module '" + ref.Module + "' because it is not a function." );
 
 	if( ref.Arguments !== undefined && ref.Arguments !== null ) {
-		ctor = Function.prototype.bind.apply( ctor,
-			Array.isArray( ref.Arguments )
-				? [null].concat( ref.Arguments )
-				: [null, ref.Arguments] );
+		ctor = ( ctor => {
+			function _f() {
+				this.constructor = ctor;
+				ctor.apply( this, $.isArray( ref.Arguments ) ? ref.Arguments : [ref.Arguments] );
+			}
+			_f.prototype = ctor.prototype;
+			return _f;
+		})( ctor );
 	}
 
 	return new ctor();
 }
 
 function getClass( mod, cls: string ) {
-	return cls.split( '.' ).reduce( (m,p) => m[p], mod );
+	return cls.split( '.' ).reduce( ( m, p ) => m[p], mod );
 }
 
-var req = (() => {
+var req = ( () => {
 	var loadedModules = {};
 
-	return function( deps: string[], cb: Function ) {
-		var loaded = deps.map( d => loadedModules[d] );
-		if( loaded.every( d => d ) ) cb.apply( this, loaded );
-		else require( deps, () => {
-			var resolved = arguments;
-			deps.every( ( d, idx ) => loadedModules[d] = loaded[idx] = resolved[idx] );
-			cb.apply( this, loaded );
-		} );
+	return function ( deps: linqjs.IEnumerable<string>, cb: Function ) {
+		var loaded = deps.select( d => loadedModules[d] );
+		if( loaded.all( d => d ) ) cb.apply( this, loaded.toArray() );
+		else require( deps.toArray(), () => {
+			loaded = deps.zip( arguments, ( d, r ) => ( loadedModules[d] = r, r ) );
+			cb.apply( this, loaded.toArray() );
+		});
 	};
-} )();
+})();

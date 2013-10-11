@@ -6,7 +6,8 @@
 /// <reference path="../tsd/knockout.mapping-2.0.d.ts"/>
 /// <reference path="../tsd/rx.d.ts" />
 /// <reference path="../tsd/rx-ko.d.ts" />
-/// <amd-dependency path="css!styles/common.css" />
+/// <reference path="../tsd/linq.d.ts"/>
+/// <reference path="../tsd/linq.amd.d.ts"/>
 
 import rx = require( "rx" );
 import ko = require( "ko" );

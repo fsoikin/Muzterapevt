@@ -1,5 +1,6 @@
 ﻿/// <amd-dependency path="css!styles/Page.css" />
 import c = require( "../common" );
+import contextMenu = require( "../Controls/ContextMenu" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
 import rx = require( "rx" );
@@ -13,30 +14,15 @@ var Ajax = {
 	Update: "page/update"
 };
 
-class PageVm implements c.IControl {
-	PageElement: JQuery;
-	MenuElement: JQuery;
+class PageVm extends c.VmBase implements c.IControl {
 	private Editor: EditorVm;
 	PageId: number;
+	ViewElement: JQuery;
+	CtxMenu = new contextMenu();
 
 	constructor( args: { id: number }) {
+		super();
 		this.PageId = args.id;
-	}
-	
-	OnLoaded( element: Element ) {
-		this.PageElement = $( element );
-		if( !this.PageElement.text().trim() ) {
-			this.PageElement.text( "Right-click here" );
-		}
-
-		this.MenuElement = Template.Menu.clone().appendTo( "body" ).hide();
-		ko.applyBindings( this, this.MenuElement[0] );
-
-		this.PageElement.on("contextmenu", e => {
-			this.MenuElement.css( { top: e.pageY, left: e.pageX }).fadeIn(100);
-			$( document ).one( "click", () => this.MenuElement.fadeOut(100) );
-			return false;
-		});
 	}
 
 	OnEdit() {
@@ -44,7 +30,18 @@ class PageVm implements c.IControl {
 		e.Show();
 	}
 
-	ControlsDescendantBindings = true;
+	OnLoaded( element: Element ) {
+		this.ViewElement = $( element );
+		if( !this.ViewElement.text().trim() ) {
+			this.ViewElement.text( "Right-click here" );
+		}
+
+		this.CtxMenu.MenuElement( Template.Menu.clone().appendTo( "body" ).hide()[0] );
+		this.CtxMenu.OnLoaded( element );
+		ko.applyBindings( this, this.CtxMenu.MenuElement() );
+	}
+
+	ControlsDescendantBindings = false;
 }
 
 // Defined in JS/PageEditor.cs
@@ -65,7 +62,7 @@ class EditorVm {
 		page.Id = this.Page.PageId;
 		c.Api.Post( Ajax.Update, page, this.IsLoading, this.Error, (html:string) => {
 			this.Close();
-			this.Page.PageElement.html( html ).prepend(
+			this.Page.ViewElement.html( html ).prepend(
 				$( "<h2>" ).text( this.Title() ) );
 		} );
 	}

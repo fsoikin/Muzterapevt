@@ -44,8 +44,9 @@
     <Reference Include="erecruit.Utils">
       <HintPath>..\External\erecruit.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -67,12 +68,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BBCodeUI.cs" />
+    <Compile Include="AuthService.cs" />
+    <Compile Include="PagesService.cs" />
     <Compile Include="Infrastructure\JsonRequestBodyAttribute.cs" />
     <Compile Include="Infrastructure\JsonResponse.cs" />
     <Compile Include="Infrastructure\LoggingModule.cs" />
+    <Compile Include="JS\Menu\Item.cs" />
+    <Compile Include="JS\Menu\SubItemsSaveRequest.cs" />
     <Compile Include="JS\PageEditor.cs" />
     <Compile Include="JS\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TopMenuUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -7,6 +7,7 @@ require.config( {
 
 		'ko': 'External/Knockout/knockout-2.2.1.debug',
 		'ko.mapping': 'External/Knockout/knockout.mapping-latest',
+		'linqjs': 'External/LinqJS/linq.min',
 
 		// RequireJS plugins
 		'text': '../require/text',
@@ -21,6 +22,9 @@ require.config( {
 	],
 
 	map: {
+		'*': {
+			'linq': 'linqjs'
+		},
 		'ko.mapping': {
 			knockout: 'ko'
 		}

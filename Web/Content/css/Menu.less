@@ -1,0 +1,41 @@
+.menu-item-editor {
+	display: none;
+	position: fixed;
+	top: 15%;
+	left: 15%;
+	bottom: 15%;
+	right: 15%;
+	border: 1px solid black;
+	background: white;
+	padding: 20px;
+
+	button { float: right; }
+}
+
+.menu-main-ctx-menu {
+	display: none;
+}
+
+.menu li {
+	&:hover > .sub-menu {
+		display: block;
+	}
+
+	> .sub-menu {
+		overflow: visible;
+		display: none;
+		position: absolute;
+		bottom: inherit;
+		margin-top: 1.3em;
+
+		> .menu {
+			min-height: 30px;
+			min-width: 200px;
+			border: 1px solid black;
+
+			li {
+				display: block;
+			}
+		}
+	}
+}

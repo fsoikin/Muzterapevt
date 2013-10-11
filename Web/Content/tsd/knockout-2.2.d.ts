@@ -19,8 +19,8 @@ declare module Ko {
 	export var computed: Ko.ComputedStatic;
 	export var observableArray: Ko.ObservableArrayStatic;
 
-	export function contextFor( node: Element ): any;
-	export function contextFor( node: Ko.VirtualElement ): any;
+	export function contextFor( node: Element ): BindingContext;
+	export function contextFor( node: Ko.VirtualElement ): BindingContext;
 	export function isSubscribable( instance: any ): boolean;
 	export function toJSON( viewModel: any, replacer?: Function, space?: any ): string;
 	export function toJS( viewModel: any ): any;
@@ -63,7 +63,7 @@ declare module Ko {
 		unshift( ...items: T[] ): number;
 		reverse(): T[];
 		sort(): void;
-		sort( compareFunction ): void;
+		sort( compareFunction: (a: T, b: T) => number ): void;
 
 		// Ko specific
 		replace( oldItem: T, newItem: T ): void;

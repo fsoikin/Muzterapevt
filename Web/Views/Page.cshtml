@@ -1,7 +1,17 @@
 ﻿@model PageModel
 
-@{
-	ViewBag.Title = Model.Page.Title;
+@{ ViewBag.Title = Model.Page.Title; }
+@section TopMenu { @Html.Partial( "~/Views/TopMenu.cshtml", Model.TopMenu ) }
+@section LeftSidebar {
+		<h1>Other Pages</h1>
+		<div class="menu">
+			<ul>
+				@foreach( var p in Model.ChildPages ) {
+					<li><a href="@Url.Content( p.Url )">@p.Title</a></li>
+				}
+			</ul>
+		</div>
+		<p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
 }
 
 @if ( Model.AllowEdit ) {
@@ -11,5 +21,6 @@
 	</div>
 }
 else {
+	<h2>@Model.Page.Title</h2>
 	@Html.Raw( Model.Page.HtmlText )
 }

@@ -8,9 +8,9 @@ ko.bindingHandlers['control'] = {
 	init: (element, valueAccessor) => {
 
 		var o = valueAccessor();
-		var vm = o.vm || o;
+		var vm: er.IControl = o.vm || o;
 		var defer = (o.defer === undefined) ? false : o.defer;
-		vm = <er.IControl>ko.utils.peekObservable(vm);
+		vm = ko.utils.peekObservable(vm);
 		if (!vm) return;
 
 		var vc = <er.IVirtualControl>vm;
@@ -24,23 +24,47 @@ ko.bindingHandlers['control'] = {
 		function f() { vm.OnLoaded(element); }
 		if (defer) setImmediate(f); else f();
 
-		return { controlsDescendantBindings: vm.ControlsDescendantBinidngs };
+		return { controlsDescendantBindings: vc.ControlsDescendantBindings };
 	}
 };
 
-ko.bindingHandlers['flashWhen'] = {
-	init: ( element, valueAccessor, allBindingsAccessor ) => {
-		var v: Ko.Subscribable<any> = valueAccessor();
-		if( ko.isSubscribable( v ) ) {
-			v.subscribe( () => {
-				$( element ).hide().slideDown( 300 );
-				setTimeout( () => $( element ).slideUp( 600 ), 2000 );
-			});
+ko.bindingHandlers['visible'] = ( () => {
+	function parse( valueAccessor: () => any ) {
+		var v = u( valueAccessor() );
+		return {
+			flag: u( v.flag == undefined ? v : v.flag ),
+			effect: v.effect,
+			on: v.on, off: v.off
+		};
+	}
+
+	var res = {
+		init: ( element, valueAccessor, allBindingsAccessor ) => {
+			var v = parse( valueAccessor );
+			var e = $( element );
+			if( v.flag ) e.show(); else e.hide();
+			return null;
+		},
+		update: ( element, valueAccessor, allBindingsAccessor ) => {
+			var v = parse( valueAccessor );
+			var ef = v.effect && res[v.effect];
+			var on = v.on || ( ef && ef.on ) || ( x => x.show() );
+			var off = v.off || ( ef && ef.off ) || ( x => x.hide() );
+			( v.flag ? on : off )( $( element ) );
 		}
+	};
 
-		return null;
-	}
-};
+	res['fade'] = {
+		on: ( x: JQuery ) => x.fadeIn(),
+		off: ( x: JQuery ) => x.fadeOut()
+	};
+	res['slide'] = {
+		on: ( x: JQuery ) => x.slideDown(),
+		off: ( x: JQuery ) => x.slideUp()
+	};
+
+	return res;
+})();
 
 ko.bindingHandlers['jqButton'] = {
 	init: e => {

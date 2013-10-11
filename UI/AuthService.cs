@@ -5,7 +5,7 @@ using System.Web.Security;
 using erecruit.Composition;
 using Mut.Data;
 
-namespace Mut.Controllers
+namespace Mut
 {
 	public interface IAuthService
 	{
@@ -82,7 +82,7 @@ namespace Mut.Controllers
 		class Guest : ISecurityActor
 		{
 			public string Name { get { return "Guest"; } }
-			public bool IsAdmin { get { return false; } }
+			public bool IsAdmin { get { return true; } } // TODO: Mock
 		}
 	}
 }

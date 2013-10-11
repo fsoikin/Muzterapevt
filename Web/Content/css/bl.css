@@ -1,0 +1,15 @@
+﻿.context-menu {
+  border: 1px solid gray;
+  background: white;
+  padding: 5px;
+  position: absolute;
+  min-width: 200px;
+}
+.context-menu .item {
+  cursor: pointer;
+  font-weight: bold;
+}
+.context-menu .item:hover {
+  background: #8576ff;
+  color: white;
+}

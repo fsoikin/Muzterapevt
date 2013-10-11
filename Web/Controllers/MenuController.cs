@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
+using System.Web.Mvc;
+using erecruit.Composition;
+using erecruit.Utils;
+using Mut.Data;
+using Mut.Models;
+using Mut.UI;
+using Mut.Web;
+
+namespace Mut.Controllers
+{
+	public class MenuController : Controller
+	{
+		[Import] public IRepository<NavigationItem> MenuItems { get; set; }
+		[Import] public IAuthService Auth { get; set; }
+		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public TopMenuUI TopMenuUI { get; set; }
+
+		public ActionResult Load( int? parentId )
+		{
+			return Json( TopMenuUI.GetItemsForParent( parentId ).Select( TopMenuUI.ToJson ), JsonRequestBehavior.AllowGet );
+		}
+
+		public JsonResponse<unit> UpdateSubItems( JS.Menu.SubItemsSaveRequest req ) {
+			return JsonResponse.Catch( () => {
+				if ( req == null ) return unit.Default;
+
+				var parent = req.ParentId == null ? null : MenuItems.Find( req.ParentId );
+				var items = TopMenuUI.GetItemsForParent( req.ParentId ).ToList();
+				UpdateItems( parent, items, req.Items.EmptyIfNull() );
+				UnitOfWork.Commit();
+				return unit.Default;
+			}, Log );
+		}
+
+		private void UpdateItems( NavigationItem parent, IEnumerable<NavigationItem> existing, IEnumerable<JS.Menu.Item> incoming ) {
+			var toAddIds = incoming.Select( i => i.Id ).Except( existing.Select( i => i.Id ) );
+			var toRemoveIds = existing.Select( i => i.Id ).Except( incoming.Select( i => i.Id ) );
+			
+			foreach ( var i in existing.GroupJoin( toRemoveIds, i => i.Id, x => x, ( i, _ ) => i ) ) MenuItems.Remove( i );
+			
+			foreach ( var i in incoming.GroupJoin( toAddIds, i => i.Id, x => x, ( i, _ ) => i ) ) {
+				var item = MenuItems.Add( new NavigationItem { Parent = parent } );
+				Copy( item, i );
+				UpdateItems( item, item.Children, i.SubItems.EmptyIfNull() );
+			}
+
+			foreach ( var x in existing.Join( incoming, i => i.Id, i => i.Id, ( e, i ) => new { e, i } ) ) {
+				Copy( x.e, x.i );
+				UpdateItems( x.e, x.e.Children, x.i.SubItems.EmptyIfNull() );
+			}
+		}
+
+		private void Copy( NavigationItem e, JS.Menu.Item i ) {
+			e.Link = i.Link; e.Text = i.Text; e.Order = i.Order;
+		}
+	}
+}

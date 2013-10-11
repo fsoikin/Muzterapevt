@@ -1,19 +1,4 @@
-﻿.page-menu {
-  border: 1px solid gray;
-  background: white;
-  padding: 5px;
-  position: absolute;
-  min-width: 200px;
-}
-.page-menu .item {
-  cursor: pointer;
-  font-weight: bold;
-}
-.page-menu .item:hover {
-  background: #8576ff;
-  color: white;
-}
-.page-editor {
+﻿.page-editor {
   position: fixed;
   top: 15%;
   left: 15%;
