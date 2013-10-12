@@ -9,7 +9,7 @@
 } else {
 	<ul>
 		@foreach( var i in Model.Items ) {
-			<li class="@( i.Id == Model.CurrentItemId ? "active" : "" )"><a href="@i.Link">@i.Text</a></li>
+			<li class="@( i.Id == Model.CurrentItemId ? "active" : "" )"><a href="@Url.Content( "~/" + i.Link )">@i.Text</a></li>
 		}
 	</ul>
 }

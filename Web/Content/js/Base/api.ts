@@ -38,9 +38,14 @@ export function Call( method: string, url: string, data: any,
 			: ( error && error.notifySubscribers( ( e.Messages || [] ).join() ) ) );
 }
 
-export function AbsoluteUrl( url: string ) {
+export function PageUrl( url: string ) {
 	if( url && url[0] == '/' ) url = url.substring( 1 );
 	return RootUrl + url;
+}
+
+export function AbsoluteUrl( url: string ) {
+	if( url && url[0] == '/' ) url = url.substring( 1 );
+	return RootUrl + '-/' + url;
 }
 
 declare module "RootUrl" { };
@@ -49,4 +54,4 @@ import _root = require( "RootUrl" );
 export var RootUrl = ((r: string) =>
 	typeof r !== "string" || !r.length
 		? "/"
-		: r[r.length-1] == '/' ? r : r + '/')(<string>_root) + '-/';
+		: r[r.length-1] == '/' ? r : r + '/')(<string>_root);

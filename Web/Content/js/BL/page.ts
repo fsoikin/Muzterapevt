@@ -1,95 +1,41 @@
 ﻿/// <amd-dependency path="css!styles/Page.css" />
 import c = require( "../common" );
-import contextMenu = require( "../Controls/ContextMenu" );
-import ko = require( "ko" );
-import map = require( "ko.mapping" );
-import rx = require( "rx" );
 import $ = require( "jQuery" );
-import bb = require( "./bbCode" );
+import ed = require( "./InPlaceEditor" );
 
 export = PageVm;
 
 var Ajax = {
-	Load: "page/load",
+	Load: id => "page/load?id=" + id,
 	Update: "page/update"
 };
 
-class PageVm extends c.VmBase implements c.IControl {
-	private Editor: EditorVm;
-	PageId: number;
-	ViewElement: JQuery;
-	CtxMenu = new contextMenu();
+// Defined in UI/JS/PageSaveResult.cs
+interface PageSaveResult {
+	Title: string;
+	Html: string;
+}
 
+// Defined in UI/JS/TextSaveResult.cs
+class PageEditor {
+	Id = 0;
+	Path = "";
+	Title = "";
+	Text = "";
+}
+
+class PageVm extends ed.InPlaceEditorVm {
 	constructor( args: { id: number }) {
-		super();
-		this.PageId = args.id;
-	}
-
-	OnEdit() {
-		var e = this.Editor || ( this.Editor = new EditorVm( this ) );
-		e.Show();
-	}
-
-	OnLoaded( element: Element ) {
-		this.ViewElement = $( element );
-		if( !this.ViewElement.text().trim() ) {
-			this.ViewElement.text( "Right-click here" );
-		}
-
-		this.CtxMenu.MenuElement( Template.Menu.clone().appendTo( "body" ).hide()[0] );
-		this.CtxMenu.OnLoaded( element );
-		ko.applyBindings( this, this.CtxMenu.MenuElement() );
-	}
-
-	ControlsDescendantBindings = false;
-}
-
-// Defined in JS/PageEditor.cs
-class EditorVm {
-	private Element: JQuery;
-	IsLoading = ko.observable( false );
-	Error = ko.observable<string>();
-	Text = ko.observable( "" );
-	Title = ko.observable( "" );
-
-	constructor( public Page: PageVm ) {
-		c.Api.Get( Ajax.Load, { id: Page.PageId }, this.IsLoading, this.Error,
-			r => map.fromJS( r, {}, this ) );
-	}
-
-	Save() {
-		var page = map.toJS( this );
-		page.Id = this.Page.PageId;
-		c.Api.Post( Ajax.Update, page, this.IsLoading, this.Error, (html:string) => {
-			this.Close();
-			this.Page.ViewElement.html( html ).prepend(
-				$( "<h2>" ).text( this.Title() ) );
-		} );
-	}
-
-	Cancel() { this.Close(); }
-
-	Close() {
-		this.Element && this.Element.fadeOut();
-	}
-
-	Show() {
-		(this.Element || ( this.Element = this.CreateElement() )).fadeIn();
-	}
-
-	CreateElement() {
-		var e = Template.Editor.clone().appendTo( 'body' );
-		ko.applyBindings( this, e[0] );
-		return e;
+		super( {
+			ajax: Ajax,
+			id: args.id,
+			emptyData: new PageEditor(),
+			onSaved: ( e: JQuery, data: PageSaveResult ) => e.html( data.Html ).prepend( $( "<h2>" ).text( data.Title ) ),
+			editorTemplate: EditorTemplate
+		});
 	}
 }
 
-declare module "text!./Templates/page.html" { }
-import _template = require( "text!./Templates/page.html" );
-var Template = ( () => {
-	var t = $( _template );
-	return {
-		Menu: t.filter( ".page-menu" ),
-		Editor: t.filter( ".page-editor" )
-	};
-})();
+declare module "text!./Templates/page-editor.html" { }
+import _template = require( "text!./Templates/page-editor.html" );
+var EditorTemplate = $( _template );

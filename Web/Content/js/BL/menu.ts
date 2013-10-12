@@ -53,13 +53,26 @@ export class MenuVm extends c.VmBase implements c.IControl {
 		else if( args.items ) {
 			this.Items( args.items.map( ( i, idx ) => new ItemVm( i, this, idx ) ) );
 		}
+
+		var onKey = ( e: JQueryEventObject ) => {
+			if( e.which == 27 ) {
+				this.EditingItem() && this.EditingItem().Cancel();
+			}
+			else if( e.which == 13 && e.ctrlKey ) {
+				this.EditingItem() && this.EditingItem().Save();
+			}
+		};
+		this.EditingItem.subscribe( e => {
+			if( e ) $( document ).on( "keydown", onKey );
+			else $( document ).off( "keydown", onKey );
+		});
 	}
 
 	OnLoaded = Template;
 	ControlsDescendantBindings = true;
 
 	OnItemsSorted = () => {
-		$( ".menu-item", this.UIRoot() ).each( ( idx, e ) => {
+		$( "li", this.UIRoot() ).each( ( idx, e ) => {
 			var ctx = ko.contextFor( e );
 			var i: ItemVm = ctx && ctx.$data;
 			if( !( i instanceof ItemVm ) ) return;
@@ -115,6 +128,8 @@ export class ItemVm
 	Cancelled = new ko.subscribable();
 	Saved = new ko.subscribable();
 	IsSaving = ko.observable( false );
+	Link = ko.observable( "" );
+	AbsoluteLink = ko.computed( () => c.Api.PageUrl( this.Link() ) );
 
 	constructor( public Item: Item, public Parent: MenuVm, index: number ) {
 		map.fromJS( Item, { ignore: "SubItems" }, this );

@@ -2,12 +2,9 @@
 	foreach: Items,
 	assignTo: UIRoot,
 	control: CtxMenu,
-	jqWidget: { sortable: {
-		items: '.menu-item',
-		update: OnItemsSorted
-	} }">
+	jqWidget: { sortable: { items: 'li', update: OnItemsSorted } }">
 	<li>
-		<a data-bind="attr: { href: Link }, text: Text, control: $parent.CtxMenu"></a>
+		<a data-bind="attr: { href: AbsoluteLink }, text: Text, control: $parent.CtxMenu"></a>
 		<div class="sub-menu" data-bind="control: Children"></div>
 	</li>
 </ul>

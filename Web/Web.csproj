@@ -147,11 +147,13 @@
     <Compile Include="Controllers\BackOffice\PagesController.cs" />
     <Compile Include="Controllers\BBCodeController.cs" />
     <Compile Include="Controllers\BackOfficeController.cs" />
+    <Compile Include="Controllers\TextController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\PageListModel.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,10 +169,17 @@
     </Content>
     <Content Include="Content\css\common.less" />
     <Content Include="Content\css\bl.less" />
+    <Content Include="Content\css\Copy of Page.css">
+      <DependentUpon>Text.less</DependentUpon>
+    </Content>
     <Content Include="Content\css\Menu.css">
       <DependentUpon>Menu.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Menu.less" />
+    <Content Include="Content\css\Text.css">
+      <DependentUpon>Text.less</DependentUpon>
+    </Content>
+    <Content Include="Content\css\Text.less" />
     <None Include="Content\css\Page.less" />
     <Content Include="Content\css\jQuery\images\animated-overlay.gif" />
     <Content Include="Content\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -202,10 +211,14 @@
     <Content Include="Content\js\Base\seq.ts" />
     <Content Include="Content\js\BL\bbCode.ts" />
     <Content Include="Content\js\BL\base.ts" />
+    <Content Include="Content\js\BL\Templates\text-editor.html" />
+    <Content Include="Content\js\BL\text.ts" />
+    <Content Include="Content\js\BL\InPlaceEditor.ts" />
     <Content Include="Content\js\BL\menu.ts" />
     <Content Include="Content\js\BL\page.ts" />
+    <Content Include="Content\js\BL\Templates\InPlaceEditor-DefaultMenu.html" />
     <Content Include="Content\js\BL\Templates\menu.html" />
-    <Content Include="Content\js\BL\Templates\page.html" />
+    <Content Include="Content\js\BL\Templates\page-editor.html" />
     <Content Include="Content\js\common.ts" />
     <Content Include="Content\js\bootstrap.ts" />
     <Content Include="Content\js\Controls\ContextMenu.ts" />
@@ -255,6 +268,7 @@
     <Content Include="web_connStrings.config" />
     <Content Include="web_smtp.config" />
     <Content Include="Views\TopMenu.cshtml" />
+    <Content Include="Views\Text.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

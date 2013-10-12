@@ -1,0 +1,8 @@
+﻿<div class="page-editor" data-bind="loadingWhen: IsLoading, overlayLoadingMode: true">
+	<label>Title</label>
+	<input tabindex="0" type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
+	<label>Text</label>
+	<textarea tabindex="1" data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
+	<button tabindex="2" data-bind="click: Cancel">Cancel</button>
+	<button tabindex="3" data-bind="click: Save">Save</button>
+</div>

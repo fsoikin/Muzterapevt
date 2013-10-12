@@ -126,21 +126,23 @@ interface JQueryDeferred extends JQueryPromise {
     Interface of the JQuery extension of the W3C event object
 */
 interface JQueryEventObject extends Event {
-    data: any;
-    delegateTarget: Element;
-    isDefaultPrevented(): boolean;
-    isImmediatePropogationStopped(): boolean;
-    isPropogationStopped(): boolean;
-    namespace: string;
-    preventDefault(): any;
-    relatedTarget: Element;
-    result: any;
-    stopImmediatePropagation();
-    stopPropagation();
-    pageX: number;
-    pageY: number;
-    which: number;
-    metaKey: any;
+	data: any;
+	delegateTarget: Element;
+	isDefaultPrevented(): boolean;
+	isImmediatePropogationStopped(): boolean;
+	isPropogationStopped(): boolean;
+	namespace: string;
+	preventDefault(): any;
+	relatedTarget: Element;
+	result: any;
+	stopImmediatePropagation();
+	stopPropagation();
+	pageX: number;
+	pageY: number;
+	which: number;
+	metaKey: boolean;
+	ctrlKey: boolean;
+	shiftKey: boolean;
 }
 
 /*

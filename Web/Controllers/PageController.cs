@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reactive;
+﻿using System.Linq;
 using System.Web.Mvc;
 using erecruit.Composition;
 using Mut.Data;
@@ -17,7 +15,6 @@ namespace Mut.Controllers
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
-		[Import] public TopMenuUI TopMenu { get; set; }
 
 		public ActionResult Page( string url )
 		{
@@ -26,8 +23,7 @@ namespace Mut.Controllers
 			else return View( "~/Views/Page.cshtml", new PageModel { 
 				Page = p, 
 				AllowEdit = Auth.CurrentActor.IsAdmin, 
-				TopMenu = TopMenu.GetTopMenu(),
-				ChildPages = PagesService.GetChildPages( p )
+				ChildPages = PagesService.GetChildPages( p ).ToList()
 			} );
 		}
 
@@ -42,17 +38,17 @@ namespace Mut.Controllers
 			}, Log );
 		}
 
-		public JsonResponse<string> Update( JS.PageEditor page ) {
+		public JsonResponse<JS.PageSaveResult> Update( [JsonRequestBody] JS.PageEditor page ) {
 			return JsonResponse.Catch( () => {
 				var p = Pages.Find( page.Id );
-				if ( p == null ) return JsonResponse<string>.NotFound;
+				if ( p == null ) return JsonResponse<JS.PageSaveResult>.NotFound;
 
 				p.Title = page.Title;
 				p.BbText = page.Text;
 				p.HtmlText = BbCode.ToHtml( p.BbText );
 				UnitOfWork.Commit();
 
-				return JsonResponse.Create( p.HtmlText );
+				return JsonResponse.Create( new JS.PageSaveResult { Title = p.Title, Html = p.HtmlText } );
 			}, Log );
 		}
 	}
