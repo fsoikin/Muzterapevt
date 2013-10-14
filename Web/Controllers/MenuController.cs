@@ -40,17 +40,20 @@ namespace Mut.Controllers
 			var toAddIds = incoming.Select( i => i.Id ).Except( existing.Select( i => i.Id ) );
 			var toRemoveIds = existing.Select( i => i.Id ).Except( incoming.Select( i => i.Id ) );
 
-			foreach ( var i in from e in existing
-												 join id in toRemoveIds on e.Id equals id into rs
-												 where rs.Any()
-												 select e ) {
+			var toRemove = from e in existing
+										 join id in toRemoveIds on e.Id equals id into rs
+										 where rs.Any()
+										 select e;
+			var toAdd = from i in incoming
+									join id in toAddIds on i.Id equals id into ads
+									where ads.Any()
+									select i;
+
+			foreach ( var i in toRemove.ToList() ) {
 				MenuItems.Remove( i );
 			}
 
-			foreach ( var i in from i in incoming
-												 join id in toAddIds on i.Id equals id into ads
-												 where ads.Any()
-												 select i ) {
+			foreach ( var i in toAdd ) {
 				var item = MenuItems.Add( new NavigationItem { Parent = parent } );
 				Copy( item, i );
 				UpdateItems( item, item.Children, i.SubItems.EmptyIfNull() );

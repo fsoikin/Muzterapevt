@@ -27,3 +27,6 @@
 .sub-menu > .menu li {
   display: block;
 }
+.sub-menu > .menu li a {
+  border-right: 0;
+}

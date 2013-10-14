@@ -108,7 +108,7 @@ list-style-type : none;
 margin : 0 0 0.1em 0;
 }
     .menu a {
-        width: 160px;
+        min-width: 80px;
         padding: 0.1em 0.8em;
         text-decoration: none;
         display: block;
