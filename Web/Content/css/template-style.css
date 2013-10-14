@@ -6,7 +6,7 @@ color : #666;
 background : #003250 url(../img/template/bgd.png) center repeat;
 }
 .container {
-width : 940px;
+width : 1040px;
 margin-left : auto;
 margin-right : auto;
 margin-top : 20px;
@@ -19,9 +19,10 @@ background : #f2f2f5;
 .banner {
 float : left;
 width: 710px;
-height: 250px;
+height: 298px;
 padding : 0;
 margin : 0 0 10px 0;
+border: 20px solid white;
 }
 .banner > img {
     width: 100%;
