@@ -15,9 +15,9 @@
 </ul>
 
 <div class="menu-main-ctx-menu context-menu" data-bind="assignTo: CtxMenu.MenuElement">
-	<div class="item" data-bind="click: Add">Add Item</div>
-	<div class="item" data-bind="click: Edit, visible: CtxMenuItemRowsVisible">Edit</div>
-	<div class="item" data-bind="click: Delete, visible: CtxMenuItemRowsVisible">Delete</div>
+	<div class="item" data-bind="click: Add">Add Item to this menu</div>
+	<div class="item" data-bind="click: Edit, visible: CtxMenuItemRowsVisible">Edit this item</div>
+	<div class="item" data-bind="click: Delete, visible: CtxMenuItemRowsVisible">Delete this item</div>
 </div>
 
 <div class="menu-item-editor" data-bind="template: { data: EditingItem, if: EditingItem }, visible: { flag: EditingItem, effect: 'fade' }, assignTo: Editor">

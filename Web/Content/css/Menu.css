@@ -21,7 +21,7 @@
 }
 .sub-menu > .menu {
   min-height: 30px;
-  min-width: 200px;
+  min-width: 50px;
   border: 1px solid black;
 }
 .sub-menu > .menu li {
