@@ -49,9 +49,7 @@ namespace Mut.Controllers
 									where ads.Any()
 									select i;
 
-			foreach ( var i in toRemove.ToList() ) {
-				MenuItems.Remove( i );
-			}
+			toRemove.ToList().ForEach( Remove );
 
 			foreach ( var i in toAdd ) {
 				var item = MenuItems.Add( new NavigationItem { Parent = parent } );
@@ -63,6 +61,11 @@ namespace Mut.Controllers
 				Copy( x.e, x.i );
 				UpdateItems( x.e, x.e.Children, x.i.SubItems.EmptyIfNull() );
 			}
+		}
+
+		private void Remove( NavigationItem i ) {
+			i.Children.ToList().ForEach( Remove );
+			MenuItems.Remove( i );
 		}
 
 		private void Copy( NavigationItem e, JS.Menu.Item i ) {
