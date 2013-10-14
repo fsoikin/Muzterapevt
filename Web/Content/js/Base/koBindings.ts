@@ -113,7 +113,6 @@ ko.bindingHandlers['assignTo'] = {
 	};
 
 	var destroyKey = "{1E981B28-C65C-4E4A-BF28-DA2F399BC5F6}";
-	var constantWidgetKey = "";
 
 	function destroyWidgets( e ) {
 		var d = $( e ).data( destroyKey );
@@ -123,16 +122,13 @@ ko.bindingHandlers['assignTo'] = {
 
 	function setWidgets( element, valueAccessor ) {
 		var e = <any>$( element );
-		if( e.data( constantWidgetKey ) ) return;
-
 		destroyWidgets( element );
 
 		var rawValue = valueAccessor();
 		var canChange = ko.isObservable( rawValue );
 		var v = u( rawValue );
+		if( !v ) return;
 		if( typeof v === "string" && e[v] ) { var x = {}; x[v] = null; v = x; }
-
-		if( !canChange ) e.data( constantWidgetKey, true );
 
 		function cons( f: () => void , g: () => void ) { return () => { g(); f(); }; }
 		function widget( ctor: Function, args ) {

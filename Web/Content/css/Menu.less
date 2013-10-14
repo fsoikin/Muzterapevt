@@ -16,26 +16,17 @@
 	display: none;
 }
 
-.menu li {
-	&:hover > .sub-menu {
-		display: block;
-	}
+.sub-menu {
+	overflow: visible;
+	position: absolute;
 
-	> .sub-menu {
-		overflow: visible;
-		display: none;
-		position: absolute;
-		bottom: inherit;
-		margin-top: 1.3em;
+	> .menu {
+		min-height: 30px;
+		min-width: 200px;
+		border: 1px solid black;
 
-		> .menu {
-			min-height: 30px;
-			min-width: 200px;
-			border: 1px solid black;
-
-			li {
-				display: block;
-			}
+		li {
+			display: block;
 		}
 	}
 }

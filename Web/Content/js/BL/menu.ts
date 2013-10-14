@@ -4,7 +4,7 @@ import ctr = require( "../lib/template" );
 import contextMenu = require( "../Controls/ContextMenu" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
-import rx = require( "rx" );
+import rx = require( "rx" ); ( () => rx )();
 import $ = require( "jQuery" );
 import bb = require( "./bbCode" );
 
@@ -29,21 +29,45 @@ interface SubItemsSaveRequest {
 export class MenuVm extends c.VmBase implements c.IControl {
 	private RootItemId: number;
 	private Items = ko.observableArray<ItemVm>();
-	private Parent: ItemVm;
 	private CtxMenu = new contextMenu();
 	private CtxMenuItemRowsVisible = ko.computed( () => this.CtxMenu.CurrentTarget() instanceof ItemVm );
+	Parent: ItemVm;
+	AllowEdit: boolean;
 	EditingItem = ko.observable<ItemVm>();
 	UIRoot = ko.observable<Element>();
 	Editor = ko.observable<Element>();
 	_moveEditor = ko.computed( () => this.Editor() && $( this.Editor() ).appendTo( "body" ) );
 
+	MustBeVisible = ko.observable( false );
+	EffectiveMustBeVisible = ko.computed( () =>
+		this.MustBeVisible() ||
+		this.Items().some( i => i.Children.EffectiveMustBeVisible() ) );
+	IsVisible = ko.observable( false );
+
 	constructor( args?: {
 		rootItemId?: number;
 		items?: Item[];
 		parent?: ItemVm;
+		allowEdit: boolean;
 	}) {
 		super();
 		this.Parent = args.parent;
+		this.AllowEdit = args.allowEdit;
+
+		// When EffectiveMustBeVisible goes to false, I wait 1000ms and then hide myself.
+		this.EffectiveMustBeVisible.asRx()
+			.throttle( 1000 )
+			.subscribe( v => !v && this.IsVisible( false ) );
+
+		// When EffectiveMustBeVisible goes to true, I show myself immediately and hide all my siblings.
+		this.EffectiveMustBeVisible
+			.subscribe( v => {
+				if( v ) {
+					this.IsVisible( true );
+					if( this.Parent ) this.Parent.Parent.Items()
+						.forEach( i => i.Children == this || i.Children.IsVisible( false ) );
+				}
+			} );
 
 		if( args.rootItemId ) {
 			c.Api.Get( Ajax.Load, { parentId: args && args.rootItemId },
@@ -68,6 +92,9 @@ export class MenuVm extends c.VmBase implements c.IControl {
 		});
 	}
 
+	OnMustShow = () => this.MustBeVisible( true );
+	OnCanHide = () => this.MustBeVisible( false );
+
 	OnLoaded = Template;
 	ControlsDescendantBindings = true;
 
@@ -83,6 +110,8 @@ export class MenuVm extends c.VmBase implements c.IControl {
 	};
 
 	Add() {
+		if( !this.AllowEdit ) return;
+
 		var i = new ItemVm( new Item(), this, this.Items().length );
 		this.Items.push( i );
 		this.EditingItem( i );
@@ -95,11 +124,15 @@ export class MenuVm extends c.VmBase implements c.IControl {
 	}
 
 	Edit() {
+		if( !this.AllowEdit ) return;
+
 		var i = <ItemVm>this.CtxMenu.CurrentTarget();
 		if ( i instanceof ItemVm ) this.EditingItem( i );
 	}
 
 	Delete() {
+		if( !this.AllowEdit ) return;
+
 		var i = <ItemVm>this.CtxMenu.CurrentTarget();
 		if( i instanceof ItemVm ) {
 			this.Items.remove( i );
@@ -108,6 +141,8 @@ export class MenuVm extends c.VmBase implements c.IControl {
 	}
 
 	Save() {
+		if( !this.AllowEdit ) return;
+
 		if( this.Parent ) this.Parent.Save();
 		else {
 			c.Api.Post( Ajax.UpdateSubItems,
@@ -123,17 +158,27 @@ export class MenuVm extends c.VmBase implements c.IControl {
 
 export class ItemVm
 {
-	private Children: MenuVm;
+	IsTopLevel: boolean;
+	Children: MenuVm;
+	ChildrenElement = ko.observable<Element>();
+	Element = ko.observable<Element>();
 	SortOrder = ko.observable( 0 );
 	Cancelled = new ko.subscribable();
 	Saved = new ko.subscribable();
 	IsSaving = ko.observable( false );
 	Link = ko.observable( "" );
-	AbsoluteLink = ko.computed( () => c.Api.PageUrl( this.Link() ) );
+	AbsoluteLink = ko.computed( () => c.Api.PageUrl( this.Link() || "" ) );
 
 	constructor( public Item: Item, public Parent: MenuVm, index: number ) {
 		map.fromJS( Item, { ignore: "SubItems" }, this );
-		this.Children = new MenuVm( { items: Item.SubItems, parent: this });
+		this.IsTopLevel = !Parent.Parent;
+		this.Children = new MenuVm( { items: Item.SubItems, parent: this, allowEdit: Parent.AllowEdit });
+
+		this.Children.IsVisible.subscribe( v => {
+			if( v ) setImmediate( () => $( this.ChildrenElement() ).position( {
+				my: 'left top', at: this.IsTopLevel ? 'left bottom' : 'right top', of: this.Element()
+			}) );
+		});
 	}
 
 	ToJson() {

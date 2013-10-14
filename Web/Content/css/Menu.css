@@ -15,21 +15,15 @@
 .menu-main-ctx-menu {
   display: none;
 }
-.menu li:hover > .sub-menu {
-  display: block;
-}
-.menu li > .sub-menu {
+.sub-menu {
   overflow: visible;
-  display: none;
   position: absolute;
-  bottom: inherit;
-  margin-top: 1.3em;
 }
-.menu li > .sub-menu > .menu {
+.sub-menu > .menu {
   min-height: 30px;
   min-width: 200px;
   border: 1px solid black;
 }
-.menu li > .sub-menu > .menu li {
+.sub-menu > .menu li {
   display: block;
 }
