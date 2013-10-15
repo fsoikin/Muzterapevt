@@ -24,7 +24,8 @@ namespace Mut.Controllers
 			Log.DebugFormat( "START: {0}", filterContext.ActionDescriptor.ActionName );
 			
 			ViewBag.LayoutModel = new LayoutModel {
-				TopMenu = TopMenu.GetTopMenu(),
+				TopMenu = TopMenu.GetTopMenu( "TopMenu.First" ),
+				SecondTopMenu = TopMenu.GetTopMenu( "TopMenu.Second" ),
 				Left = Text.TextModel( "Layout.Left" ),
 				Right = Text.TextModel( "Layout.Right" ),
 				TopRight = Text.TextModel( "Layout.TopRight" )

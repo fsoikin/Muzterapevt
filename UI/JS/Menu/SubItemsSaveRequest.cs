@@ -11,7 +11,7 @@ namespace Mut.JS.Menu
 	// Defined in js/BackOffice/menu.ts
 	public class SubItemsSaveRequest
 	{
-		public int? ParentId { get; set; }
+		public string MenuId { get; set; }
 		public IEnumerable<Item> Items { get; set; }
 	}
 }

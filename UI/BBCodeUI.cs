@@ -19,7 +19,7 @@ namespace Mut.UI
 			new BBTag( "h1", "<h1>", "</h1>" ),
 			new BBTag( "c", "<span class='${class}'>", "</span>", new BBAttribute( "class", "" ) ),
 			new BBTag( "url", "<a href=\"${href}\">", "</a>", new BBAttribute( "href", "" ) ),
-			new BBTag( "video", "<a>", "</a>", new BBAttribute( "url", "", ctx => ctx. ) ),
+			//new BBTag( "video", "<a>", "</a>", new BBAttribute( "url", "", ctx => ctx. ) ),
 
 			new BBTag( "list", "<ul>", "</ul>" ),
 			new BBTag( "*", "<li>", "</li>", true, false ),

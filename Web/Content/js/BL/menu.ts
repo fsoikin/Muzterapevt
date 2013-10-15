@@ -23,7 +23,7 @@ export class Item {
 }
 
 interface SubItemsSaveRequest {
-	ParentId: number;
+	MenuId: string;
 	Items: Item[];
 }
 
@@ -91,7 +91,7 @@ export class MenuVm implements c.IControl {
 }
 
 export class RootMenuVm extends MenuVm {
-	private RootItemId: number;
+	private MenuId: string;
 	private InfoBox = new infoBox();
 	CtxMenu = new contextMenu();
 	CtxMenuItemRowsVisible = ko.computed( () => this.CtxMenu.CurrentTarget() instanceof ItemVm );
@@ -106,14 +106,15 @@ export class RootMenuVm extends MenuVm {
 	OnLoaded = RootTemplate;
 
 	constructor( args?: {
-		rootItemId?: number;
+		menuId?: string;
 		items?: Item[];
 		allowEdit: boolean;
 	}) {
 		super( { parent: null, items: args.items, allowEdit: args.allowEdit });
+		this.MenuId = args.menuId;
 
-		if( args.rootItemId ) {
-			c.Api.Get( Ajax.Load, { parentId: args && args.rootItemId },
+		if( args.menuId ) {
+			c.Api.Get( Ajax.Load, { menuId: args && args.menuId },
 				this.IsLoading, err => this.InfoBox.Error,
 				ii => this.Items( ii.map( ( i, idx ) => new ItemVm( i, this, idx ) ) ) );
 		}
@@ -139,7 +140,7 @@ export class RootMenuVm extends MenuVm {
 
 		this.InfoBox.Info( "Saving..." );
 		c.Api.Post( Ajax.UpdateSubItems,
-			<SubItemsSaveRequest>{ ParentId: this.RootItemId, Items: this.ToJson() },
+			<SubItemsSaveRequest>{ MenuId: this.MenuId, Items: this.ToJson() },
 			this.IsSaving, this.InfoBox.Error, () => {
 				this.InfoBox.Info( null );
 				onDone && onDone();

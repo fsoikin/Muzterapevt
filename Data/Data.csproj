@@ -64,6 +64,7 @@
     <Compile Include="Entities\NavigationItem.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
+    <Content Include="Migrations\001.AddMenuIdToNavigationitem.sql" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

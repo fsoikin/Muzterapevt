@@ -12,16 +12,12 @@
 	</head>
 	<body>
 		<div class="container">
+			@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
 			<div class="banner"><img src="@Url.Content( "~/Content/img/template/banner.jpg" )" alt="Muzterapevt.RU" title="Muzterapevt.RU"/> </div>
 			<div class="bannerb">
 				@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
 			</div>
-			<div class="topnav">
-				<div class="navcontainer">
-					@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
-				</div>
-				<div class="clear">&nbsp; </div>
-			</div>
+			@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
 			<div class="sidebar">
 				@RenderSection("LeftSidebar", false)
 				@Html.Partial( "~/Views/Text.cshtml", model.Left )

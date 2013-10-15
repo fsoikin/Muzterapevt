@@ -9,6 +9,7 @@ namespace Mut.Data
 	public class NavigationItem
 	{
 		public int Id { get; set; }
+		public string MenuId { get; set; }
 		public string Text { get; set; }
 		public string Link { get; set; }
 		public int Order { get; set; }

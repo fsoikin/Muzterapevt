@@ -1,7 +1,9 @@
 ﻿@model TopMenuModel
 
-<div 	
-	class="autobind" 
-	data-controller="RootMenuVm, BL/menu" 
-	data-args='@Html.Raw( Json.Encode( new { rootItemId = Model.ParentId, items = Model.Items, allowEdit = Model.AllowEdit } ) )'
-></div>
+<div class="topnav">
+	<div class="navcontainer autobind" 
+			data-controller="RootMenuVm, BL/menu" 
+			data-args='@Html.Raw( Json.Encode( new { menuId = Model.MenuId, items = Model.Items, allowEdit = Model.AllowEdit } ) )'
+	></div>
+	<div class="clear">&nbsp; </div>
+</div>
