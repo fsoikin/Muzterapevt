@@ -20,7 +20,7 @@ export class PagesVm extends c.VmBase implements c.IControl {
 	
 	constructor() {
 		super();
-		c.Api.Get(Ajax.Load, null, this.IsLoading, this.Error,
+		c.Api.Get(Ajax.Load, null, this.IsLoading, null,
 			ps => this.Pages(ps.map(p => new PageVm(this, p))));
 	}
 
@@ -56,7 +56,7 @@ export class PageVm {
 	CommitEdit() {
 		this.Model = map.toJS( this );
 		c.Api.Post( this.IsNew() ? Ajax.Create : Ajax.Update, this.Model,
-			this.IsSaving, this.Parent.Error, r => {
+			this.IsSaving, null, r => {
 				map.fromJS( this.Model = r, {}, this );
 				this.IsEditing( false );
 				this.IsNew( false );
