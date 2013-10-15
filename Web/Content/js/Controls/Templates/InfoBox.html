@@ -1,0 +1,6 @@
+<div class="message-box" data-bind="
+		visible: { flag: Visible, effect: 'fade' },
+		css: { error: IsError, warning: IsWarning, invisible: !Text() }">
+	<div class="dismiss" title="Dismiss this message." data-bind="click: Dismiss"></div>
+	<span data-bind="text: Text"></span>
+</div>

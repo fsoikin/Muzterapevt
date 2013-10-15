@@ -1,6 +1,7 @@
 ﻿/// <amd-dependency path="css!styles/Page.css" />
 import c = require( "../common" );
 import contextMenu = require( "../Controls/ContextMenu" );
+import infoBox = require( "../Controls/InfoBox" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
 import rx = require( "rx" );
@@ -64,17 +65,28 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 class EditorVm {
 	private Element: JQuery;
 	IsLoading = ko.observable( false );
-	Error = ko.observable<string>();
+	Loaded = false;
+	InfoBox = new infoBox();
 
 	constructor( public Parent: InPlaceEditorVm ) {
 		map.fromJS( Parent.EmptyData, {}, this );
-		c.Api.Get( Parent.Ajax.Load( Parent.ObjectId ), null, this.IsLoading, this.Error,
-			r => map.fromJS( r, {}, this ) );
+		this.EnsureLoaded();
+	}
+
+	EnsureLoaded() {
+		if( this.Loaded ) return;
+
+		this.InfoBox.Clear();
+		c.Api.Get( this.Parent.Ajax.Load( this.Parent.ObjectId ), null, this.IsLoading,
+			this.InfoBox.Error, r => {
+				map.fromJS( r, {}, this );
+				this.Loaded = true;
+			} );
 	}
 
 	Save() {
 		var obj = map.toJS( this );
-		c.Api.Post( this.Parent.Ajax.Update, obj, this.IsLoading, this.Error, result => {
+		c.Api.Post( this.Parent.Ajax.Update, obj, this.IsLoading, this.InfoBox.Error, result => {
 			this.Close();
 			map.fromJS( result, {}, this );
 			this.Parent.OnSaved( result );
@@ -89,6 +101,7 @@ class EditorVm {
 	}
 
 	Show() {
+		this.EnsureLoaded();
 		( this.Element || ( this.Element = this.CreateElement() ) ).fadeIn();
 		$( document ).on( "keydown", this._onKey );
 	}

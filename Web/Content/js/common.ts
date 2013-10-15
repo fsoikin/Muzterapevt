@@ -88,8 +88,6 @@ export function dataSourceFromServer<T extends IHaveNameAndId<any>>( url: string
 export class VmBase {
 	IsLoading = ko.observable( false );
 	IsSaving = ko.observable( false );
-	Message = new ko.subscribable();
-	Error = new ko.subscribable();
 }
 
 export interface IDataSource<T> {
@@ -134,7 +132,7 @@ export class RemoteDataSource<T> implements IDataSource<T> {
 	}
 
 	Reload() {
-		Api.Get( this.Url, null, this.IsLoading, this.Error, this.Items );
+		Api.Get( this.Url, null, this.IsLoading, err => this.Error.notifySubscribers( err ), this.Items );
 	}
 
 	Lookup( term: string ) {
@@ -149,22 +147,11 @@ export class RemoteDataSource<T> implements IDataSource<T> {
 		}
 
 		return rx.Observable.create<T[]>( o => {
-			var err = new ko.subscribable();
-			var d = err.subscribe( e => {
-				o.onError( e );
-				this.Error.notifySubscribers( e );
-			});
+			var xhr = Api.Get( this.LookupUrl( term ), null, this.IsLoading,
+				err => { o.onError( err ); this.Error.notifySubscribers( err ); },
+				res => { o.onNext( res ); o.onCompleted(); });
 
-			var xhr = Api.Get( this.LookupUrl( term ), null, this.IsLoading, err,
-				res => {
-					o.onNext( res );
-					o.onCompleted();
-				});
-
-			return () => {
-				d.dispose();
-				xhr.abort();
-			};
+			return () => xhr.abort();
 		} );
 	}
 

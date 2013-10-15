@@ -100,3 +100,41 @@ button {
 		.icon( -80px -128px );
 	}
 }
+
+.message-box {
+	padding: 5px;
+	background-color: #BFD8FF;
+	z-index: 1000000;
+	border-bottom: 1px solid #aaaaaa;
+	margin-bottom: 10px;
+
+	&.invisible {
+		display: none !important;
+	}
+
+	&.error {
+			background-color: #ff6464;
+			color: #ffffff;
+	}
+
+	&.warning {
+		background-color: #fefe72;
+	}
+
+	&.fixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.dismiss {
+		float: right;
+		margin-left: 5px;
+		width: 16px;
+		height: 16px;
+		background: transparent url("jQuery/images/ui-icons_888888_256x240.png") no-repeat center center;
+		background-position: -32px -192px;
+		cursor: pointer;
+	}
+}

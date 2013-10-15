@@ -2,6 +2,7 @@
 import c = require( "../common" );
 import ctr = require( "../lib/template" );
 import contextMenu = require( "../Controls/ContextMenu" );
+import infoBox = require( "../Controls/InfoBox" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
 import rx = require( "rx" ); ( () => rx )();
@@ -26,17 +27,12 @@ interface SubItemsSaveRequest {
 	Items: Item[];
 }
 
-export class MenuVm extends c.VmBase implements c.IControl {
-	private RootItemId: number;
-	private Items = ko.observableArray<ItemVm>();
-	private CtxMenu = new contextMenu();
-	private CtxMenuItemRowsVisible = ko.computed( () => this.CtxMenu.CurrentTarget() instanceof ItemVm );
-	Parent: ItemVm;
+export class MenuVm implements c.IControl {
 	AllowEdit: boolean;
-	EditingItem = ko.observable<ItemVm>();
+	CtxMenu = null;
+	Items = ko.observableArray<ItemVm>();
+	Parent: ItemVm;
 	UIRoot = ko.observable<Element>();
-	Editor = ko.observable<Element>();
-	_moveEditor = ko.computed( () => this.Editor() && $( this.Editor() ).appendTo( "body" ) );
 
 	MustBeVisible = ko.observable( false );
 	EffectiveMustBeVisible = ko.computed( () =>
@@ -45,12 +41,10 @@ export class MenuVm extends c.VmBase implements c.IControl {
 	IsVisible = ko.observable( false );
 
 	constructor( args?: {
-		rootItemId?: number;
 		items?: Item[];
 		parent?: ItemVm;
 		allowEdit: boolean;
 	}) {
-		super();
 		this.Parent = args.parent;
 		this.AllowEdit = args.allowEdit;
 
@@ -69,27 +63,9 @@ export class MenuVm extends c.VmBase implements c.IControl {
 				}
 			} );
 
-		if( args.rootItemId ) {
-			c.Api.Get( Ajax.Load, { parentId: args && args.rootItemId },
-				this.IsLoading, this.Error,
-				ii => this.Items( ii.map( (i, idx) => new ItemVm( i, this, idx ) ) ) );
-		}
-		else if( args.items ) {
+		if( args.items ) {
 			this.Items( args.items.map( ( i, idx ) => new ItemVm( i, this, idx ) ) );
 		}
-
-		var onKey = ( e: JQueryEventObject ) => {
-			if( e.which == 27 ) {
-				this.EditingItem() && this.EditingItem().Cancel();
-			}
-			else if( e.which == 13 && e.ctrlKey ) {
-				this.EditingItem() && this.EditingItem().Save();
-			}
-		};
-		this.EditingItem.subscribe( e => {
-			if( e ) $( document ).on( "keydown", onKey );
-			else $( document ).off( "keydown", onKey );
-		});
 	}
 
 	OnMustShow = () => this.MustBeVisible( true );
@@ -106,17 +82,85 @@ export class MenuVm extends c.VmBase implements c.IControl {
 			i.SortOrder( idx );
 		});
 		this.Items.sort( ( x, y ) => x.SortOrder() - y.SortOrder() );
-		this.Save();
+		this.Save( null );
 	};
+
+	EditItem( i: ItemVm ) { this.Parent.Parent.EditItem( i ); }
+	Save( onDone: () => void ) { this.Parent.Parent.Save( onDone ); }
+	ToJson() { return this.Items().map( i => i.ToJson() ); }
+}
+
+export class RootMenuVm extends MenuVm {
+	private RootItemId: number;
+	private InfoBox = new infoBox();
+	CtxMenu = new contextMenu();
+	CtxMenuItemRowsVisible = ko.computed( () => this.CtxMenu.CurrentTarget() instanceof ItemVm );
+	AllowEdit: boolean;
+	EditingItem = ko.observable<ItemVm>();
+	Editor = ko.observable<Element>();
+	_moveEditor = ko.computed( () => this.Editor() && $( this.Editor() ).appendTo( "body" ) );
+
+	IsSaving = ko.observable( false );
+	IsLoading = ko.observable( false );
+
+	OnLoaded = RootTemplate;
+
+	constructor( args?: {
+		rootItemId?: number;
+		items?: Item[];
+		allowEdit: boolean;
+	}) {
+		super( { parent: null, items: args.items, allowEdit: args.allowEdit });
+
+		if( args.rootItemId ) {
+			c.Api.Get( Ajax.Load, { parentId: args && args.rootItemId },
+				this.IsLoading, err => this.InfoBox.Error,
+				ii => this.Items( ii.map( ( i, idx ) => new ItemVm( i, this, idx ) ) ) );
+		}
+
+		var onKey = ( e: JQueryEventObject ) => {
+			if( e.which == 27 ) {
+				this.EditingItem() && this.EditingItem().Cancel();
+			}
+			else if( e.which == 13 && e.ctrlKey ) {
+				this.EditingItem() && this.EditingItem().Save();
+			}
+		};
+		this.EditingItem.subscribe( e => {
+			if( e ) $( document ).on( "keydown", onKey );
+			else $( document ).off( "keydown", onKey );
+		});
+	}
+
+	EditItem( i: ItemVm ) { this.EditingItem( i ); }
+
+	Save( onDone: () => void ) {
+		if( !this.AllowEdit ) return;
+
+		this.InfoBox.Info( "Saving..." );
+		c.Api.Post( Ajax.UpdateSubItems,
+			<SubItemsSaveRequest>{ ParentId: this.RootItemId, Items: this.ToJson() },
+			this.IsSaving, this.InfoBox.Error, () => {
+				this.InfoBox.Info( null );
+				onDone && onDone();
+			} );
+	}
 
 	Add() {
 		if( !this.AllowEdit ) return;
 
-		var i = new ItemVm( new Item(), this, this.Items().length );
-		this.Items.push( i );
-		this.EditingItem( i );
+		var t = this.CtxMenu.CurrentTarget();
+		var menu: MenuVm =
+			t instanceof MenuVm ? t :
+			t instanceof ItemVm ? ( <ItemVm>t ).Parent
+			: null;
+		if( !menu ) return;
 
-		var onCancel = i.Cancelled.subscribe( () => this.Items.remove( i ) );
+		var i = new ItemVm( new Item(), menu, menu.Items().length );
+		menu.Items.push( i );
+		menu.EditItem( i );
+
+		var onCancel = i.Cancelled.subscribe( () => menu.Items.remove( i ) );
 		var onSave = i.Saved.subscribe( () => {
 			onCancel.dispose();
 			onSave.dispose();
@@ -127,7 +171,7 @@ export class MenuVm extends c.VmBase implements c.IControl {
 		if( !this.AllowEdit ) return;
 
 		var i = <ItemVm>this.CtxMenu.CurrentTarget();
-		if ( i instanceof ItemVm ) this.EditingItem( i );
+		if( i instanceof ItemVm ) this.EditItem( i );
 	}
 
 	Delete() {
@@ -135,24 +179,9 @@ export class MenuVm extends c.VmBase implements c.IControl {
 
 		var i = <ItemVm>this.CtxMenu.CurrentTarget();
 		if( i instanceof ItemVm ) {
-			this.Items.remove( i );
-			this.Save();
+			i.Parent.Items.remove( i );
+			this.Save( null );
 		}
-	}
-
-	Save() {
-		if( !this.AllowEdit ) return;
-
-		if( this.Parent ) this.Parent.Save();
-		else {
-			c.Api.Post( Ajax.UpdateSubItems,
-				<SubItemsSaveRequest>{ ParentId: this.RootItemId, Items: this.ToJson() },
-				this.IsSaving, this.Error, null );
-		}
-	}
-
-	ToJson() {
-		return this.Items().map( i => i.ToJson() );
 	}
 }
 
@@ -172,7 +201,7 @@ export class ItemVm
 	constructor( public Item: Item, public Parent: MenuVm, index: number ) {
 		map.fromJS( Item, { ignore: "SubItems" }, this );
 		this.IsTopLevel = !Parent.Parent;
-		this.Children = new MenuVm( { items: Item.SubItems, parent: this, allowEdit: Parent.AllowEdit });
+		this.Children = new MenuVm( { items: Item.SubItems, parent: this, allowEdit: this.Parent.AllowEdit });
 
 		this.Children.IsVisible.subscribe( v => {
 			if( v ) setImmediate( () => $( this.ChildrenElement() ).position( {
@@ -188,17 +217,20 @@ export class ItemVm
 	}
 
 	Save() {
-		this.Parent.Save();
-		this.Saved.notifySubscribers( null );
-		this.Parent.EditingItem( null );
+		this.Parent.Save( () => {
+			this.Saved.notifySubscribers( null );
+			this.Parent.EditItem( null );
+		});
 	}
 
 	Cancel() {
 		this.Cancelled.notifySubscribers( null );
-		this.Parent.EditingItem( null );
+		this.Parent.EditItem( null );
 	}
 }
 
 declare module "text!./Templates/menu.html" { }
 import _template = require( "text!./Templates/menu.html" );
-var Template = ctr.ApplyTemplate( <string>_template );
+var _t = $( <string>_template );
+var Template = ctr.ApplyTemplate( _t.filter( ".menu" ) );
+var RootTemplate = ctr.ApplyTemplate( _t );

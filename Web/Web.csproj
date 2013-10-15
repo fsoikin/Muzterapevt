@@ -222,6 +222,8 @@
     <Content Include="Content\js\common.ts" />
     <Content Include="Content\js\bootstrap.ts" />
     <Content Include="Content\js\Controls\ContextMenu.ts" />
+    <Content Include="Content\js\Controls\InfoBox.ts" />
+    <Content Include="Content\js\Controls\Templates\InfoBox.html" />
     <Content Include="Content\js\External\jQuery\jquery-1.9.1.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.min.js" />

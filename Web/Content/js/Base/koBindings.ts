@@ -8,8 +8,8 @@ ko.bindingHandlers['control'] = {
 	init: (element, valueAccessor) => {
 
 		var o = valueAccessor();
-		var vm: er.IControl = o.vm || o;
-		var defer = (o.defer === undefined) ? false : o.defer;
+		var vm: er.IControl = (o && o.vm) || o;
+		var defer = o && ((o === undefined) ? false : o.defer);
 		vm = ko.utils.peekObservable(vm);
 		if (!vm) return;
 
@@ -55,8 +55,8 @@ ko.bindingHandlers['visible'] = ( () => {
 	};
 
 	res['fade'] = {
-		on: ( x: JQuery ) => x.fadeIn(),
-		off: ( x: JQuery ) => x.fadeOut()
+		on: ( x: JQuery ) => x.fadeIn('fast'),
+		off: ( x: JQuery ) => x.fadeOut('fast')
 	};
 	res['slide'] = {
 		on: ( x: JQuery ) => x.slideDown(),

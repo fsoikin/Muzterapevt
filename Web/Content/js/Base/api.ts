@@ -11,31 +11,34 @@ export interface JsonResponse {
 }
 
 export function Get( url: string, data: any,
-	inProgress: Ko.Observable<boolean>, error: Ko.Subscribable<string>,
+	inProgress: Ko.Observable<boolean>,
+	onError: ( err: string ) => void,
 	onSuccess: ( result: any ) => void, options?: {} )
 {
-	return Call( "GET", url, data, inProgress, error, onSuccess, options );
+	return Call( "GET", url, data, inProgress, onError, onSuccess, options );
 }
 
 export function Post( url: string, data: any,
-	inProgress: Ko.Observable<boolean>, error: Ko.Subscribable<string>,
+	inProgress: Ko.Observable<boolean>,
+	onError: ( err: string ) => void,
 	onSuccess: ( result: any ) => void, options?: {} )
 {
-	return Call( "POST", url, JSON.stringify( data ), inProgress, error, onSuccess, options );
+	return Call( "POST", url, JSON.stringify( data ), inProgress, onError, onSuccess, options );
 }
 
 export function Call( method: string, url: string, data: any,
-	inProgress: Ko.Observable<boolean>, error: Ko.Subscribable<string>,
+	inProgress: Ko.Observable<boolean>,
+	onError: ( err: string ) => void,
 	onSuccess: ( result: any ) => void, options?: {} )
 {
 	inProgress && inProgress( true );
 	return $
 		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' }) )
-		.fail( e => error && error.notifySubscribers( e.statusText ) )
+		.fail( e => onError && onError( e.statusText ) )
 		.always( () => inProgress && inProgress( false ) )
 		.done( ( e: JsonResponse ) => e.Success
 			? ( onSuccess && onSuccess( e.Result ) )
-			: ( error && error.notifySubscribers( ( e.Messages || [] ).join() ) ) );
+			: ( onError && onError( ( e.Messages || [] ).join() ) ) );
 }
 
 export function PageUrl( url: string ) {

@@ -2,6 +2,6 @@
 
 <div 	
 	class="autobind" 
-	data-controller="MenuVm, BL/menu" 
+	data-controller="RootMenuVm, BL/menu" 
 	data-args='@Html.Raw( Json.Encode( new { rootItemId = Model.ParentId, items = Model.Items, allowEdit = Model.AllowEdit } ) )'
 ></div>

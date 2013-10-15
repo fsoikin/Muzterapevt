@@ -1,4 +1,5 @@
-﻿<ul class="menu" data-bind="
+﻿<!-- ko control: InfoBox --><!-- /ko -->
+<ul class="menu" data-bind="
 	foreach: Items,
 	assignTo: UIRoot,
 	control: AllowEdit && CtxMenu,
@@ -21,6 +22,7 @@
 </div>
 
 <div class="menu-item-editor" data-bind="template: { data: EditingItem, if: EditingItem }, visible: { flag: EditingItem, effect: 'fade' }, assignTo: Editor">
+	<!-- ko control: Parent.InfoBox --><!-- /ko -->
 	<label>Name</label>
 	<input type="text" data-bind="value: Text, valueUpdate: 'keyup'" />
 	<label>Link</label>

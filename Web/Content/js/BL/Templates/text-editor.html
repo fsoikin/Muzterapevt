@@ -1,5 +1,8 @@
 ﻿<div class="text-editor" data-bind="loadingWhen: IsLoading, overlayLoadingMode: true">
-	<textarea tabindex="0" data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
-	<button tabindex="2" data-bind="click: Cancel">Cancel</button>
-	<button tabindex="1" data-bind="click: Save">Save</button>
+	<span data-bind="loadingWhen: IsLoading">
+		<!-- ko control: InfoBox --><!-- /ko -->
+		<textarea tabindex="0" data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
+		<button tabindex="2" data-bind="click: Cancel">Cancel</button>
+		<button tabindex="1" data-bind="click: Save">Save</button>
+	</span>
 </div>

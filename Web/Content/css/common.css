@@ -93,3 +93,35 @@ button.icon-no:before {
   content: 'x';
   color: transparent;
 }
+.message-box {
+  padding: 5px;
+  background-color: #BFD8FF;
+  z-index: 1000000;
+  border-bottom: 1px solid #aaaaaa;
+  margin-bottom: 10px;
+}
+.message-box.invisible {
+  display: none !important;
+}
+.message-box.error {
+  background-color: #ff6464;
+  color: #ffffff;
+}
+.message-box.warning {
+  background-color: #fefe72;
+}
+.message-box.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.message-box .dismiss {
+  float: right;
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+  background: transparent url("jQuery/images/ui-icons_888888_256x240.png") no-repeat center center;
+  background-position: -32px -192px;
+  cursor: pointer;
+}
