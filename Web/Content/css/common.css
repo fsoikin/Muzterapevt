@@ -110,7 +110,8 @@ button.icon-no:before {
 .message-box.warning {
   background-color: #fefe72;
 }
-.message-box.fixed {
+.message-box.fixed,
+.fixed-message-box > .message-box {
   position: fixed;
   top: 0;
   left: 0;

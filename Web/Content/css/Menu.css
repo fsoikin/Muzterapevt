@@ -30,3 +30,11 @@
 .sub-menu > .menu li a {
   border-right: 0;
 }
+.menu .drop-target {
+  min-width: 100px;
+  min-height: 20px;
+  border: 1px solid silver;
+}
+.menu .drop-target:before {
+  content: ' ';
+}

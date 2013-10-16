@@ -12,7 +12,7 @@ namespace Mut.Controllers
 	public class Controller : System.Web.Mvc.Controller
 	{
 		[Import] public ILog Log { get; set; }
-		[Import] public TopMenuUI TopMenu { get; set; }
+		[Import] public ITopMenuUI TopMenu { get; set; }
 		[Import] public TextUI Text { get; set; }
 
 		protected override void OnException( ExceptionContext filterContext ) {

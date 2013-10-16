@@ -67,7 +67,6 @@ padding: 0.2em 1em;
 background: #F36207;
 color: #fff;
 text-decoration: none;
-float: left;
 border-right: 1px solid #fff;
 }
 .navcontainer ul li a:hover {
@@ -98,7 +97,7 @@ background : #f2f2f5;
 			/*LEFT MENU*/
 .menu {
 width : 180px;
-padding : 10px 0 0 0;
+padding : 5px 0 5px 0;
 }
 .menu ul {
 margin : 0;
@@ -112,7 +111,7 @@ margin : 0 0 0.1em 0;
         min-width: 80px;
         padding: 0.1em 0.8em;
         text-decoration: none;
-        display: block;
+        display: inline-block;
         color: #fff;
         background: #f36207;
         -ms-text-overflow: ellipsis;

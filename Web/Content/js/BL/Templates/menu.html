@@ -1,9 +1,9 @@
-﻿<!-- ko control: InfoBox --><!-- /ko -->
+﻿<span class="fixed-message-box"><!-- ko control: InfoBox --><!-- /ko --></span>
 <ul class="menu" data-bind="
 	foreach: Items,
 	assignTo: UIRoot,
 	control: AllowEdit && CtxMenu,
-	jqWidget: AllowEdit && { sortable: { items: 'li', update: OnItemsSorted } }">
+	jqWidget: AllowEdit && { sortable: { items: 'li', update: OnItemsSorted, placeholder: 'drop-target' } }">
 	<li data-bind="event: { mouseover: Children.OnMustShow, mouseout: Children.OnCanHide }, assignTo: Element">
 		<a data-bind="attr: { href: AbsoluteLink }, text: Text"></a>
 	</li>

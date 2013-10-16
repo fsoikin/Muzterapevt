@@ -6,8 +6,15 @@ using Mut.Data;
 
 namespace Mut
 {
+	public interface ITopMenuUI
+	{
+		TopMenuModel GetTopMenu( string menuId );
+		IQueryable<NavigationItem> GetItemsForParent( int? parentId, string menuId = null );
+		JS.Menu.Item ToJson( NavigationItem i );
+	}
+
 	[Export, TransactionScoped]
-	public class TopMenuUI
+	class TopMenuUI : ITopMenuUI
 	{
 		[Import] public IRepository<NavigationItem> Items { get; set; }
 		[Import] public IAuthService Auth { get; set; }
@@ -28,7 +35,7 @@ namespace Mut
 			return res;
 		}
 
-		public static JS.Menu.Item ToJson( NavigationItem i ) {
+		public JS.Menu.Item ToJson( NavigationItem i ) {
 			return new JS.Menu.Item { Id = i.Id, Text = i.Text, Link = i.Link, Order = i.Order, SubItems = i.Children.Select( ToJson ) };
 		}
 	}

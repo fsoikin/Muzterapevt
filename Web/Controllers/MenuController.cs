@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
 using System.Web.Mvc;
 using erecruit.Composition;
 using erecruit.Utils;
 using Mut.Data;
-using Mut.Models;
-using Mut.UI;
 using Mut.Web;
 
 namespace Mut.Controllers
@@ -17,18 +13,17 @@ namespace Mut.Controllers
 		[Import] public IRepository<NavigationItem> MenuItems { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
-		[Import] public TopMenuUI TopMenuUI { get; set; }
 
 		public ActionResult Load( string menuId )
 		{
-			return Json( TopMenuUI.GetItemsForParent( null, menuId ).Select( TopMenuUI.ToJson ), JsonRequestBehavior.AllowGet );
+			return Json( TopMenu.GetItemsForParent( null, menuId ).Select( TopMenu.ToJson ), JsonRequestBehavior.AllowGet );
 		}
 
 		public JsonResponse<unit> UpdateSubItems( JS.Menu.SubItemsSaveRequest req ) {
 			return JsonResponse.Catch( () => {
 				if ( req == null ) return unit.Default;
 
-				var items = TopMenuUI.GetItemsForParent( null, req.MenuId ).ToList();
+				var items = TopMenu.GetItemsForParent( null, req.MenuId ).ToList();
 				UpdateItems( null, req.MenuId, items, req.Items.EmptyIfNull() );
 				UnitOfWork.Commit();
 				return unit.Default;
