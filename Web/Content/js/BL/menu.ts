@@ -19,7 +19,7 @@ export class Item {
 	Text = "";
 	Link = "";
 	Order = 0;
-	SubItems = new Array<Item>();
+	SubItems: Item[] = [];
 }
 
 interface SubItemsSaveRequest {
@@ -63,9 +63,11 @@ export class MenuVm implements c.IControl {
 				}
 			} );
 
-		if( args.items ) {
-			this.Items( args.items.map( ( i, idx ) => new ItemVm( i, this, idx ) ) );
-		}
+		if( args.items ) this.ItemsFrom( args.items );
+	}
+
+	ItemsFrom( ii: Item[] ) {
+		this.Items( ii.sort( (a,b) => a.Order - b.Order ).map( ( i, idx ) => new ItemVm( i, this, idx ) ) );
 	}
 
 	OnMustShow = () => this.MustBeVisible( true );
@@ -79,9 +81,9 @@ export class MenuVm implements c.IControl {
 			var ctx = ko.contextFor( e );
 			var i: ItemVm = ctx && ctx.$data;
 			if( !( i instanceof ItemVm ) ) return;
-			i.SortOrder( idx );
+			i.Order( idx );
 		});
-		this.Items.sort( ( x, y ) => x.SortOrder() - y.SortOrder() );
+		this.Items.sort( ( x, y ) => x.Order() - y.Order() );
 		this.Save( null );
 	};
 
@@ -115,8 +117,7 @@ export class RootMenuVm extends MenuVm {
 
 		if( args.menuId ) {
 			c.Api.Get( Ajax.Load, { menuId: args && args.menuId },
-				this.IsLoading, err => this.InfoBox.Error,
-				ii => this.Items( ii.map( ( i, idx ) => new ItemVm( i, this, idx ) ) ) );
+				this.IsLoading, err => this.InfoBox.Error, ii => this.ItemsFrom(ii) );
 		}
 
 		var onKey = ( e: JQueryEventObject ) => {
@@ -141,9 +142,10 @@ export class RootMenuVm extends MenuVm {
 		this.InfoBox.Info( "Saving..." );
 		c.Api.Post( Ajax.UpdateSubItems,
 			<SubItemsSaveRequest>{ MenuId: this.MenuId, Items: this.ToJson() },
-			this.IsSaving, this.InfoBox.Error, () => {
-				this.InfoBox.Info( null );
+			this.IsSaving, this.InfoBox.Error, (res: Item[]) => {
+				this.InfoBox.Clear();
 				onDone && onDone();
+				this.ItemsFrom( res );
 			} );
 	}
 
@@ -192,7 +194,7 @@ export class ItemVm
 	Children: MenuVm;
 	ChildrenElement = ko.observable<Element>();
 	Element = ko.observable<Element>();
-	SortOrder = ko.observable( 0 );
+	Order = ko.observable( 0 );
 	Cancelled = new ko.subscribable();
 	Saved = new ko.subscribable();
 	IsSaving = ko.observable( false );

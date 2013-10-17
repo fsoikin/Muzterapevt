@@ -14,19 +14,18 @@ namespace Mut.Controllers
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
-		public ActionResult Load( string menuId )
+		public JsonResponse<IEnumerable<JS.Menu.Item>> Load( string menuId )
 		{
-			return Json( TopMenu.GetItemsForParent( null, menuId ).Select( TopMenu.ToJson ), JsonRequestBehavior.AllowGet );
+			return JsonResponse.Catch( () => TopMenu.GetItemsForParent( null, menuId ).Select( TopMenu.ToJson ), Log );
 		}
 
-		public JsonResponse<unit> UpdateSubItems( JS.Menu.SubItemsSaveRequest req ) {
+		public JsonResponse<IEnumerable<JS.Menu.Item>> UpdateSubItems( JS.Menu.SubItemsSaveRequest req ) {
 			return JsonResponse.Catch( () => {
-				if ( req == null ) return unit.Default;
-
 				var items = TopMenu.GetItemsForParent( null, req.MenuId ).ToList();
 				UpdateItems( null, req.MenuId, items, req.Items.EmptyIfNull() );
 				UnitOfWork.Commit();
-				return unit.Default;
+
+				return Load( req.MenuId );
 			}, Log );
 		}
 
