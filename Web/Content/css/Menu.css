@@ -36,5 +36,13 @@
   border: 1px solid silver;
 }
 .menu .drop-target:before {
-  content: ' ';
+  content: '.';
+  color: transparent;
+  padding: 0.2em 1em;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0px 0px 18px white inset, 0px 0px 5px white;
+  border-right: 1px solid #fff;
+  min-width: 80px;
+  opacity: 0.4;
 }
