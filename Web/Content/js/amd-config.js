@@ -19,6 +19,8 @@ require.config( {
 		'External/Polyfill/polyfill',
 		'Base/koBindings',
 		'bootstrap'
+		//,
+		//'http://connect.facebook.net/en_US/all.js#appId=378011798897423'
 	],
 
 	map: {

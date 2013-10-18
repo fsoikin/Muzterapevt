@@ -58,6 +58,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Interactive">
+      <HintPath>..\packages\Ix-Main.0.9.0.2\lib\Net45\System.Interactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -69,6 +72,7 @@
   <ItemGroup>
     <Compile Include="BBCodeUI.cs" />
     <Compile Include="AuthService.cs" />
+    <Compile Include="VideoEmbedUI.cs" />
     <Compile Include="JS\Text\TextEditor.cs" />
     <Compile Include="JS\Text\TextSaveResult.cs" />
     <Compile Include="JS\Page\PageSaveResult.cs" />
