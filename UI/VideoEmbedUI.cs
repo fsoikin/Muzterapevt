@@ -18,6 +18,7 @@ namespace Mut.UI
 
 			var toTry = new[] {
 				new { regex = _youtube, tpl = _youtubeTemplate },
+				new { regex = _youtubeShort, tpl = _youtubeTemplate },
 //				new { regex = _facebook, tpl = _facebookTemplate },
 			};
 			foreach ( var x in toTry ) {
@@ -29,12 +30,14 @@ namespace Mut.UI
 			return "";
 		}
 
-		static string domainRegex( string domain ) { return @"^(https{0,1}\:\/\/){0,1}(www\.){0,1}" + domain + @"\.com"; }
-		static string paramRegex( string param ) { return @"(\/[^\?]*){0,1}\?((?<=&|\?)" + param + @"=(?'id'[a-zA-Z0-9]+))"; }
-		static readonly Regex _youtube = new Regex( domainRegex( "youtube" ) + paramRegex( "v" ) );
-		static readonly Regex _facebook = new Regex( domainRegex( "facebook" ) + paramRegex( "v" ) );
+		static string domainRegex( string domain, string firstLevel = null ) { return @"^(https{0,1}\:\/\/){0,1}(www\.){0,1}" + domain + @"\." + (firstLevel ?? "com"); }
+		static string paramRegex( string param ) { return @"(\/[^&\?]*){0,1}\?([^&]+&)*((?<=&|\?)" + param + @"=(?'id'[^&]+))"; }
 
-		static readonly string _youtubeTemplate = @"<iframe width=""{1}"" height=""{2}"" src=""//www.youtube.com/embed/{0}"" frameborder=""0"" allowfullscreen></iframe>";
-		static readonly string _facebookTemplate = @"<div class=""fb-post"" data-href=""https://www.facebook.com/photo.php?v={0}"">";
+		internal static readonly Regex _youtube = new Regex( domainRegex( "youtube" ) + paramRegex( "v" ) );
+		internal static readonly Regex _youtubeShort = new Regex( domainRegex( "youtu", "be" ) + "((" + paramRegex( "h" ) + @")|(\/(?'id'.+)))" );
+		internal static readonly string _youtubeTemplate = @"<iframe width=""{1}"" height=""{2}"" src=""//www.youtube.com/embed/{0}"" frameborder=""0"" allowfullscreen></iframe>";
+
+		//		static readonly Regex _facebook = new Regex( domainRegex( "facebook" ) + paramRegex( "v" ) );
+		//		static readonly string _facebookTemplate = @"<div class=""fb-post"" data-href=""https://www.facebook.com/photo.php?v={0}"">";
 	}
 }

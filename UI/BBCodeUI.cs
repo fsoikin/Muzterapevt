@@ -26,10 +26,12 @@ namespace Mut.UI
 			new BBTag( "*", "<li>", "</li>", true, false ),
 
 			new BBTag( "video", "<x>", "</x>", true, false, new BBAttribute( "url", "" ) ),
+			new BBTag( "html", "<x>", "</x>" ),
 		} );
 
-		static readonly Dictionary<string, Func<IDictionary<string, string>, string>> _tagsMap = new Dictionary<string, Func<IDictionary<string, string>, string>> {
-			{ "video", args => VideoEmbedUI.HtmlFromUrl( args.ValueOrDefault( "url" ) ) }
+		static readonly Dictionary<string, Func<TagNode, string>> _tagsMap = new Dictionary<string, Func<TagNode, string>> {
+			{ "video", tag => VideoEmbedUI.HtmlFromUrl( tag.AttrValue( "url" ) ) },
+			{ "html", tag => new SequenceNode( tag.SubNodes ).ToBBCode() }
 		};
 
 		public string ToHtml( string bbCode )
@@ -46,12 +48,19 @@ namespace Mut.UI
 
 				var converter = _tagsMap.ValueOrDefault( node.Tag.Name );
 				if ( converter != null ) {
-					return base.Visit( new SequenceNode( node.SubNodes.StartWith(
-						new TextNode( "", converter( node.AttributeValues.ToDictionary( a => a.Key.ID, a => a.Value ) ) ) ) ) );
+					var text = new TextNode( "", converter( node ) );
+					return node.Tag.RequiresClosingTag ? text : base.Visit( new SequenceNode( node.SubNodes.StartWith( text ) ) );
 				}
 
 				return base.Visit( node );
 			}
+		}
+	}
+
+	public static class BBTagExtensions
+	{
+		public static string AttrValue( this TagNode tag, string attrId ) {
+			return tag.AttributeValues.Where( a => a.Key.ID == attrId ).Select( a => a.Value ).FirstOrDefault();
 		}
 	}
 }
