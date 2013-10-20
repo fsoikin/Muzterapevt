@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -161,6 +162,9 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\css\BBQuickReference.css">
+      <DependentUpon>BBQuickReference.less</DependentUpon>
+    </Content>
     <Content Include="Content\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
     </Content>
@@ -169,17 +173,18 @@
     </Content>
     <Content Include="Content\css\common.less" />
     <Content Include="Content\css\bl.less" />
-    <Content Include="Content\css\Copy of Page.css">
-      <DependentUpon>Text.less</DependentUpon>
-    </Content>
     <Content Include="Content\css\Menu.css">
       <DependentUpon>Menu.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Menu.less" />
+    <Content Include="Content\css\template-style.css">
+      <DependentUpon>template-style.less</DependentUpon>
+    </Content>
     <Content Include="Content\css\Text.css">
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
+    <Content Include="Content\css\BBQuickReference.less" />
     <None Include="Content\css\Page.less" />
     <Content Include="Content\css\jQuery\images\animated-overlay.gif" />
     <Content Include="Content\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -200,7 +205,7 @@
     <Content Include="Content\css\Page.css">
       <DependentUpon>Page.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\template-style.css" />
+    <None Include="Content\css\template-style.less" />
     <Content Include="Content\img\spinner.gif" />
     <Content Include="Content\img\template\banner.jpg" />
     <Content Include="Content\img\template\bgd.png" />
@@ -223,6 +228,7 @@
     <Content Include="Content\js\bootstrap.ts" />
     <Content Include="Content\js\Controls\ContextMenu.ts" />
     <Content Include="Content\js\Controls\InfoBox.ts" />
+    <Content Include="Content\js\Controls\Templates\BBQuickReference.html" />
     <Content Include="Content\js\Controls\Templates\InfoBox.html" />
     <Content Include="Content\js\External\jQuery\jquery-1.9.1.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
@@ -313,11 +319,15 @@
   <ItemGroup>
     <Content Include="Content\js\BackOffice\Templates\pages.html" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\js\Controls\BBQuickReference.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

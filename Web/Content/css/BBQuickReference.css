@@ -1,0 +1,60 @@
+﻿.bb-quick-reference {
+  float: right;
+  border: 1px solid black;
+  box-shadow: 1px 1px 5px silver;
+  padding: 10px;
+  background: #FDFDFD;
+  max-width: 500px;
+}
+.bb-quick-reference > div {
+  white-space: nowrap;
+  display: block;
+  margin-bottom: 20px;
+  border-top: 1px solid #C0C0C0;
+}
+.bb-quick-reference > div:first-child {
+  border-top: none;
+}
+.bb-quick-reference > div > label,
+.bb-quick-reference > div > span {
+  display: inline-block;
+  color: black;
+}
+.bb-quick-reference > div > label {
+  width: 100px;
+  font-weight: bold;
+}
+.bb-quick-reference > div > span:before {
+  content: '--';
+  margin-right: 10px;
+}
+.bb-quick-reference > div > .example {
+  display: block;
+  margin-left: 140px;
+}
+.bb-quick-reference > div > .more {
+  display: block;
+  margin-left: 110px;
+  margin-top: 5px;
+}
+.bb-quick-reference > div > .example {
+  color: navy;
+  font-size: 1em;
+}
+.bb-quick-reference > div > .example:before {
+  content: 'example:';
+  font-style: italic;
+  color: silver;
+  margin-left: -80px;
+  margin-right: 10px;
+}
+.bb-quick-reference > div > .more {
+  white-space: normal;
+}
+.bb-quick-reference > div > .more ul {
+  margin-top: 0;
+}
+.bb-quick-reference > div > .more:before {
+  content: '--';
+  color: transparent;
+}

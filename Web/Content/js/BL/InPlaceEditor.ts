@@ -2,6 +2,7 @@
 import c = require( "../common" );
 import contextMenu = require( "../Controls/ContextMenu" );
 import infoBox = require( "../Controls/InfoBox" );
+import bbref = require( "../Controls/BBQuickReference" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
 import rx = require( "rx" );
@@ -67,6 +68,7 @@ class EditorVm {
 	IsLoading = ko.observable( false );
 	Loaded = false;
 	InfoBox = new infoBox();
+	BBQuickReference = new bbref();
 
 	constructor( public Parent: InPlaceEditorVm ) {
 		map.fromJS( Parent.EmptyData, {}, this );

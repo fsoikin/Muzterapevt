@@ -17,6 +17,7 @@ namespace Mut.UI
 			new BBTag( "br", "<br/>", "", true, false ),
 			new BBTag( "b", "<b>", "</b>" ),
 			new BBTag( "i", "<i>", "</i>" ),
+			new BBTag( "u", "<u>", "</u>" ),
 			new BBTag( "h", "<h2>", "</h2>" ),
 			new BBTag( "h1", "<h1>", "</h1>" ),
 			new BBTag( "c", "<span class='${class}'>", "</span>", new BBAttribute( "class", "" ) ),
