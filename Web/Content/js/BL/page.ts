@@ -22,6 +22,8 @@ class PageEditor {
 	Path = "";
 	Title = "";
 	Text = "";
+	TagsStandIn = "";
+	ReferenceName = "";
 }
 
 class PageVm extends ed.InPlaceEditorVm {

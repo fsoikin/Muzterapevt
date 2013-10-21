@@ -37,7 +37,7 @@ namespace Mut.UI
 
 		public string ToHtml( string bbCode )
 		{
-			bbCode = bbCode.Replace( "\n", "[br]" ).Replace( "\r", "" );
+			bbCode = (bbCode??"").Replace( "\n", "[br]" ).Replace( "\r", "" );
 			var syntaxTree = _parser.ParseSyntaxTree( bbCode );
 			var modifiedTree = new V().Visit( syntaxTree );
 			return modifiedTree.ToHtml();

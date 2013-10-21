@@ -33,7 +33,7 @@ namespace Mut.Controllers
 				if ( p == null ) return JsonResponse<JS.PageEditor>.NotFound;
 
 				return JsonResponse.Create( new JS.PageEditor {
-					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title
+					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title, TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName
 				} );
 			}, Log );
 		}
@@ -45,6 +45,8 @@ namespace Mut.Controllers
 
 				p.Title = page.Title;
 				p.BbText = page.Text;
+				p.TagsStandIn = page.TagsStandIn;
+				p.ReferenceName = page.ReferenceName;
 				p.HtmlText = BbCode.ToHtml( p.BbText );
 				UnitOfWork.Commit();
 

@@ -1,12 +1,13 @@
 ﻿@model PageModel
+@using erecruit.Utils
 
 @{ ViewBag.Title = Model.Page.Title; }
 @section LeftSidebar {
 		@if ( Model.ChildPages.Any() ) { <h1>Other Pages</h1> }
-		<div class="menu">
+		<div class="sidenav">
 			<ul>
 				@foreach( var p in Model.ChildPages ) {
-					<li><a href="@Url.Content( p.Url )">@p.Title</a></li>
+					<li><a href="@Url.Content( p.Url )">@( p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName )</a></li>
 				}
 			</ul>
 		</div>

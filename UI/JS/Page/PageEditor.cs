@@ -15,5 +15,7 @@ namespace Mut.JS
 		public string Path { get; set; }
 		public string Text { get; set; }
 		public string Title { get; set; }
+		public string TagsStandIn { get; set; }
+		public string ReferenceName { get; set; }
 	}
 }

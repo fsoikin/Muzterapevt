@@ -13,6 +13,8 @@ namespace Mut.Data
 		public string Title { get; set; }
 		public string BbText { get; set; }
 		public string HtmlText { get; set; }
+		public string TagsStandIn { get; set; }
+		public string ReferenceName { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Modified { get; set; }
 
