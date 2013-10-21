@@ -67,11 +67,14 @@ div.scroll {
   background: #F36207;
   color: #fff;
   text-decoration: none;
-  border-right: 1px solid #fff;
+  border-left: 1px solid #fff;
 }
 .navcontainer ul li a:hover {
   background: #036;
   color: #fff;
+}
+.navcontainer ul li:first-child a {
+  border-left: none;
 }
 .active a:link,
 .active a:visited,
