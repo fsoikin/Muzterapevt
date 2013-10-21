@@ -99,12 +99,14 @@ class EditorVm {
 
 	Close() {
 		this.Element && this.Element.fadeOut();	
+		this.BBQuickReference.Hide();
 		$( document ).off( "keydown", this._onKey );
 	}
 
 	Show() {
 		this.EnsureLoaded();
 		( this.Element || ( this.Element = this.CreateElement() ) ).fadeIn();
+		this.BBQuickReference.Show();
 		$( document ).on( "keydown", this._onKey );
 	}
 
