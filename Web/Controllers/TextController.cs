@@ -5,12 +5,12 @@ using Mut.Web;
 
 namespace Mut.Controllers
 {
+	[EditPermission]
 	public class TextController : Controller
 	{
 		[Import] public IRepository<Text> Texts { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
-		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
 		public JsonResponse<JS.TextEditor> Load( string id ) {
 			return JsonResponse.Catch( () => {

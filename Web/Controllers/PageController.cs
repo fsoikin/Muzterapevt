@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using erecruit.Composition;
+using erecruit.Utils;
 using Mut.Data;
 using Mut.Models;
 using Mut.UI;
 using Mut.Web;
+using Name.Files;
 
 namespace Mut.Controllers
 {
@@ -14,7 +18,7 @@ namespace Mut.Controllers
 		[Import] public PagesService PagesService { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
-		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public IPictureUI Pictures { get; set; }
 
 		public ActionResult Page( string url )
 		{
@@ -27,17 +31,21 @@ namespace Mut.Controllers
 			} );
 		}
 
+		[EditPermission, HttpPost]
 		public JsonResponse<JS.PageEditor> Load( int id ) {
 			return JsonResponse.Catch( () => {
 				var p = Pages.Find( id );
 				if ( p == null ) return JsonResponse<JS.PageEditor>.NotFound;
 
 				return JsonResponse.Create( new JS.PageEditor {
-					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title, TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName
+					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title,
+					TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName,
+					PictureIds = p.Pictures.Select( pc => pc.Id )
 				} );
 			}, Log );
 		}
 
+		[EditPermission, HttpPost]
 		public JsonResponse<JS.PageSaveResult> Update( [JsonRequestBody] JS.PageEditor page ) {
 			return JsonResponse.Catch( () => {
 				var p = Pages.Find( page.Id );

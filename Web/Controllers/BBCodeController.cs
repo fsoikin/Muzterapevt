@@ -6,6 +6,7 @@ using Mut.Web;
 
 namespace Mut.Controllers
 {
+	[EditPermission]
 	public class BBCodeController : Controller
 	{
 		[Import] public BBCodeUI UI { get; set; }

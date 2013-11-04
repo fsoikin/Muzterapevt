@@ -14,6 +14,7 @@ namespace Mut.Controllers
 		[Import] public ILog Log { get; set; }
 		[Import] public ITopMenuUI TopMenu { get; set; }
 		[Import] public TextUI Text { get; set; }
+		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
 		protected override void OnException( ExceptionContext filterContext ) {
 			this.Log.Error( filterContext.Exception );

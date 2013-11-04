@@ -69,6 +69,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Interactive, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ix-Main.0.9.0.2\lib\Net45\System.Interactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -143,6 +147,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\PictureController.cs" />
     <Compile Include="Controllers\Controller.cs" />
     <Compile Include="Controllers\BackOffice\PagesController.cs" />
     <Compile Include="Controllers\BBCodeController.cs" />
@@ -279,7 +285,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -291,6 +296,10 @@
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{7f236c96-359a-468c-9f1e-db4a67511264}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files\Files.csproj">
+      <Project>{6cb0fe7e-d6ed-4a8c-8d55-c2e278880a32}</Project>
+      <Name>Files</Name>
     </ProjectReference>
     <ProjectReference Include="..\UI\UI.csproj">
       <Project>{2bc0fd5a-7e20-4f07-b604-bab5e908a45a}</Project>

@@ -8,6 +8,7 @@ using Mut.UI;
 
 namespace Mut.Controllers
 {
+	[EditPermission]
 	public class BackOfficeController : Controller
 	{
 		public ActionResult Index()

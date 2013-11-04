@@ -4,15 +4,16 @@ using System.Web.Mvc;
 using erecruit.Composition;
 using erecruit.Utils;
 using Mut.Data;
+using Mut.UI;
 using Mut.Web;
 
 namespace Mut.Controllers
 {
+	[EditPermission]
 	public class MenuController : Controller
 	{
 		[Import] public IRepository<NavigationItem> MenuItems { get; set; }
 		[Import] public IAuthService Auth { get; set; }
-		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
 		public JsonResponse<IEnumerable<JS.Menu.Item>> Load( string menuId )
 		{

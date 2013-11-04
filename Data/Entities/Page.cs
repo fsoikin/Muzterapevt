@@ -17,6 +17,7 @@ namespace Mut.Data
 		public string ReferenceName { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Modified { get; set; }
+		public virtual ICollection<Picture> Pictures { get; set; }
 
 		[Export] class Mapping : IModelMapping { public void Map( DbModelBuilder b ) { b.Entity<Page>(); } }
 

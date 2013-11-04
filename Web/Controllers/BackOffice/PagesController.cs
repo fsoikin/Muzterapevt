@@ -16,9 +16,6 @@ namespace Mut.Controllers.BackOffice
 		[Import]
 		public IRepository<Page> Pages { get; set; }
 
-		[Import]
-		public IUnitOfWork UnitOfWork { get; set; }
-
 		public JsonResponse<IEnumerable<JS.Page>> All()
 		{
 			return JsonResponse.Catch( () => Pages.All.AsEnumerable().Select( p => new JS.Page {

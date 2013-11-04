@@ -20,6 +20,16 @@ namespace Mut
 			);
 
 			routes.MapRoute(
+					name: "File",
+					url: "file/{*path}",
+					defaults: new { controller = "File", action = "Serve", path = UrlParameter.Optional }
+			);
+
+			routes.MapRoute( "Picture", "img/{action}/{width}/{height}/{*path}", new { controller = "Picture" }, new {  action = "Stretch|Crop"} );
+			routes.MapRoute( "PictureScaleW", "img/scalew/{width}/{*path}", new { controller = "Picture", action = "ScaleW" } );
+			routes.MapRoute( "PictureScaleH", "img/scaleh/{height}/{*path}", new { controller = "Picture", action = "ScaleH" } );
+
+			routes.MapRoute(
 					name: "Page",
 					url: "{*url}",
 					defaults: new { controller = "Page", action = "Page", url = UrlParameter.Optional }
