@@ -89,11 +89,12 @@ div.scroll {
 }
 /*CENTRE CONTENT*/
 .content {
+  font-size: 14px;
+  color: black;
   padding: 5px;
   margin-left: 205px;
   margin-right: 205px;
   background: #f7f7f7;
-  color: #666;
   text-align: justify;
 }
 /*LEFT CONTENT*/
@@ -120,12 +121,13 @@ div.scroll {
 }
 /*RIGHT CONTENT*/
 .sidebar-b {
+  font-size: 14px;
+  color: #666;
   float: right;
   width: 180px;
   margin: 0 0 0 5px;
   padding: 5px;
   background: #f2f2f5;
-  color: #333;
 }
 /*FOOTER*/
 .footer {
