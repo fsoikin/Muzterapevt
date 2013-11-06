@@ -16,11 +16,11 @@ namespace Name.Files
 	[ContractClass(typeof(Contracts.IFileUIContracts))]
 	public interface IFileUI
 	{
-		ActionResult ServeFile( string path, bool forceDownload = false );
+		ActionResult ServeFile( string domain, string path, bool forceDownload = false );
 
-		ActionResult ServeFileVersion( string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false );
+		ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false );
 
-		IEnumerable<File> UploadFiles( string pathPrefix, HttpPostedFileBase[] file );
+		IEnumerable<File> UploadFiles( string domain, string pathPrefix, HttpPostedFileBase[] file );
 	}
 
 	[Export, TransactionScoped]
@@ -29,14 +29,14 @@ namespace Name.Files
 		[Import] public IRepository<File> Files { get; set; }
 		[Import] public IRepository<FileData> FilesData { get; set; }
 
-		public ActionResult ServeFile( string path, bool forceDownload = false ) {
-			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.FilePath == path );
+		public ActionResult ServeFile( string domain, string path, bool forceDownload = false ) {
+			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
 			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.Time );
 		}
 
-		public ActionResult ServeFileVersion( string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false ) {
-			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.FilePath == path );
+		public ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false ) {
+			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
 			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.Time );
 		}
@@ -90,7 +90,7 @@ namespace Name.Files
 			}
 		}
 
-		public IEnumerable<File> UploadFiles( string pathPrefix, HttpPostedFileBase[] file ) {
+		public IEnumerable<File> UploadFiles( string domain, string pathPrefix, HttpPostedFileBase[] file ) {
 			pathPrefix = '/' + (pathPrefix ?? "").Trim( '/' ) + '/';
 
 			return from f in file.EmptyIfNull()
@@ -100,11 +100,12 @@ namespace Name.Files
 								 .Select( i => fn + "_" + i + ext )
 								 .StartWith( fn + ext )
 								 .Select( name => new { name, path = pathPrefix + '/' + name } )
-								 .Where( n => !Files.All.Any( e => e.FilePath == n.name ) )
+								 .Where( n => !Files.All.Any( e => e.Domain == domain && e.FilePath == n.name ) )
 								 .Select( n => n.path )
 								 .First()
 						 let fObj = Files.Add( new File {
 							 FilePath = filePath,
+							 Domain = domain,
 							 OriginalFileName = f.FileName,
 							 Data = new FileData { ContentType = f.ContentType, Data = ReadAll( f.InputStream ) }
 						 } )
@@ -129,13 +130,13 @@ namespace Name.Files
 		[ContractClassFor(typeof(IFileUI))]
 		abstract class IFileUIContracts : IFileUI
 		{
-			public ActionResult ServeFile( string path, bool forceDownload = false ) {
+			public ActionResult ServeFile( string domain, string path, bool forceDownload = false ) {
 				Contract.Requires( !String.IsNullOrEmpty( path ) );
 				Contract.Ensures( Contract.Result<ActionResult>() != null );
 				throw new NotImplementedException();
 			}
 
-			public ActionResult ServeFileVersion( string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload ) {
+			public ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload ) {
 				Contract.Requires( !String.IsNullOrEmpty( path ) );
 				Contract.Requires( !String.IsNullOrEmpty( versionKey ) );
 				Contract.Requires( transform != null );
@@ -143,7 +144,7 @@ namespace Name.Files
 				throw new NotImplementedException();
 			}
 
-			public IEnumerable<File> UploadFiles( string pathPrefix, HttpPostedFileBase[] file ) {
+			public IEnumerable<File> UploadFiles( string domain, string pathPrefix, HttpPostedFileBase[] file ) {
 				Contract.Requires( file != null );
 				Contract.Ensures( Contract.Result<IEnumerable<File>>() != null );	
 				throw new NotImplementedException();

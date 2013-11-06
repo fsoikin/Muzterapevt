@@ -19,9 +19,9 @@ namespace Name.Files
 	[ContractClass(typeof(Contracts.IPictureUIContracts))]
 	public interface IPictureUI
 	{
-		ActionResult ServeCropped( string path, int width, int height );
-		ActionResult ServeStretched( string path, int width, int height );
-		ActionResult ServeScaled( string path, int? width, int? height );
+		ActionResult ServeCropped( string domain, string path, int width, int height );
+		ActionResult ServeStretched( string domain, string path, int width, int height );
+		ActionResult ServeScaled( string domain, string path, int? width, int? height );
 	}
 
 	[Export, TransactionScoped]
@@ -29,16 +29,16 @@ namespace Name.Files
 	{
 		[Import] public IFileUI Files { get; set; }
 
-		public ActionResult ServeCropped( string path, int width, int height ) {
-			return Files.ServeFileVersion( path, string.Format( "crop_{0}x{1}", width, height ), Crop( width, height ) );
-		}
-		
-		public ActionResult ServeStretched( string path, int width, int height ) {
-			return Files.ServeFileVersion( path, string.Format( "crop_{0}x{1}", width, height ), Stretch( width, height ) );
+		public ActionResult ServeCropped( string domain, string path, int width, int height ) {
+			return Files.ServeFileVersion( domain, path, string.Format( "crop_{0}x{1}", width, height ), Crop( width, height ) );
 		}
 
-		public ActionResult ServeScaled( string path, int? width, int? height ) {
-			return Files.ServeFileVersion( path, string.Format( "scale_{0}", width ?? height ), Scale( width, height ) );
+		public ActionResult ServeStretched( string domain, string path, int width, int height ) {
+			return Files.ServeFileVersion( domain, path, string.Format( "crop_{0}x{1}", width, height ), Stretch( width, height ) );
+		}
+
+		public ActionResult ServeScaled( string domain, string path, int? width, int? height ) {
+			return Files.ServeFileVersion( domain, path, string.Format( "scale_{0}", width ?? height ), Scale( width, height ) );
 		}
 
 		private Func<FileData, FileVersion> Scale( int? width, int? height ) {
@@ -115,7 +115,7 @@ namespace Name.Files
 		[ContractClassFor(typeof(IPictureUI))]
 		abstract class IPictureUIContracts : IPictureUI
 		{
-			public ActionResult ServeCropped( string path, int width, int height ) {
+			public ActionResult ServeCropped( string domain, string path, int width, int height ) {
 				Contract.Requires( !String.IsNullOrEmpty( path ) );
 				Contract.Requires( width > 0 && height > 0 );
 				Contract.Ensures( Contract.Result<ActionResult>() != null );
@@ -123,7 +123,7 @@ namespace Name.Files
 				throw new NotImplementedException();
 			}
 
-			public ActionResult ServeStretched( string path, int width, int height ) {
+			public ActionResult ServeStretched( string domain, string path, int width, int height ) {
 				Contract.Requires( !String.IsNullOrEmpty( path ) );
 				Contract.Requires( width > 0 && height > 0 );
 				Contract.Ensures( Contract.Result<ActionResult>() != null );
@@ -131,7 +131,7 @@ namespace Name.Files
 				throw new NotImplementedException();
 			}
 
-			public ActionResult ServeScaled( string path, int? width, int? height ) {
+			public ActionResult ServeScaled( string domain, string path, int? width, int? height ) {
 				Contract.Requires( !String.IsNullOrEmpty( path ) );
 				Contract.Requires( width != null || height != null );
 				Contract.Requires( width == null || width > 0 );

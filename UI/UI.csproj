@@ -73,6 +73,8 @@
     <Compile Include="BBCodeUI.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="Infrastructure\EditPermissionAttribute.cs" />
+    <Compile Include="Infrastructure\TypedRoutingExtensions.cs" />
+    <Compile Include="TextService.cs" />
     <Compile Include="VideoEmbedUI.cs" />
     <Compile Include="JS\Text\TextEditor.cs" />
     <Compile Include="JS\Text\TextSaveResult.cs" />

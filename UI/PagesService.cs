@@ -12,6 +12,8 @@ namespace Mut
 		[Import] public IRepository<Page> Pages { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
+		public static string AttachmentDomain( int pageId ) { return "PageAttachment." + pageId; }
+
 		public Page GetPage( string url, bool create ) {
 			url = url ?? "";
 			var p = Pages.All.FirstOrDefault( x => x.Url == url );

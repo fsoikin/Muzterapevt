@@ -9,6 +9,7 @@ namespace Name.Files
 	{
 		public int Id { get; set; }
 
+		public string Domain { get; set; }
 		public string FilePath { get; set; }
 		public DateTime Time { get; set; }
 		public string OriginalFileName { get; set; }

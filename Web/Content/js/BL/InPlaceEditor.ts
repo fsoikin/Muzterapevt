@@ -11,6 +11,7 @@ import bb = require( "./bbCode" );
 
 export interface IInPlaceEditorAjax {
 	Load( id: any ): string;
+	UploadAttachment( id: any ): string;
 	Update: string;
 };
 
@@ -20,6 +21,7 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 	Ajax: IInPlaceEditorAjax;
 	EditorTemplate: JQuery;
 	EmptyData: any;
+	IsAcceptingFiles = ko.observable( false );
 	private CtxMenu = new contextMenu();
 	private MenuTemplate: JQuery;
 	private _onSaved: ( element: JQuery, data ) => void;
@@ -59,6 +61,14 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 	}
 
 	OnSaved( data ) { this._onSaved( this.ViewElement, data ); }
+
+	DropFiles( e: DragEvent ) {
+		this.IsAcceptingFiles( false );
+		e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
+	}
+
+	DragOver( e: DragEvent ) { this.IsAcceptingFiles( true ); }
+	DragOut( e: DragEvent ) { this.IsAcceptingFiles( false ); }
 
 	ControlsDescendantBindings = false;
 }
