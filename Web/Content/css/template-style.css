@@ -11,7 +11,7 @@
   margin-right: auto;
   margin-top: 20px;
   padding: 20px;
-  line-height: 1.7em;
+  line-height: 1.2em;
   color: #666;
   background: #f2f2f5;
 }
@@ -89,7 +89,7 @@ div.scroll {
 }
 /*CENTRE CONTENT*/
 .content {
-  font-size: 14px;
+  font-size: 12px;
   color: black;
   padding: 5px;
   margin-left: 205px;
@@ -99,6 +99,7 @@ div.scroll {
 }
 /*LEFT CONTENT*/
 .sidebar {
+  font-size: 12px;
   float: left;
   width: 180px;
   margin: 0 5px 0 0;
@@ -153,7 +154,7 @@ p {
   margin: 10px;
 }
 h1 {
-  margin: 0 0 10px 10px;
+  margin: 0 0 10px 0;
   font: normal 1.3em verdana, arial, tahoma, sans-serif;
   letter-spacing: 3px;
   color: #036;
