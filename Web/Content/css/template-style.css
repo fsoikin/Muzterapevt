@@ -129,6 +129,7 @@ div.scroll {
   margin: 0 0 0 5px;
   padding: 5px;
   background: #f2f2f5;
+  text-align: justify;
 }
 /*FOOTER*/
 .footer {
