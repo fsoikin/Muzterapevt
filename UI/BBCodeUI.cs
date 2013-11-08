@@ -32,12 +32,11 @@ namespace Mut.UI
 
 		static readonly Dictionary<string, Func<TagNode, string>> _tagsMap = new Dictionary<string, Func<TagNode, string>> {
 			{ "video", tag => VideoEmbedUI.HtmlFromUrl( tag.AttrValue( "url" ) ) },
-			{ "html", tag => new SequenceNode( tag.SubNodes ).ToBBCode() }
+			{ "html", tag => new SequenceNode( tag.SubNodes ).ToBBCode().Replace( "\n", "<br/>" ).Replace( "\r", "" ) }
 		};
 
 		public string ToHtml( string bbCode )
 		{
-			bbCode = (bbCode??"").Replace( "\n", "[br]" ).Replace( "\r", "" );
 			var syntaxTree = _parser.ParseSyntaxTree( bbCode );
 			var modifiedTree = new V().Visit( syntaxTree );
 			return modifiedTree.ToHtml();
@@ -54,6 +53,10 @@ namespace Mut.UI
 				}
 
 				return base.Visit( node );
+			}
+
+			protected override SyntaxTreeNode Visit( TextNode node ) {
+				return new TextNode( "", (node.ToHtml() ?? "").Replace( "\n", "<br/>" ).Replace( "\r", "" ) );
 			}
 		}
 	}
