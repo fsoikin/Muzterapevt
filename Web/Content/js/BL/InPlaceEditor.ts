@@ -1,13 +1,20 @@
-﻿/// <amd-dependency path="css!styles/Page.css" />
+﻿/// <amd-dependency path="css!./Templates/InPlaceEditor.css" />
+/// <amd-dependency path="text!./Templates/InPlaceEditor.html" />
+/// <amd-dependency path="text!./Templates/InPlaceEditor-DefaultMenu.html" />
+/// <amd-dependency path="text!./Templates/InPlaceEditor-BBQuickReference.html" />
 import c = require( "../common" );
 import contextMenu = require( "../Controls/ContextMenu" );
 import infoBox = require( "../Controls/InfoBox" );
-import bbref = require( "../Controls/BBQuickReference" );
 import ko = require( "ko" );
 import map = require( "ko.mapping" );
 import rx = require( "rx" );
 import $ = require( "jQuery" );
 import bb = require( "./bbCode" );
+import uploader = require( "../Lib/Uploader" );
+
+var MenuTemplate = $( require( "text!./Templates/InPlaceEditor-DefaultMenu.html" ) );
+var EditorTemplate = c.ApplyTemplate( require( "text!./Templates/InPlaceEditor.html" ) );
+var BBRefTemplate = c.ApplyTemplate( require( "text!./Templates/InPlaceEditor-BBQuickReference.html" ) );
 
 export interface IInPlaceEditorAjax {
 	Load( id: any ): string;
@@ -64,7 +71,7 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 
 	DropFiles( e: DragEvent ) {
 		this.IsAcceptingFiles( false );
-		e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
+		//e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
 	}
 
 	DragOver( e: DragEvent ) { this.IsAcceptingFiles( true ); }
@@ -78,10 +85,17 @@ class EditorVm {
 	IsLoading = ko.observable( false );
 	Loaded = false;
 	InfoBox = new infoBox();
-	BBQuickReference = new bbref();
+	BBQuickReference = <c.IControl>{
+		OnLoaded: BBRefTemplate,
+		ControlsDescendantBindings: true
+	};
+	Data = <c.IControl>{
+		OnLoaded: this.Parent.EditorTemplate,
+		ControlsDescendantBindings: true
+	};
 
 	constructor( public Parent: InPlaceEditorVm ) {
-		map.fromJS( Parent.EmptyData, {}, this );
+		map.fromJS( Parent.EmptyData, {}, this.Data );
 		this.EnsureLoaded();
 	}
 
@@ -97,10 +111,10 @@ class EditorVm {
 	}
 
 	Save() {
-		var obj = map.toJS( this );
+		var obj = map.toJS( this.Data );
 		c.Api.Post( this.Parent.Ajax.Update, obj, this.IsLoading, this.InfoBox.Error, result => {
 			this.Close();
-			map.fromJS( result, {}, this );
+			map.fromJS( result, {}, this.Data );
 			this.Parent.OnSaved( result );
 		} );
 	}
@@ -109,19 +123,17 @@ class EditorVm {
 
 	Close() {
 		this.Element && this.Element.fadeOut();	
-		this.BBQuickReference.Hide();
 		$( document ).off( "keydown", this._onKey );
 	}
 
 	Show() {
 		this.EnsureLoaded();
 		( this.Element || ( this.Element = this.CreateElement() ) ).fadeIn();
-		this.BBQuickReference.Show();
 		$( document ).on( "keydown", this._onKey );
 	}
 
 	CreateElement() {
-		var e = this.Parent.EditorTemplate.clone().appendTo( 'body' );
+		var e = EditorTemplate.clone().appendTo( 'body' );
 		ko.applyBindings( this, e[0] );
 		return e;
 	}
@@ -131,7 +143,3 @@ class EditorVm {
 		else if( e.which == 13 && e.ctrlKey ) this.Save();
 	};
 }
-
-declare module "text!./Templates/InPlaceEditor-DefaultMenu.html" { }
-import _template = require( "text!./Templates/InPlaceEditor-DefaultMenu.html" );
-var MenuTemplate = $( _template );

@@ -1,7 +1,14 @@
-﻿using erecruit.Composition;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.Mvc;
+using erecruit.Composition;
 using Mut.Data;
+using Mut.Models;
 using Mut.UI;
 using Mut.Web;
+using Name.Files;
+using erecruit.Mvc;
 
 namespace Mut.Controllers
 {
@@ -11,6 +18,7 @@ namespace Mut.Controllers
 		[Import] public IRepository<Text> Texts { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
+		[Import] public AttachmentUI Attachments { get; set; }
 
 		public JsonResponse<JS.TextEditor> Load( string id ) {
 			return JsonResponse.Catch( () => {
@@ -30,6 +38,11 @@ namespace Mut.Controllers
 
 				return JsonResponse.Create( new JS.TextSaveResult { Html = p.HtmlText } );
 			}, Log );
+		}
+
+		[Mixin]
+		public AttachmentUI.Mixin Attachment( int textId ) {
+			return Attachments.AsMixin( TextService.AttachmentDomain( textId ) );
 		}
 	}
 }

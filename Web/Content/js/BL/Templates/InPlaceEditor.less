@@ -1,10 +1,33 @@
+@bb-quick-reference-width: 500px;
+
+.popup-editor {
+	position: fixed;
+	top: 5%;
+	left: 5%;
+	bottom: 5%;
+	right: 5%;
+	border: 1px solid black;
+	background: white;
+	padding: 20px;
+	padding-right: @bb-quick-reference-width;
+
+	> .buttons {
+		display: block;
+
+		> button {
+			float: right;
+		}
+	}
+}
+
 .bb-quick-reference {
-	float: right;
+	position: absolute;
+	right: 0;
 	border: 1px solid black;
 	box-shadow: 1px 1px 5px silver;
 	padding: 10px;
 	background: #FDFDFD;
-	max-width: 500px;
+	width: @bb-quick-reference-width;
 
 	> div {
 		white-space: nowrap;

@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using erecruit.Composition;
+using erecruit.Mvc;
 using erecruit.Utils;
 using Mut.Data;
 using Mut.Models;
@@ -18,7 +20,7 @@ namespace Mut.Controllers
 		[Import] public PagesService PagesService { get; set; }
 		[Import] public IAuthService Auth { get; set; }
 		[Import] public BBCodeUI BbCode { get; set; }
-		[Import] public IPictureUI Pictures { get; set; }
+		[Import] public AttachmentUI Attachments { get; set; }
 
 		public ActionResult Page( string url )
 		{
@@ -60,6 +62,11 @@ namespace Mut.Controllers
 
 				return JsonResponse.Create( new JS.PageSaveResult { Title = p.Title, Html = p.HtmlText } );
 			}, Log );
+		}
+
+		[Mixin]
+		public AttachmentUI.Mixin Attachment( int pageId ) {
+			return Attachments.AsMixin( PagesService.AttachmentDomain( pageId ) );
 		}
 	}
 }

@@ -127,16 +127,3 @@ button.icon-no:before {
   background-position: -32px -192px;
   cursor: pointer;
 }
-.popup-editor {
-  position: fixed;
-  top: 15%;
-  left: 5%;
-  bottom: 15%;
-  right: 30%;
-  border: 1px solid black;
-  background: white;
-  padding: 20px;
-}
-.popup-editor button {
-  float: right;
-}

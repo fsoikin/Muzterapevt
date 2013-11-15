@@ -7,6 +7,7 @@ export = PageVm;
 
 var Ajax = {
 	Load: id => "page/load?id=" + id,
+	UploadAttachment: id => "page/uploadAttachment?id=" + id,
 	Update: "page/update"
 };
 

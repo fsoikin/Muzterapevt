@@ -1,19 +1,11 @@
-﻿<div class="page-editor popup-editor">
-	<span data-bind="loadingWhen: IsLoading">
-		<!-- ko control: InfoBox --><!-- /ko -->
-		<label>Title</label>
-		<input tabindex="0" type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
+﻿<label>Title</label>
+<input tabindex="0" type="text" data-bind="value: Title, valueUpdate: 'keyup'" />
 
-		<label>Tags</label>
-		<input tabindex="1" type="text" data-bind="value: TagsStandIn, valueUpdate: 'keyup'" />
+<label>Tags</label>
+<input tabindex="1" type="text" data-bind="value: TagsStandIn, valueUpdate: 'keyup'" />
 
-		<label>Reference Name</label>
-		<input tabindex="2" type="text" data-bind="value: ReferenceName, valueUpdate: 'keyup'" />
+<label>Reference Name</label>
+<input tabindex="2" type="text" data-bind="value: ReferenceName, valueUpdate: 'keyup'" />
 
-		<label>Text</label>
-		<textarea tabindex="3" data-bind="value: Text, control: BBQuickReference, valueUpdate: 'keyup'"></textarea>
-
-		<button tabindex="4" data-bind="click: Cancel">Cancel</button>
-		<button tabindex="5" data-bind="click: Save">Save</button>
-	</span>
-</div>
+<label>Text</label>
+<textarea tabindex="3" data-bind="value: Text, valueUpdate: 'keyup'"></textarea>
