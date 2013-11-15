@@ -41,6 +41,9 @@
     <Reference Include="erecruit.Composition">
       <HintPath>..\External\erecruit.Composition.dll</HintPath>
     </Reference>
+    <Reference Include="erecruit.UI">
+      <HintPath>..\External\erecruit.UI.dll</HintPath>
+    </Reference>
     <Reference Include="erecruit.Utils">
       <HintPath>..\External\erecruit.Utils.dll</HintPath>
     </Reference>
@@ -72,6 +75,7 @@
   <ItemGroup>
     <Compile Include="BBCodeUI.cs" />
     <Compile Include="AuthService.cs" />
+    <Compile Include="AttachmentUI.cs" />
     <Compile Include="Infrastructure\EditPermissionAttribute.cs" />
     <Compile Include="Infrastructure\TypedRoutingExtensions.cs" />
     <Compile Include="TextService.cs" />
