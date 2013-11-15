@@ -1,0 +1,11 @@
+﻿<div class="popup-editor" data-bind="loadingWhen: IsLoading">
+	<!-- ko control: InfoBox --><!-- /ko -->
+	<!-- ko control: BBQuickReference --><!-- /ko -->
+
+	<div data-bind="control: Data"></div>
+
+	<div class="buttons">
+		<button tabindex="4" data-bind="click: Cancel">Cancel</button>
+		<button tabindex="5" data-bind="click: Save">Save</button>
+	</div>
+</div>
