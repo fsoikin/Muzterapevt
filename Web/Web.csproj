@@ -169,13 +169,6 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <None Include="Content\js\BL\Templates\Attachment.less" />
-    <Content Include="Content\js\BL\Templates\Attachment.css">
-      <DependentUpon>Attachment.less</DependentUpon>
-    </Content>
-    <Content Include="Content\js\BL\Templates\BBQuickReference.css">
-      <DependentUpon>InPlaceEditor.less</DependentUpon>
-    </Content>
     <Content Include="Content\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
     </Content>
@@ -195,6 +188,9 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
+    <Content Include="Content\js\BL\Templates\Attachment.css">
+      <DependentUpon>Attachment.less</DependentUpon>
+    </Content>
     <Content Include="Content\js\BL\Templates\InPlaceEditor.css">
       <DependentUpon>InPlaceEditor.less</DependentUpon>
     </Content>
@@ -225,6 +221,7 @@
     <Content Include="Content\img\template\bgd.png" />
     <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
+    <Content Include="Content\js\BL\Templates\Attachment.less" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />

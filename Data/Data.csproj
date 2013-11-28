@@ -100,7 +100,7 @@
     <Compile Include="Entities\Picture.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
-    <Content Include="Migrations\002.AddedTagsStandInAndReferenceNameToPage - Copy.sql" />
+    <Content Include="Migrations\002.AddedTagsStandInAndReferenceNameToPage.sql" />
     <Content Include="Migrations\003_AddedFiles.sql" />
     <Content Include="Migrations\001.AddMenuIdToNavigationitem.sql" />
     <Compile Include="Properties\AssemblyInfo.cs" />
