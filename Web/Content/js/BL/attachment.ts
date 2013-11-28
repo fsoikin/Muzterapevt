@@ -1,4 +1,5 @@
 ﻿/// <amd-dependency path="text!./Templates/Attachment.html" />
+/// <amd-dependency path="css!./Templates/Attachment.css" />
 import c = require( "../common" );
 import $ = require( "jQuery" );
 import rx = require( "rx" );
@@ -14,6 +15,7 @@ export interface AttachmentDef {
 
 export interface IAttachment {
 	Render(): c.IControl;
+	AsBBCode(): string;
 }
 
 export class File implements IAttachment {
@@ -22,6 +24,9 @@ export class File implements IAttachment {
 	Render(): c.IControl {
 		return new Visual( this.Def, Templates.File );
 	}
+	AsBBCode() {
+		return "[file=" + this.Def.Path + "]" + this.Def.Path + "[/file]";
+	}
 }
 
 export class Picture implements IAttachment {
@@ -29,6 +34,9 @@ export class Picture implements IAttachment {
 
 	Render(): c.IControl {
 		return new Visual( this.Def, Templates.Picture );
+	}
+	AsBBCode() {
+		return "[img=" + this.Def.Path + "]";
 	}
 }
 

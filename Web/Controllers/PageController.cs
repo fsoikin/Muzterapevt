@@ -33,7 +33,7 @@ namespace Mut.Controllers
 			} );
 		}
 
-		[EditPermission, HttpPost]
+		[EditPermission]
 		public JsonResponse<JS.PageEditor> Load( int id ) {
 			return JsonResponse.Catch( () => {
 				var p = Pages.Find( id );
@@ -57,7 +57,7 @@ namespace Mut.Controllers
 				p.BbText = page.Text;
 				p.TagsStandIn = page.TagsStandIn;
 				p.ReferenceName = page.ReferenceName;
-				p.HtmlText = BbCode.ToHtml( p.BbText );
+				p.HtmlText = BbCode.ToHtml( p.BbText ?? "", new BBParseArgs { AttachmentMixin = Url.Mixin( (PageController c) => c.Attachment( page.Id ) ) } );
 				UnitOfWork.Commit();
 
 				return JsonResponse.Create( new JS.PageSaveResult { Title = p.Title, Html = p.HtmlText } );

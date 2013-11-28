@@ -38,7 +38,7 @@ namespace Name.Files
 		}
 
 		public ActionResult ServeScaled( string domain, string path, int? width, int? height ) {
-			return Files.ServeFileVersion( domain, path, string.Format( "scale_{0}", width ?? height ), Scale( width, height ) );
+			return Files.ServeFileVersion( domain, path, string.Format( "scale_{0}x{1}", width, height ), Scale( width, height ) );
 		}
 
 		private Func<FileData, FileVersion> Scale( int? width, int? height ) {

@@ -12,10 +12,11 @@ namespace Mut
 		public static void RegisterRoutes( RouteCollection routes )
 		{
 			routes.IgnoreRoute( "{resource}.axd/{*pathInfo}" );
-			routes.MapRoute( "Default", "-/{controller}/{action}", new { controller = "BackOffice", action = "Index" } );
 
-			routes.MapRoute( "PageAttachment", "--/page/{pageId}/{action}/{*path}", new { controller = "Page" }, new { action = "^Attachment.*" } );
-			routes.MapRoute( "TextAttachment", "--/text/{textId}/{action}/{*path}", new { controller = "Text" }, new { action = "^Attachment.*" } );
+			routes.MapRoute( "PageAttachment", "--/page/{pageId}/{action}", new { controller = "Page" }, new { action = "^Attachment.+" } );
+			routes.MapRoute( "TextAttachment", "--/text/{textId}/{action}", new { controller = "Text" }, new { action = "^Attachment.+" } );
+
+			routes.MapRoute( "Default", "-/{controller}/{action}", new { controller = "BackOffice", action = "Index" } );
 
 			routes.MapRoute( "Page", "{*url}", new { controller = "Page", action = "Page", url = UrlParameter.Optional } );
 		}

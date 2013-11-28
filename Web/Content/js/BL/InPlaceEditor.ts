@@ -10,34 +10,37 @@ import map = require( "ko.mapping" );
 import rx = require( "rx" );
 import $ = require( "jQuery" );
 import bb = require( "./bbCode" );
-import uploader = require( "../Lib/Uploader" );
+import dyn = require( "../lib/dynamic" ); ( () => dyn )();
+import uploader = require( "../lib/Uploader" );
+import att = require( "./attachment" );
+import bbTextField = require( "./BBTextField" );
 
 var MenuTemplate = $( require( "text!./Templates/InPlaceEditor-DefaultMenu.html" ) );
-var EditorTemplate = c.ApplyTemplate( require( "text!./Templates/InPlaceEditor.html" ) );
+var EditorTemplate = $( require( "text!./Templates/InPlaceEditor.html" ) );
 var BBRefTemplate = c.ApplyTemplate( require( "text!./Templates/InPlaceEditor-BBQuickReference.html" ) );
 
-export interface IInPlaceEditorAjax {
+export interface IInPlaceEditorAjax<T> {
 	Load( id: any ): string;
-	UploadAttachment( id: any ): string;
+	GetAttachments( obj: T ): string;
+	UploadAttachment( obj: T ): string;
 	Update: string;
 };
 
-export class InPlaceEditorVm extends c.VmBase implements c.IControl {
+export class InPlaceEditorVm<T> extends c.VmBase implements c.IControl {
 	ObjectId: number;
 	ViewElement: JQuery;
-	Ajax: IInPlaceEditorAjax;
-	EditorTemplate: JQuery;
-	EmptyData: any;
-	IsAcceptingFiles = ko.observable( false );
+	Ajax: IInPlaceEditorAjax<T>;
+	EditorTemplate: (e: Element) => void;
+	EmptyData: T;
 	private CtxMenu = new contextMenu();
 	private MenuTemplate: JQuery;
 	private _onSaved: ( element: JQuery, data ) => void;
-	private Editor: EditorVm;
+	private Editor: EditorVm<T>;
 
 	constructor( args: {
 		id: any;
-		ajax: IInPlaceEditorAjax;
-		emptyData: any;
+		ajax: IInPlaceEditorAjax<T>;
+		emptyData: T;
 		onSaved: ( element: JQuery, data ) => void;
 		editorTemplate: JQuery;
 		menuTemplate?: JQuery;
@@ -45,20 +48,20 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 		super();
 		this.EmptyData = args.emptyData;
 		this._onSaved = args.onSaved;
-		this.EditorTemplate = args.editorTemplate;
+		this.EditorTemplate = c.ApplyTemplate( args.editorTemplate );
 		this.MenuTemplate = args.menuTemplate || MenuTemplate;
 		this.Ajax = args.ajax;
 		this.ObjectId = args.id;
 	}
 
 	OnEdit() {
-		var e = this.Editor || ( this.Editor = new EditorVm( this ) );
+		var e = this.Editor || ( this.Editor = new EditorVm<T>( this ) );
 		e.Show();
 	}
 
 	OnLoaded( element: Element ) {
 		this.ViewElement = $( element );
-		if( !this.ViewElement.text().trim() ) {
+		if( !this.ViewElement.text().trim() && !this.ViewElement.children().length ) {
 			this.ViewElement.text( "Right-click here" );
 		}
 
@@ -69,34 +72,83 @@ export class InPlaceEditorVm extends c.VmBase implements c.IControl {
 
 	OnSaved( data ) { this._onSaved( this.ViewElement, data ); }
 
-	DropFiles( e: DragEvent ) {
-		this.IsAcceptingFiles( false );
-		//e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
-	}
-
-	DragOver( e: DragEvent ) { this.IsAcceptingFiles( true ); }
-	DragOut( e: DragEvent ) { this.IsAcceptingFiles( false ); }
-
 	ControlsDescendantBindings = false;
 }
 
-class EditorVm {
-	private Element: JQuery;
+class EditorVm<T> {
+	Element: JQuery;
 	IsLoading = ko.observable( false );
+	IsLoadingAttachments = ko.observable( false );
 	Loaded = false;
 	InfoBox = new infoBox();
-	BBQuickReference = <c.IControl>{
+	BBQuickReference = <c.IVirtualControl>{
 		OnLoaded: BBRefTemplate,
-		ControlsDescendantBindings: true
+		ControlsDescendantBindings: true,
+		SupportsVirtualElements: true
 	};
-	Data = <c.IControl>{
-		OnLoaded: this.Parent.EditorTemplate,
+
+	LastFocusedBBField: bbTextField.BBTextFieldVm;
+	FromJS: ( h: Hash ) => void = _ => { };
+	ToJS: () => Hash = () => ({ });
+
+	Data: T;
+	DataControl: { [key: string]: any } = <c.IControl>{
+		OnLoaded: ( e: Element ) => {
+			this.Parent.EditorTemplate.call( this.DataControl, e );
+		},
 		ControlsDescendantBindings: true
 	};
 
-	constructor( public Parent: InPlaceEditorVm ) {
-		map.fromJS( Parent.EmptyData, {}, this.Data );
+	private IsAcceptingAttachments = ko.observable( false );
+	private Attachments = ko.observableArray<AttachmentVm<T>>();
+	private Uploader = new uploader.Uploader();
+
+	constructor( public Parent: InPlaceEditorVm<T> ) {
+		for ( var x in Parent.EmptyData ) {
+			var v = Parent.EmptyData[x];
+			var mapped: Ko.Observable<any>;
+
+			if ( v == bbTextField.IAm ) {
+				var field = new bbTextField.BBTextFieldVm();
+				this.DataControl[x] = field;
+				this.BindToFieldDrop( field );
+				mapped = field.Value;
+			}
+			else {
+				this.DataControl[x] = mapped = ko.observable( v );
+			}
+
+			this.FromJS = ( ( prev, mapped, x ) => h => { prev( h ); mapped( h[x] ); })( this.FromJS, mapped, x );
+			this.ToJS = ( ( prev, mapped, x ) => () => { var h = prev(); h[x] = mapped(); return h; })( this.ToJS, mapped, x );
+		}
+
 		this.EnsureLoaded();
+	}
+
+	BindToFieldDrop( f: bbTextField.BBTextFieldVm ) {
+		f.JQueryDrop.subscribe( element => {
+			var ctx = ko.contextFor( element );
+			var att = ctx && <AttachmentVm>ctx.$data;
+			if ( att instanceof AttachmentVm ) this.InsertAttachment( att, f );
+		});
+
+		f.NativeDrop.subscribe( dt => {
+			if ( dt && dt.files && dt.files.length ) {
+				this.UploadAndInsert( dt.files, f );
+			}
+		});
+
+		if ( !this.LastFocusedBBField ) this.LastFocusedBBField = f;
+		f.IsFocused.subscribe( focused => focused && ( this.LastFocusedBBField = f ) );
+	}
+
+	InsertAttachment( att: AttachmentVm, field: bbTextField.BBTextFieldVm ) {
+		field = field || this.LastFocusedBBField;
+		if ( !field || !att.ViewModel() ) return;
+
+		var pos = field.GetCaretPosition();
+		var value = field.Value();
+		field.Value( value.substring( 0, pos ) + att.ViewModel().AsBBCode() + value.substring( pos ) );
 	}
 
 	EnsureLoaded() {
@@ -105,16 +157,18 @@ class EditorVm {
 		this.InfoBox.Clear();
 		c.Api.Get( this.Parent.Ajax.Load( this.Parent.ObjectId ), null, this.IsLoading,
 			this.InfoBox.Error, r => {
-				map.fromJS( r, {}, this );
+				this.Data = r;
+				this.FromJS( r );
 				this.Loaded = true;
-			} );
+
+				c.Api.Get( this.Parent.Ajax.GetAttachments( this.Data ), null, this.IsLoadingAttachments,
+					this.InfoBox.Error, ( r: dyn.ClassRef[] ) => this.Attachments( r.map( cr => new AttachmentVm<T>( this, cr ) ) ) );
+			});
 	}
 
 	Save() {
-		var obj = map.toJS( this.Data );
-		c.Api.Post( this.Parent.Ajax.Update, obj, this.IsLoading, this.InfoBox.Error, result => {
+		c.Api.Post( this.Parent.Ajax.Update, this.ToJS(), this.IsLoading, this.InfoBox.Error, result => {
 			this.Close();
-			map.fromJS( result, {}, this.Data );
 			this.Parent.OnSaved( result );
 		} );
 	}
@@ -138,8 +192,77 @@ class EditorVm {
 		return e;
 	}
 
+	DropAttachments( _, je: JQueryEventObject ) {
+		this.IsAcceptingAttachments( false );
+
+		var e = <DragEvent>je.originalEvent;
+		e && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
+	}
+
+	DragOverAttachments( _, je: JQueryEventObject ) { this.IsAcceptingAttachments( true ); }
+	DragOutAttachments() { this.IsAcceptingAttachments( false ); }
+
+	ChooseAttachments() {
+		if ( this.LastFocusedBBField ) this.UploadAndInsert( null, this.LastFocusedBBField );
+	}
+
+	Upload( files: FileList ): Rx.IObservable<AttachmentVm<T>> {
+		var result = new rx.Subject<AttachmentVm>();
+		this.Uploader.Upload( c.Api.AbsoluteUrl( this.Parent.Ajax.UploadAttachment( this.Data ) ), null, files )
+			.selectMany( res => {
+				if ( res.Success ) {
+					return rx.Observable.fromArray( <att.AttachmentDef[]>( res.Result || [] ) );
+				} else {
+					this.InfoBox.Error( ( res.Messages || [] ).join() );
+					return rx.Observable.fromArray( <att.AttachmentDef[]>[] );
+				}
+			})
+			.select( a => {
+				var res = new AttachmentVm( this, a );
+				this.Attachments.push( res );
+				return res;
+			})
+			.subscribe( result );
+
+		return result;
+	}
+
+	UploadAndInsert( files: FileList, field: bbTextField.BBTextFieldVm ) {
+		var pos = field.GetCaretPosition();
+		this.Upload( files )
+			.selectMany( a => c.koToRx( a.ViewModel ) )
+			.where( vm => !!vm )
+			.take( 1 )
+			.select( avm => avm.AsBBCode() )
+			.where( bb => !!bb )
+			.subscribe( bb => { field.Value( field.Value().substring(0, pos) + bb + field.Value().substring(pos) ); pos += bb.length; });
+	}
+
 	_onKey = ( e: JQueryEventObject ) => {
 		if( e.which == 27 ) this.Close();
 		else if( e.which == 13 && e.ctrlKey ) this.Save();
 	};
 }
+
+class AttachmentVm<T> {
+	ViewModel = <Ko.Observable<att.IAttachment>> dyn.bind( this._ref );
+	private Visual = ko.computed( () => this.ViewModel() && this.ViewModel().Render() );
+
+	private DraggableDefinition: JQueryUI.DraggableOptions = {
+		helper: ( () => { 
+			var uiRoot = this.Parent.Element;
+			return function () { return $( this ).clone().addClass( "in-place-editor--file--dragging" ).appendTo( uiRoot ); };
+		})()
+	};
+
+	constructor( private Parent: EditorVm<T>, private _ref: dyn.ClassRef ) { }
+
+	Remove() {
+	}
+
+	Insert() {
+		this.Parent.InsertAttachment( this, null );
+	}
+}
+
+interface Hash { [key: string]: any }

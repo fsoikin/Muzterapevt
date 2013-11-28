@@ -1,11 +1,39 @@
-﻿<div class="popup-editor" data-bind="loadingWhen: IsLoading">
+﻿<div class="popup-editor">
 	<!-- ko control: InfoBox --><!-- /ko -->
 	<!-- ko control: BBQuickReference --><!-- /ko -->
 
-	<div data-bind="control: Data"></div>
+	<div class="toolbar">
+		<button data-bind="click: ChooseAttachments">Insert Image or File</button>
+		<div class="right">
+			<button data-bind="click: Save" title="Save (Ctrl+Enter)">Save</button>
+			<button data-bind="click: Cancel" title="Cancel (Esc)">Cancel</button>
+		</div>
+	</div>
+
+	<div class="content">
+		<div class="data-wrapper" data-bind="control: DataControl"></div>
+	</div>
 
 	<div class="buttons">
-		<button tabindex="4" data-bind="click: Cancel">Cancel</button>
-		<button tabindex="5" data-bind="click: Save">Save</button>
+		<button tabindex="5" data-bind="click: Save" title="Save (Ctrl+Enter)">Save</button>
+		<button tabindex="4" data-bind="click: Cancel" title="Cancel (Esc)">Cancel</button>
+	</div>
+
+	<div class="files" data-bind="
+		css: { 'ready-to-drop': IsAcceptingAttachments },
+		event: { dragover: DragOverAttachments, dragleave: DragOutAttachments, drop: DropAttachments }
+	">
+		<div class="title">Files attached to this page</div>
+		<div class="uploading">
+			<div class="indicator" data-bind="style: { width: Uploader.ProgressPercent() + '%' }, css: { active: Uploader.IsUploading }"></div>
+		</div>
+		<div class="list" data-bind="foreach: Attachments, css: { empty: !Attachments().length }">
+			<div class="file" data-bind="jqWidget: { draggable: DraggableDefinition }">
+				<div class="remove" data-bind="click: Remove" title="Delete this attachment">&nbsp;</div>
+				<div class="insert" data-bind="click: Insert" title="Insert into text">&nbsp;</div>
+				<!-- ko if: !Visual() --><div class="loading"></div><!-- /ko -->
+				<!-- ko if: Visual --><div data-bind="control: Visual"></div><!-- /ko -->
+			</div>
+		</div>
 	</div>
 </div>

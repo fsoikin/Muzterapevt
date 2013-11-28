@@ -1,7 +1,7 @@
 ﻿@model TextModel
 
 @if ( Model.AllowEdit ) { 
-	<div class="autobind" data-controller="BL/text" data-args="{ id: '@Model.Id' }">@Html.Raw( Model.Html )</div>
+	<div class="autobind" data-controller="TextVm, BL/text" data-args="{ id: '@Model.Id' }">@Html.Raw( Model.Html )</div>
 } else {
 	@Html.Raw( Model.Html )
 }

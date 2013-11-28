@@ -1,78 +1,267 @@
 ﻿.popup-editor {
-  position: fixed;
-  top: 5%;
-  left: 5%;
-  bottom: 5%;
-  right: 5%;
-  border: 1px solid black;
-  background: white;
-  padding: 20px;
-  padding-right: 500px;
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    bottom: 5%;
+    right: 5%;
+    border: 1px solid black;
+    background: white;
+    padding: 20px;
+    padding-right: 520px;
+    padding-left: 270px;
+    padding-bottom: 60px;
 }
+
+.popup-editor > .toolbar {
+    position: relative;
+    display: block;
+}
+
+.popup-editor > .toolbar > .right {
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+}
+
+.popup-editor > .files {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    height: 100%;
+    overflow: hidden;
+    background: #FAFAFA;
+    border-right: 1px solid #E0E0E0;
+}
+
+.popup-editor > .files.ready-to-drop {
+    background: #F0FFFF;
+}
+
+.popup-editor > .files > .title {
+    background: #F0F0F0;
+    padding: 5px 8px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.popup-editor > .files > .uploading > .indicator {
+    height: 3px;
+}
+
+.popup-editor > .files > .uploading > .indicator.active {
+    background: #409040;
+}
+
+.popup-editor > .files > .list {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 90%;
+    padding: 3px 10px;
+}
+
+.popup-editor > .files > .list > .file {
+    position: relative;
+    padding: 5px;
+    font-size: 12px;
+    width: 100px;
+    background: white;
+    border: 1px solid #F0F0F0;
+    margin: 5px;
+    display: inline-block;
+    text-align: center;
+    min-height: 60px;
+}
+
+.popup-editor > .files > .list > .file:hover > .remove,
+.popup-editor > .files > .list > .file:hover > .insert {
+    opacity: 0.7;
+    -moz-transition: ease-in;
+    -o-transition: ease-in;
+    -webkit-transition: ease-in;
+    transition: ease-in;
+    -moz-transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+}
+
+.popup-editor > .files > .list > .file > .remove,
+.popup-editor > .files > .list > .file > .insert {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid gray;
+    opacity: 0;
+    cursor: pointer;
+    right: 3px;
+    background: white;
+    box-shadow: 0 0 5px silver;
+}
+
+.popup-editor > .files > .list > .file > .remove:hover,
+.popup-editor > .files > .list > .file > .insert:hover {
+    opacity: 1;
+    border-color: black;
+}
+
+.popup-editor > .files > .list > .file > .remove:before,
+.popup-editor > .files > .list > .file > .insert:before {
+    position: relative;
+    top: -2px;
+    left: 2px;
+}
+
+.popup-editor > .files > .list > .file .remove {
+    top: 3px;
+}
+
+.popup-editor > .files > .list > .file .remove:before {
+    content: 'x';
+}
+
+.popup-editor > .files > .list > .file .insert {
+    top: 26px;
+}
+
+.popup-editor > .files > .list > .file .insert:before {
+    content: '>';
+}
+
+.popup-editor > .files > .list.empty {
+    text-align: center;
+}
+
+.popup-editor > .files > .list.empty:before {
+    content: "Drag&drop files here or click the 'Insert Image or File' button.";
+    font-size: 12px;
+    color: silver;
+    -webkit-text-shadow: 1px 1px white;
+    text-shadow: 1px 1px 4px white;
+    margin: 20px;
+    display: block;
+    text-align: center;
+}
+
+.popup-editor > .content {
+    height: 97%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: black;
+    text-align: left;
+}
+
+.popup-editor > .content > .data-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .popup-editor > .buttons {
-  display: block;
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    right: 520px;
+    padding: 0;
 }
-.popup-editor > .buttons > button {
-  float: right;
+
+.in-place-editor--file--dragging {
+    position: relative;
+    padding: 5px;
+    font-size: 12px;
+    width: 100px;
+    background: white;
+    border: 1px solid #F0F0F0;
+    margin: 5px;
+    display: inline-block;
+    text-align: center;
+    overflow: hidden;
+    height: 100px;
+    box-shadow: 1px 1px 6px silver;
+    opacity: 0.7;
 }
+
+.in-place-editor--file--dragging .remove,
+.in-place-editor--file--dragging .insert {
+    display: none;
+}
+
 .bb-quick-reference {
-  position: absolute;
-  right: 0;
-  border: 1px solid black;
-  box-shadow: 1px 1px 5px silver;
-  padding: 10px;
-  background: #FDFDFD;
-  width: 500px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-left: 1px solid #F0F0F0;
+    padding: 10px;
+    background: #FAFAFA;
+    width: 500px;
+    font-size: 14px;
 }
+
 .bb-quick-reference > div {
-  white-space: nowrap;
-  display: block;
-  margin-bottom: 20px;
-  border-top: 1px solid #C0C0C0;
+    white-space: nowrap;
+    display: block;
+    margin-bottom: 20px;
+    border-top: 1px solid #C0C0C0;
 }
+
 .bb-quick-reference > div:first-child {
-  border-top: none;
+    border-top: none;
 }
+
 .bb-quick-reference > div > label,
 .bb-quick-reference > div > span {
-  display: inline-block;
-  color: black;
+    display: inline-block;
+    color: black;
 }
+
 .bb-quick-reference > div > label {
-  width: 100px;
-  font-weight: bold;
+    width: 100px;
+    font-weight: bold;
 }
+
 .bb-quick-reference > div > span:before {
-  content: '--';
-  margin-right: 10px;
+    content: '--';
+    margin-right: 10px;
 }
+
 .bb-quick-reference > div > .example {
-  display: block;
-  margin-left: 140px;
+    display: block;
+    margin-left: 140px;
 }
+
 .bb-quick-reference > div > .more {
-  display: block;
-  margin-left: 110px;
-  margin-top: 5px;
+    display: block;
+    margin-left: 110px;
+    margin-top: 5px;
 }
+
 .bb-quick-reference > div > .example {
-  color: navy;
-  font-size: 1em;
+    color: navy;
+    font-size: 1em;
 }
+
 .bb-quick-reference > div > .example:before {
-  content: 'example:';
-  font-style: italic;
-  color: silver;
-  margin-left: -80px;
-  margin-right: 10px;
+    content: 'example:';
+    font-style: italic;
+    color: silver;
+    margin-left: -80px;
+    margin-right: 10px;
 }
+
 .bb-quick-reference > div > .more {
-  white-space: normal;
+    white-space: normal;
 }
+
 .bb-quick-reference > div > .more ul {
-  margin-top: 0;
+    margin-top: 0;
 }
+
 .bb-quick-reference > div > .more:before {
-  content: '--';
-  color: transparent;
+    content: '--';
+    color: transparent;
 }

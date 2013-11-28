@@ -1,13 +1,14 @@
 ﻿/// <amd-dependency path="css!styles/Page.css" />
+/// <amd-dependency path="text!./Templates/page-editor.html" />
 import c = require( "../common" );
 import $ = require( "jQuery" );
 import ed = require( "./InPlaceEditor" );
+import bbTextField = require( "./BBTextField" );
 
-export = PageVm;
-
-var Ajax = {
+var Ajax = <ed.IInPlaceEditorAjax<PageEditor>>{
 	Load: id => "page/load?id=" + id,
-	UploadAttachment: id => "page/uploadAttachment?id=" + id,
+	GetAttachments: page => "page/attachment-getAll?pageId=" + page.Id,
+	UploadAttachment: page => "page/attachment-upload?pageId=" + page.Id,
 	Update: "page/update"
 };
 
@@ -18,27 +19,25 @@ interface PageSaveResult {
 }
 
 // Defined in UI/JS/TextSaveResult.cs
-class PageEditor {
+export class PageEditor {
 	Id = 0;
 	Path = "";
 	Title = "";
-	Text = "";
+	Text = bbTextField.IAm;
 	TagsStandIn = "";
 	ReferenceName = "";
 }
 
-class PageVm extends ed.InPlaceEditorVm {
+export class PageVm extends ed.InPlaceEditorVm<PageEditor> {
 	constructor( args: { id: number }) {
 		super( {
 			ajax: Ajax,
 			id: args.id,
-			emptyData: new PageEditor(),
+			emptyData: <any>new PageEditor(),
 			onSaved: ( e: JQuery, data: PageSaveResult ) => e.html( data.Html ).prepend( $( "<h2>" ).text( data.Title ) ),
 			editorTemplate: EditorTemplate
 		});
 	}
 }
 
-declare module "text!./Templates/page-editor.html" { }
-import _template = require( "text!./Templates/page-editor.html" );
-var EditorTemplate = $( _template );
+var EditorTemplate = $( require( "text!./Templates/page-editor.html" ) );

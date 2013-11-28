@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using erecruit.Composition;
+using erecruit.Mvc.Mixins;
 using log4net;
 using Mut.Data;
 using Mut.Models;
@@ -38,6 +39,21 @@ namespace Mut.Controllers
 		protected override void OnActionExecuted( ActionExecutedContext filterContext ) {
 			Log.DebugFormat( "END:   {0}, result = {1}", filterContext.ActionDescriptor.ActionName, filterContext.Result );
 			base.OnActionExecuted( filterContext );
+		}
+
+
+		protected override IActionInvoker CreateActionInvoker() {
+			return new MixinControllerActionInvoker();
+		}
+
+		public class MixinControllerActionInvoker : ControllerActionInvoker
+		{
+			protected override ControllerDescriptor GetControllerDescriptor( ControllerContext controllerContext ) {
+				return new AggregateControllerDescriptor( this.GetType(),
+						MixinControllerDescriptor.GetFromMethods( controllerContext.Controller.GetType() ).Concat(
+						new[] { base.GetControllerDescriptor( controllerContext ) }
+					) );
+			}
 		}
 	}
 }

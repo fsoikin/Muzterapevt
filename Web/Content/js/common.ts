@@ -220,3 +220,18 @@ export function ApplyTemplate( template: any ) {
 	};
 
 }
+
+
+export function rxToKo<T>( rx: Rx.IObservable<T> ): Ko.Observable<T> {
+	var res = ko.observable<T>();
+	rx && rx.subscribe( res );
+	return res;
+}
+
+export function koToRx<T>( ko: Ko.Subscribable<T> ): Rx.IObservable<T> {
+	return rx.Observable.create( ( o: Rx.IObserver<T> ) => {
+		var d = ko.subscribe( o.onNext, o );
+		o.onNext( ko.peek() );
+		return () => d.dispose();
+	});
+}

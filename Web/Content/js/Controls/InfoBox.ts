@@ -1,4 +1,5 @@
-﻿import er = require( "../common" );
+﻿/// <amd-dependency path="text!./Templates/InfoBox.html" />
+import er = require( "../common" );
 import ko = require( "ko" );
 
 export = InfoBox;
@@ -32,6 +33,4 @@ class InfoBox implements er.IVirtualControl {
 }
 
 // TODO: [fs] have to come up with a better way
-declare module "text!./Templates/InfoBox.html" { }
-import _tpl = require( "text!./Templates/InfoBox.html" );
-var _template = er.ApplyTemplate( <string>_tpl );
+var _template = er.ApplyTemplate( <string>require( "text!./Templates/InfoBox.html" ) );

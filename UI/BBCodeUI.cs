@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using CodeKicker.BBCode;
@@ -13,6 +15,9 @@ namespace Mut.UI
 	[Export, TransactionScoped]
 	public class BBCodeUI
 	{
+		[Import]
+		public ICompositionRoot Composition { get; set; }
+
 		private BBCodeParser _parser = new BBCodeParser( new [] {
 			new BBTag( "br", "<br/>", "", true, false ),
 			new BBTag( "b", "<b>", "</b>" ),
@@ -28,34 +33,60 @@ namespace Mut.UI
 
 			new BBTag( "video", "<x>", "</x>", true, false, new BBAttribute( "url", "" ) ),
 			new BBTag( "html", "<x>", "</x>" ),
+			new BBTag( "img", "<img src='${src}'/>", "", true, false, new BBAttribute( "src", "" ), 
+				new BBAttribute( "width", "width" ), new BBAttribute( "height", "height" ) ),
+			new BBTag( "file", "<a href='${path}'/>", "", true, true, new BBAttribute( "path", "" ) )
 		} );
 
-		static readonly Dictionary<string, Func<TagNode, string>> _tagsMap = new Dictionary<string, Func<TagNode, string>> {
-			{ "video", tag => VideoEmbedUI.HtmlFromUrl( tag.AttrValue( "url" ) ) },
-			{ "html", tag => new SequenceNode( tag.SubNodes ).ToBBCode() }
+		static readonly Dictionary<string, Func<BBParseContext, string>> _tagsMap = new Dictionary<string, Func<BBParseContext, string>> {
+			{ "video", ctx => VideoEmbedUI.HtmlFromUrl( ctx.Node.AttrValue( "url" ) ) },
+			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode() },
+			{ "img", ctx => AttachmentUI.BB.Image( ctx ) },
+			{ "file", ctx => AttachmentUI.BB.File( ctx ) }
 		};
 
-		public string ToHtml( string bbCode )
+		public string ToHtml( string bbCode, BBParseArgs args )
 		{
 			bbCode = (bbCode??"").Replace( "\n", "[br]" ).Replace( "\r", "" );
 			var syntaxTree = _parser.ParseSyntaxTree( bbCode );
-			var modifiedTree = new V().Visit( syntaxTree );
+			var modifiedTree = new V( Composition, args ?? new BBParseArgs() ).Visit( syntaxTree );
 			return modifiedTree.ToHtml();
 		}
 
 		class V : SyntaxTreeVisitor
 		{
+			private readonly BBParseArgs _args;
+			private readonly ICompositionRoot _comp;
+			public V( ICompositionRoot comp, BBParseArgs args ) {
+				Contract.Requires( args != null );
+				Contract.Requires( comp != null );
+				_args = args;
+				_comp = comp;
+			}
+
 			protected override SyntaxTreeNode Visit( TagNode node ) {
 
 				var converter = _tagsMap.ValueOrDefault( node.Tag.Name );
 				if ( converter != null ) {
-					var text = new TextNode( "", converter( node ) );
+					var text = new TextNode( "", converter( new BBParseContext { Node = node, Args = _args, Composition = _comp } ) );
 					return node.Tag.RequiresClosingTag ? text : base.Visit( new SequenceNode( node.SubNodes.StartWith( text ) ) );
 				}
 
 				return base.Visit( node );
 			}
 		}
+	}
+
+	public class BBParseContext
+	{
+		public TagNode Node { get; set; }
+		public ICompositionRoot Composition { get; set; }
+		public BBParseArgs Args { get; set; }
+	}
+
+	public class BBParseArgs
+	{
+		public erecruit.Mvc.MixinRouteBuilder<AttachmentUI.Mixin> AttachmentMixin { get; set; }
 	}
 
 	public static class BBTagExtensions

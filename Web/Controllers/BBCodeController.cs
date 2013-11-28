@@ -14,7 +14,7 @@ namespace Mut.Controllers
 		public IJsonResponse<string> ToHtml( string bbText )
 		{
 			return JsonResponse.Catch( () => 
-				UI.ToHtml( bbText ), Log );
+				UI.ToHtml( bbText, new BBParseArgs() ), Log );
 		}
 	}
 }

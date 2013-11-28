@@ -14,7 +14,7 @@
 }
 
 @if ( Model.AllowEdit ) {
-	<div class="autobind" data-controller="BL/page" data-args="{ id: @Model.Page.Id }">
+	<div class="autobind" data-controller="PageVm, BL/page" data-args="{ id: @Model.Page.Id }">
 		<h2>@Model.Page.Title</h2>
 		@Html.Raw( Model.Page.HtmlText )
 	</div>

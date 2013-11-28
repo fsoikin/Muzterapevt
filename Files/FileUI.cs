@@ -21,6 +21,8 @@ namespace Name.Files
 		ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false );
 
 		IEnumerable<File> UploadFiles( string domain, string pathPrefix, HttpPostedFileBase[] file );
+
+		IQueryable<File> GetAll( string domain );
 	}
 
 	[Export, TransactionScoped]
@@ -28,17 +30,25 @@ namespace Name.Files
 	{
 		[Import] public IRepository<File> Files { get; set; }
 		[Import] public IRepository<FileData> FilesData { get; set; }
+		[Import] public IRepository<FileVersion> FilesVersions { get; set; }
+		[Import] public IUnitOfWork UnitOfWork { get; set; }
 
 		public ActionResult ServeFile( string domain, string path, bool forceDownload = false ) {
 			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
-			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.Time );
+			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.CreatedOn );
 		}
 
 		public ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false ) {
 			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
-			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.Time );
+
+			var ver = GetVersion( domain, path, versionKey, transform );
+			return new FileResult( ver == null ? file.Data : ver.Data, ver == null ? file.ContentType : ver.ContentType, forceDownload, file.File.OriginalFileName, file.File.CreatedOn );
+		}
+
+		public IQueryable<File> GetAll( string domain ) {
+			return Files.All.Where( f => f.Domain == domain );
 		}
 
 		class FileResult : ActionResult
@@ -73,13 +83,14 @@ namespace Name.Files
 				}
 
 				if ( _forceDownload ) {
-					resp.AddHeader( "Content-Dosposition", "attachment; filename=" + _fileName );
+					resp.AddHeader( "Content-Disposition", "attachment; filename=\"" + _fileName + "\"" );
 				}
 				resp.ContentType = _contentType;
 				resp.OutputStream.Write( _data, 0, _data.Length );
 			}
 
 			public static DateTime? GetIfModifiedSinceHeader( HttpRequestBase req ) {
+				Contract.Requires( req != null );
 				var header = req.Headers["If-Modified-Since"];
 				if ( string.IsNullOrEmpty( header ) ) return null;
 
@@ -91,7 +102,8 @@ namespace Name.Files
 		}
 
 		public IEnumerable<File> UploadFiles( string domain, string pathPrefix, HttpPostedFileBase[] file ) {
-			pathPrefix = '/' + (pathPrefix ?? "").Trim( '/' ) + '/';
+			pathPrefix = (pathPrefix ?? "").Trim( '/' );
+			if ( !pathPrefix.NullOrEmpty() ) pathPrefix = '/' + pathPrefix + '/';
 
 			return from f in file.EmptyIfNull()
 						 let fn = Path.GetFileNameWithoutExtension( f.FileName )
@@ -99,7 +111,7 @@ namespace Name.Files
 						 let filePath = Enumerable.Range( 1, int.MaxValue )
 								 .Select( i => fn + "_" + i + ext )
 								 .StartWith( fn + ext )
-								 .Select( name => new { name, path = pathPrefix + '/' + name } )
+								 .Select( name => new { name, path = pathPrefix + name } )
 								 .Where( n => !Files.All.Any( e => e.Domain == domain && e.FilePath == n.name ) )
 								 .Select( n => n.path )
 								 .First()
@@ -114,6 +126,7 @@ namespace Name.Files
 		}
 
 		private byte[] ReadAll( Stream stream ) {
+			Contract.Requires( stream != null );
 			var buf = new byte[stream.Length];
 			int read = 0, ofs = 0;
 			do {
@@ -122,6 +135,25 @@ namespace Name.Files
 			} while ( read > 0 );
 
 			return buf;
+		}
+
+		private FileVersion GetVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform ) {
+			var existing = this.FilesVersions.All.FirstOrDefault( fv => fv.File.FilePath == path && fv.File.Domain == domain && fv.Key == versionKey );
+			if ( existing != null ) return existing;
+
+			var fileObj = FilesData.All.Include( fd => fd.File ).FirstOrDefault( fl => fl.File.FilePath == path && fl.File.Domain == domain );
+			if ( fileObj == null ) return null;
+
+			var newVersion = transform( fileObj );
+			if ( newVersion == null ) return null;
+
+			newVersion.File = fileObj.File;
+			newVersion.Key = versionKey;
+
+			var res = FilesVersions.Add( newVersion );
+			UnitOfWork.Commit();
+
+			return res;
 		}
 	}
 
@@ -148,6 +180,11 @@ namespace Name.Files
 				Contract.Requires( file != null );
 				Contract.Ensures( Contract.Result<IEnumerable<File>>() != null );	
 				throw new NotImplementedException();
+			}
+
+			public IQueryable<File> GetAll( string domain ) {
+				Contract.Ensures( Contract.Result<IQueryable<File>>() != null );
+				return null;
 			}
 		}
 	}

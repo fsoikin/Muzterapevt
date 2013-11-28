@@ -1,22 +1,30 @@
 import er = require( "../common" );
 import $ = require( "jQuery" );
 import ko = require( "ko" );
+import rx = require( "rx" );
+import api = require( "../Base/api" );
 
 export class Uploader {
 	CurrentFiles = ko.observableArray<UploadingFile>();
-	IsUploading = ko.computed( () => this.CurrentFiles().some( f => !f.IsFinished() ) )
-   private _input: HTMLInputElement;
+	IsUploading = ko.computed( () => this.CurrentFiles().some( f => !f.IsFinished() ) );
+	ProgressPercent = ko.computed( () => {
+		var files = this.CurrentFiles();
+		return files.length ? files.reduce( ( sum, f ) => sum + f.Progress(), 0 )/files.length : 0;
+	} )
+  private _input: HTMLInputElement;
 
-	public Upload( url: string, data: { [key: string]: string; }, files?: FileList ) {
+	public Upload( url: string, data: { [key: string]: string; }, files?: FileList ): Rx.IObservable<api.JsonResponse> {
 		this.CleanFinishedFiles();
 
 		if ( files ) {
-			this.AddFiles( files, url, data );
+			return this.AddFiles( files, url, data );
 		} else {
+			var result = new rx.Subject<api.JsonResponse>();
 			this.EnsureInput();
 			$( this._input )
-				.one( "change", () => this.AddFiles( this._input.files, url, data ) )
+				.one( "change", () => this.AddFiles( this._input.files, url, data ).subscribe( result ) )
 				.click();
+			return result;
 		}
 	}
 
@@ -32,9 +40,11 @@ export class Uploader {
 		ko.utils.arrayForEach( finished, f => this.CurrentFiles.remove( f ) );
 	}
 
-	private AddFiles( files: FileList, url: string, data: { [key: string]: string; }) {
+	private AddFiles( files: FileList, url: string, data: { [key: string]: string; }): Rx.IObservable<api.JsonResponse> {
+		var result = new rx.Subject<api.JsonResponse>();
 		for ( var i = 0; i < files.length; i++ )
-			this.CurrentFiles.push( new UploadingFile( files[i], url, data ) );
+			this.CurrentFiles.push( new UploadingFile( files[i], url, data, result ) );
+		return result;
 	}
 
 	public Dispose() {
@@ -54,7 +64,7 @@ export class UploadingFile {
 	public DataUrl = ko.observable( "" );
 	private _xhr: XMLHttpRequest;
 
-	constructor( public File: File, url: string, data: { [key: string]: string; }) {
+	constructor( public File: File, url: string, data: { [key: string]: string; }, result: Rx.IObserver<api.JsonResponse>, headers?: any ) {
 		var rd = new FileReader();
 		rd.onloadend = () => this.DataUrl( rd.result );
 		rd.readAsDataURL( this.File );
@@ -62,16 +72,23 @@ export class UploadingFile {
 		this.Name( this.File.name );
 
 		var form = new FormData();
-		$.each( data, ( key, value ) => form.append( key, value ) );
+		$.each( data || {}, ( key, value ) => form.append( key, value ) );
 		form.append( "file", File );
 
 		this._xhr = new XMLHttpRequest();
 		this._xhr.upload.onprogress = e => e.lengthComputable && this.Progress( 100 * e.loaded / e.total );
-		this._xhr.onloadend = e => this.IsFinished( true );
+		this._xhr.onloadend = e => {
+			this.IsFinished( true );
+
+			var resp;
+			try { resp = JSON.parse( this._xhr.response ); } catch ( ex ) { resp = this._xhr.response; }
+			result.onNext( resp );
+		};
 		this._xhr.onerror = e => this.Error( this._xhr.responseText );
 		this._xhr.onabort = e => this.Error( "Upload aborted" );
 		this._xhr.ontimeout = e => this.Error( "Upload timed out" );
 		this._xhr.open( "POST", url, true );
+		if ( headers ) for ( var h in headers ) this._xhr.setRequestHeader( h, headers[h] );
 		this._xhr.send( form );
 	}
 

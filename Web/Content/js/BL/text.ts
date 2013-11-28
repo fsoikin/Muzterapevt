@@ -1,12 +1,14 @@
 ﻿/// <amd-dependency path="css!styles/Text.css" />
+/// <amd-dependency path="text!./Templates/text-editor.html" />
 import c = require( "../common" );
 import $ = require( "jQuery" );
 import ed = require( "./InPlaceEditor" );
+import bbTextField = require( "./BBTextField" );
 
-export = TextVm;
-
-var Ajax = {
+var Ajax = <ed.IInPlaceEditorAjax<TextEditor>>{
 	Load: id => "text/load?id=" + id,
+	GetAttachments: text => "text/attachment-getAll?textId=" + text.Id,
+	UploadAttachment: text => "text/attachment-upload?textId=" + text.Id,
 	Update: "text/update"
 };
 
@@ -16,23 +18,21 @@ interface TextSaveResult {
 }
 
 // Defined in UI/JS/TextEditor.cs
-class TextEditor {
+export class TextEditor {
 	Id = "";
-	Text = "";
+	Text = bbTextField.IAm;
 }
 
-class TextVm extends ed.InPlaceEditorVm {
+export class TextVm extends ed.InPlaceEditorVm<TextEditor> {
 	constructor( args: { id: number }) {
 		super( {
 			ajax: Ajax,
 			id: args.id,
-			emptyData: new TextEditor(),
+			emptyData: <any>new TextEditor(),
 			onSaved: ( e: JQuery, data: TextSaveResult ) => e.html( data.Html ),
 			editorTemplate: EditorTemplate
 		});
 	}
 }
 
-declare module "text!./Templates/text-editor.html" { }
-import _template = require( "text!./Templates/text-editor.html" );
-var EditorTemplate = $( _template );
+var EditorTemplate = $( require( "text!./Templates/text-editor.html" ) );

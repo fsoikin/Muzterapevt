@@ -7,6 +7,6 @@ namespace Mut.Models
 	[Export, TransactionScoped]
 	public class TextService
 	{
-		public static string AttachmentDomain( int textId ) { return "TextAttachment." + textId; }
+		public static string AttachmentDomain( string textId ) { return "TextAttachment." + textId; }
 	}
 }

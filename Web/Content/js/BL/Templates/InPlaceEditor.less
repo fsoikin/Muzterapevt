@@ -1,4 +1,21 @@
 @bb-quick-reference-width: 500px;
+@bb-quick-reference-padding: 10px;
+@files-width: 250px;
+@buttons-height: 40px;
+@editor-padding: 20px;
+@buttons-padding: 5px;
+
+.file() {
+	position: relative;
+	padding: 5px;
+	font-size: 12px;
+	width: 100px;
+	background: white;
+	border: 1px solid #F0F0F0;
+	margin: 5px;
+	display: inline-block;
+	text-align: center;
+}
 
 .popup-editor {
 	position: fixed;
@@ -8,26 +25,179 @@
 	right: 5%;
 	border: 1px solid black;
 	background: white;
-	padding: 20px;
-	padding-right: @bb-quick-reference-width;
+	padding: @editor-padding;
+	padding-right: @editor-padding + @bb-quick-reference-width;
+	padding-left: @editor-padding + @files-width;
+	padding-bottom: @editor-padding + @buttons-height;
+
+	> .toolbar {
+		position: relative;
+		display: block;
+
+		> .right {
+			display: inline-block;
+			position: absolute;
+			right: @buttons-padding;
+		}
+	}
+
+	> .files {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: @files-width;
+		height: 100%;
+		overflow: hidden;
+		background: #FAFAFA;
+		border-right: 1px solid #E0E0E0;
+
+		&.ready-to-drop {
+			background: #F0FFFF;
+		}
+
+		> .title {
+			background: #F0F0F0;
+			padding: 5px 8px;
+			border-bottom: 1px solid #E0E0E0;
+		}
+
+		> .uploading > .indicator {
+			&.active {
+				background: #409040;
+			}
+
+			height: 3px;
+		}
+
+		> .list {
+			overflow-x: hidden;
+			overflow-y: auto;
+			height: 90%;
+			padding: 3px 10px;
+
+			> .file {
+				.file();
+				min-height: 60px;
+
+				&:hover {
+					> .remove, > .insert {
+						opacity: 0.7;
+						-moz-transition: ease-in;
+						-o-transition: ease-in;
+						-webkit-transition: ease-in;
+						transition: ease-in;
+						-moz-transition-duration: 0.2s;
+						-o-transition-duration: 0.2s;
+						-webkit-transition-duration: 0.2s;
+						transition-duration: 0.2s;
+					}
+				}
+
+				> .remove, > .insert {
+					position: absolute;
+					width: 16px;
+					height: 16px;
+					border: 1px solid gray;
+					opacity: 0;
+					cursor: pointer;
+					right: 3px;
+					background: white;
+					box-shadow: 0 0 5px silver;
+
+					&:hover {
+						opacity: 1;
+						border-color: black;
+					}
+
+					&:before {
+						position: relative;
+						top: -2px;
+						left: 2px;
+					}
+				}
+
+				.remove {
+					top: 3px;
+
+					&:before {
+						content: 'x';
+					}
+				}
+
+				.insert {
+					top: 26px;
+
+					&:before {
+						content: '>';
+					}
+				}
+			}
+
+			&.empty {
+				text-align: center;
+
+				&:before {
+					content: "Drag&drop files here or click the 'Insert Image or File' button.";
+					font-size: 12px;
+					color: silver;
+					-webkit-text-shadow: 1px 1px white;
+					text-shadow: 1px 1px 4px white;
+					margin: 20px;
+					display: block;
+					text-align: center;
+				}
+			}
+		}
+	}
+
+	> .content {
+		height: 97%;
+		overflow: hidden;
+		padding: 0;
+		margin: 0;
+		background: transparent;
+		color: black;
+		text-align: left;
+
+		> .data-wrapper {
+			height: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+	}
 
 	> .buttons {
 		display: block;
-
-		> button {
-			float: right;
-		}
+		position: absolute;
+		bottom: @buttons-padding;
+		right: @editor-padding + @bb-quick-reference-width;
+		padding: 0;
 	}
+}
+
+.in-place-editor--file--dragging {
+	.file();
+	overflow: hidden;
+	height: 100px;
+	box-shadow: 1px 1px 6px silver;
+	opacity: 0.7;
+
+	.remove, .insert { display: none; }
 }
 
 .bb-quick-reference {
 	position: absolute;
+	top: 0;
 	right: 0;
-	border: 1px solid black;
-	box-shadow: 1px 1px 5px silver;
-	padding: 10px;
-	background: #FDFDFD;
+	bottom: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	border-left: 1px solid #F0F0F0;
+	padding: @bb-quick-reference-padding;
+	background: #FAFAFA;
 	width: @bb-quick-reference-width;
+	font-size: 14px;
 
 	> div {
 		white-space: nowrap;

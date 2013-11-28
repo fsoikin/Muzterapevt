@@ -27,13 +27,14 @@ namespace Mut.Controllers
 			}, Log );
 		}
 
+		[HttpPost]
 		public JsonResponse<JS.TextSaveResult> Update( [JsonRequestBody] JS.TextEditor text ) {
 			return JsonResponse.Catch( () => {
 				var p = Texts.Find( text.Id );
 				if ( p == null ) p = Texts.Add( new Data.Text { Id = text.Id } );
 
 				p.BbText = text.Text;
-				p.HtmlText = BbCode.ToHtml( p.BbText );
+				p.HtmlText = BbCode.ToHtml( p.BbText ?? "", new BBParseArgs { AttachmentMixin = Url.Mixin( ( TextController c ) => c.Attachment( text.Id ) ) } );
 				UnitOfWork.Commit();
 
 				return JsonResponse.Create( new JS.TextSaveResult { Html = p.HtmlText } );
@@ -41,7 +42,7 @@ namespace Mut.Controllers
 		}
 
 		[Mixin]
-		public AttachmentUI.Mixin Attachment( int textId ) {
+		public AttachmentUI.Mixin Attachment( string textId ) {
 			return Attachments.AsMixin( TextService.AttachmentDomain( textId ) );
 		}
 	}

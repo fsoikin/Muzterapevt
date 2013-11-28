@@ -169,6 +169,10 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <None Include="Content\js\BL\Templates\Attachment.less" />
+    <Content Include="Content\js\BL\Templates\Attachment.css">
+      <DependentUpon>Attachment.less</DependentUpon>
+    </Content>
     <Content Include="Content\js\BL\Templates\BBQuickReference.css">
       <DependentUpon>InPlaceEditor.less</DependentUpon>
     </Content>
@@ -221,31 +225,32 @@
     <Content Include="Content\img\template\bgd.png" />
     <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
-    <Content Include="Content\js\Base\api.ts" />
-    <Content Include="Content\js\Base\koBindings.ts" />
-    <Content Include="Content\js\Base\seq.ts" />
-    <Content Include="Content\js\BL\bbCode.ts" />
-    <Content Include="Content\js\BL\base.ts" />
+    <TypeScriptCompile Include="Content\js\Base\api.ts" />
+    <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
+    <TypeScriptCompile Include="Content\js\Base\seq.ts" />
+    <TypeScriptCompile Include="Content\js\BL\bbCode.ts" />
+    <TypeScriptCompile Include="Content\js\BL\base.ts" />
     <Content Include="Content\js\BL\Templates\InPlaceEditor.html" />
     <Content Include="Content\js\BL\Templates\Attachment.html" />
     <Content Include="Content\js\BL\Templates\text-editor.html" />
-    <Content Include="Content\js\BL\text.ts" />
-    <Content Include="Content\js\BL\InPlaceEditor.ts" />
-    <Content Include="Content\js\BL\menu.ts" />
-    <Content Include="Content\js\BL\page.ts" />
+    <TypeScriptCompile Include="Content\js\BL\BBTextField.ts" />
+    <TypeScriptCompile Include="Content\js\BL\text.ts" />
+    <TypeScriptCompile Include="Content\js\BL\InPlaceEditor.ts" />
+    <TypeScriptCompile Include="Content\js\BL\menu.ts" />
+    <TypeScriptCompile Include="Content\js\BL\page.ts" />
     <Content Include="Content\js\BL\Templates\InPlaceEditor-DefaultMenu.html" />
     <Content Include="Content\js\BL\Templates\menu.html" />
     <Content Include="Content\js\BL\Templates\page-editor.html" />
-    <Content Include="Content\js\common.ts" />
-    <Content Include="Content\js\bootstrap.ts" />
-    <Content Include="Content\js\Controls\ContextMenu.ts" />
-    <Content Include="Content\js\Controls\InfoBox.ts" />
+    <TypeScriptCompile Include="Content\js\common.ts" />
+    <TypeScriptCompile Include="Content\js\bootstrap.ts" />
+    <TypeScriptCompile Include="Content\js\Controls\ContextMenu.ts" />
+    <TypeScriptCompile Include="Content\js\Controls\InfoBox.ts" />
     <Content Include="Content\js\BL\Templates\InPlaceEditor-BBQuickReference.html" />
     <Content Include="Content\js\Controls\Templates\InfoBox.html" />
     <Content Include="Content\js\External\jQuery\jquery-1.9.1.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.min.js" />
-    <Content Include="Content\js\External\jQuery\main.ts" />
+    <TypeScriptCompile Include="Content\js\External\jQuery\main.ts" />
     <Content Include="Content\js\External\Knockout\knockout-2.2.1.debug.js" />
     <Content Include="Content\js\External\Knockout\knockout-2.2.1.js" />
     <Content Include="Content\js\External\Knockout\knockout.mapping-latest.debug.js" />
@@ -253,14 +258,14 @@
     <Content Include="Content\js\External\LinqJS\linq.js" />
     <Content Include="Content\js\External\LinqJS\linq.min.js" />
     <Content Include="Content\js\External\polyfill\polyfill.js" />
-    <Content Include="Content\js\lib\autobind.ts" />
-    <Content Include="Content\js\lib\template.ts" />
-    <Content Include="Content\js\lib\dynamic.ts" />
+    <TypeScriptCompile Include="Content\js\lib\autobind.ts" />
+    <TypeScriptCompile Include="Content\js\lib\template.ts" />
+    <TypeScriptCompile Include="Content\js\lib\dynamic.ts" />
     <Content Include="Content\require\css.js" />
     <Content Include="Content\require\normalize.js" />
     <Content Include="Content\require\require.js" />
     <Content Include="Content\require\text.js" />
-    <Content Include="Content\js\External\Rx\main.ts" />
+    <TypeScriptCompile Include="Content\js\External\Rx\main.ts" />
     <Content Include="Content\js\External\Rx\rx.js" />
     <Content Include="Content\js\External\Rx\rx.min.js" />
     <Content Include="Content\js\External\Rx\rx.time.js" />
@@ -323,19 +328,19 @@
     <Content Include="Views\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\js\BackOffice\main.ts" />
+    <TypeScriptCompile Include="Content\js\BackOffice\main.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\tsd\jquery.amd.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\js\BackOffice\pages.ts" />
+    <TypeScriptCompile Include="Content\js\BackOffice\pages.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\js\BackOffice\Templates\pages.html" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\js\BL\attachment.ts" />
+    <TypeScriptCompile Include="Content\js\BL\attachment.ts" />
     <TypeScriptCompile Include="Content\js\lib\Uploader.ts" />
   </ItemGroup>
   <PropertyGroup>
@@ -367,9 +372,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="BeforeBuild">
-    <MSBuild Projects="$(ProjectDir)..\Build\TypeScript\buildts.proj" ToolsVersion="4.0" />
-  </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- Target Name="AfterBuild">
   </Target> -->
