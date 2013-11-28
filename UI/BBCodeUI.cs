@@ -40,14 +40,13 @@ namespace Mut.UI
 
 		static readonly Dictionary<string, Func<BBParseContext, string>> _tagsMap = new Dictionary<string, Func<BBParseContext, string>> {
 			{ "video", ctx => VideoEmbedUI.HtmlFromUrl( ctx.Node.AttrValue( "url" ) ) },
-			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode() },
+			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode().Replace( "\n", "<br/>" ).Replace( "\r", "" ) },
 			{ "img", ctx => AttachmentUI.BB.Image( ctx ) },
 			{ "file", ctx => AttachmentUI.BB.File( ctx ) }
 		};
 
 		public string ToHtml( string bbCode, BBParseArgs args )
 		{
-			bbCode = (bbCode??"").Replace( "\n", "[br]" ).Replace( "\r", "" );
 			var syntaxTree = _parser.ParseSyntaxTree( bbCode );
 			var modifiedTree = new V( Composition, args ?? new BBParseArgs() ).Visit( syntaxTree );
 			return modifiedTree.ToHtml();
@@ -82,7 +81,7 @@ namespace Mut.UI
 		public TagNode Node { get; set; }
 		public ICompositionRoot Composition { get; set; }
 		public BBParseArgs Args { get; set; }
-	}
+		}
 
 	public class BBParseArgs
 	{
