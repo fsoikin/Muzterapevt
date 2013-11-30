@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarkupParser.cs" />
     <Compile Include="VideoEmbedUI.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{98511bd8-e239-474e-b9a9-08dee421e1de}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{7f236c96-359a-468c-9f1e-db4a67511264}</Project>
       <Name>Data</Name>

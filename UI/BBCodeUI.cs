@@ -27,6 +27,8 @@ namespace Mut.UI
 			new BBTag( "h1", "<h1>", "</h1>" ),
 			new BBTag( "c", "<span class='${class}'>", "</span>", new BBAttribute( "class", "" ) ),
 			new BBTag( "url", "<a href=\"${href}\">", "</a>", new BBAttribute( "href", "" ) ),
+			
+//			new BBTag( "anchor", "", "", true, false, new BBAttribute( "link", "link" ), new BBAttribute( "name", "" ) ),
 
 			new BBTag( "list", "<ul>", "</ul>" ),
 			new BBTag( "*", "<li>", "</li>", true, false ),
@@ -42,7 +44,12 @@ namespace Mut.UI
 			{ "video", ctx => VideoEmbedUI.HtmlFromUrl( ctx.Node.AttrValue( "url" ) ) },
 			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode().Replace( "\n", "<br/>" ).Replace( "\r", "" ) },
 			{ "img", ctx => AttachmentUI.BB.Image( ctx ) },
-			{ "file", ctx => AttachmentUI.BB.File( ctx ) }
+			{ "file", ctx => AttachmentUI.BB.File( ctx ) },
+			//{ "anchor", ctx => {
+			//	var name = ctx.Node.AttrValue( "name" );
+			//	var link = ctx.Node.AttrValue( "link" );
+			//	if ( link.NullOrEmpty() ) { }
+			//}}
 		};
 
 		public string ToHtml( string bbCode, BBParseArgs args )
