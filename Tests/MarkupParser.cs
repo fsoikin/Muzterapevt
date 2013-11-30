@@ -65,8 +65,14 @@ namespace Mut.Tests
 
 		void t( string source, string result = null, IEnumerable<MarkupNodeDefinition> defs = null ) {
 			if ( result == null ) result = source.Replace( '[', '<' ).Replace( ']', '>' );
-			var res = Mut.MarkupParser.Parse( source, defs ?? Mut.MarkupParser.StdDefs );
+			var res = Mut.MarkupParser.Parse( source, defs ?? StdDefs );
 			Assert.Equal( result, string.Join( "", res.Select( r => r.Instance.ToHtml() ) ) );
 		}
+
+		static readonly MarkupNodeDefinition[] StdDefs = new[] {
+			Mut.MarkupParser.BbNode( "b" ),
+			Mut.MarkupParser.BbNode( "i" ),
+			Mut.MarkupParser.BbNode( "u" )
+		};
 	}
 }

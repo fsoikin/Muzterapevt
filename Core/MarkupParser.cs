@@ -86,10 +86,6 @@ namespace Mut
 
 	public class MarkupParser
 	{
-		public static readonly MarkupNodeDefinition[] StdDefs = new[] {
-			BbNode( "b" ), BbNode( "i" ), BbNode( "u" )
-		};
-
 		public static MarkupNodeDefinition BbNode( string tagName, string htmlTag = null ) {
 			var escapedTagName = Regex.Escape( tagName );
 			return new MarkupNodeDefinition( "\\[" + escapedTagName + "\\]", "\\[\\/" + escapedTagName + "\\]",
