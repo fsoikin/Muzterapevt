@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarkupDefinitions.cs" />
     <Compile Include="MarkupParser.cs" />
     <Compile Include="VideoEmbedUI.cs" />
     <Compile Include="MenuController.cs" />

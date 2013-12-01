@@ -42,7 +42,7 @@ namespace Mut.UI
 
 		static readonly Dictionary<string, Func<BBParseContext, string>> _tagsMap = new Dictionary<string, Func<BBParseContext, string>> {
 			{ "video", ctx => VideoEmbedUI.HtmlFromUrl( ctx.Node.AttrValue( "url" ) ) },
-			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode().Replace( "\n", "<br/>" ).Replace( "\r", "" ) },
+//			{ "html", ctx => new SequenceNode( ctx.Node.SubNodes ).ToBBCode().Replace( "\n", "<br/>" ).Replace( "\r", "" ) },
 			{ "img", ctx => AttachmentUI.BB.Image( ctx ) },
 			{ "file", ctx => AttachmentUI.BB.File( ctx ) },
 			//{ "anchor", ctx => {
@@ -72,11 +72,11 @@ namespace Mut.UI
 
 			protected override SyntaxTreeNode Visit( TagNode node ) {
 
-				var converter = _tagsMap.ValueOrDefault( node.Tag.Name );
-				if ( converter != null ) {
-					var text = new TextNode( "", converter( new BBParseContext { Node = node, Args = _args, Composition = _comp } ) );
-					return node.Tag.RequiresClosingTag ? text : base.Visit( new SequenceNode( node.SubNodes.StartWith( text ) ) );
-				}
+				//var converter = _tagsMap.ValueOrDefault( node.Tag.Name );
+				//if ( converter != null ) {
+				//	var text = new TextNode( "", converter( new BBParseContext { Node = node, Args = _args, Composition = _comp } ) );
+				//	return node.Tag.RequiresClosingTag ? text : base.Visit( new SequenceNode( node.SubNodes.StartWith( text ) ) );
+				//}
 
 				return base.Visit( node );
 			}

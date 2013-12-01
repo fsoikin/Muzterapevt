@@ -28,8 +28,8 @@ namespace Mut
 			Func<Match, Match, IEnumerable<MarkupNode>, IMarkupNodeInstance> createInstance ) {
 			Contract.Requires( startRegex != null );
 			Contract.Requires( createInstance != null );
-			this.Start = new Regex( startRegex, RegexOptions.Compiled | RegexOptions.Multiline );
-			this.End = endRegex.NullOrEmpty() ? null : new Regex( endRegex, RegexOptions.Compiled | RegexOptions.Multiline );
+			this.Start = new Regex( startRegex, RegexOptions.Compiled );
+			this.End = endRegex.NullOrEmpty() ? null : new Regex( endRegex, RegexOptions.Compiled );
 			this.CreateInstance = createInstance;
 		}
 
@@ -86,10 +86,66 @@ namespace Mut
 
 	public class MarkupParser
 	{
-		public static MarkupNodeDefinition BbNode( string tagName, string htmlTag = null ) {
+		public static MarkupNodeDefinition SimpleTag( string tagName, string htmlTag = null ) {
 			var escapedTagName = Regex.Escape( tagName );
 			return new MarkupNodeDefinition( "\\[" + escapedTagName + "\\]", "\\[\\/" + escapedTagName + "\\]",
 				(_, __, inners) => new WrapNode( htmlTag ?? tagName, inners ) );
+		}
+
+		/// <summary>
+		/// Produces a markup definition that matches a piece of text wrapped in the
+		/// 'wrappingSequence' on both ends and translates that into the same text
+		/// wrapped in 'htmlTag'.
+		/// </summary>
+		/// <remarks>
+		/// For example:
+		///			**bold**    ==		&lt;b&gt;bold&lt;/b&gt;
+		/// </remarks>
+		public static MarkupNodeDefinition Wrap( string wrappingSequence, string htmlTag ) {
+			var regex = new Regex( Regex.Escape( wrappingSequence ) );
+			return new MarkupNodeDefinition {
+				Start = regex, End = regex,
+				CreateInstance = ( a, b, c ) => new WrapNode( htmlTag, c )
+			};
+		}
+
+		static string attributeRegex( string attName ) {
+			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s]+)|(\\\"[^\\\"]+\\\"))";
+		}
+
+		public static MarkupNodeDefinition ComplexTag( string tagName, bool hasClosing, string[] attributes, 
+			Func<IDictionary<string, string>, Range<string>> generateOpenAndCloseHtml ) {
+				return ComplexTag( tagName, hasClosing, attributes, ( atrs, inners ) => {
+					var html = generateOpenAndCloseHtml( atrs );
+					return html.Start + string.Join( "", inners.Select( i => i.Instance.ToHtml() ) ) + html.End;
+				} );
+		}
+
+		public static MarkupNodeDefinition ComplexTag( string tagName, bool hasClosing,
+			string[] attributes, Func<IDictionary<string, string>, IEnumerable<MarkupNode>, string> generateHtml ) {
+
+			var defaultAttribute = attributes.Any( s => s.NullOrEmpty() );
+			tagName = Regex.Escape( tagName );
+
+			return new MarkupNodeDefinition {
+
+				Start = new Regex(
+					"\\[" + tagName +
+					(defaultAttribute ? "(" + attributeRegex( "" ) + "){0,1}" : "") +
+					"(\\s+(" + string.Join( "|", attributes.Select( attributeRegex ) ) + "))*" +
+					"\\s*\\]" ),
+
+				End = hasClosing ? new Regex( "\\[\\/" + tagName + "\\]" ) : null,
+
+				CreateInstance = ( start, _, inners ) => {
+					var attrs = (from a in attributes
+											 let g = start.Groups["att_" + a]
+											 where g != null && g.Success
+											 select new { a, g.Value }
+											).ToDictionary( x => x.a, x => x.Value.Trim( '\"' ) );
+					return new TextNode( generateHtml( attrs, inners ), false );
+				}
+			};
 		}
 
 		class ParsingNode
