@@ -67,7 +67,11 @@ namespace Mut.UI
 
 					new MarkupNodeDefinition<MarkupParseArgs>( @"&[^;\s]+;", (ctx, regex, _, __) => new TextNode( regex.Value, false ) ),
 
-					new MarkupNodeDefinition<MarkupParseArgs>( @"[\r\n]{2}", (ctx, regex, _, __) => new TextNode( "<br>", false ) )
+					new MarkupNodeDefinition<MarkupParseArgs>( @"[\r\n]{2}", (ctx, regex, _, __) => new TextNode( "<br>", false ) ),
+
+					// Legacy:
+					_parser.SimpleTag("b"), _parser.SimpleTag("i"), _parser.SimpleTag("u"),
+					_parser.SimpleTag("h", "h2"), _parser.SimpleTag("h1")
 				};
 			}
 		}

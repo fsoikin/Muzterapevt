@@ -41,8 +41,7 @@ namespace Mut.Controllers
 
 				return JsonResponse.Create( new JS.PageEditor {
 					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title,
-					TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName,
-					PictureIds = p.Pictures.Select( pc => pc.Id )
+					TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName
 				} );
 			}, Log );
 		}

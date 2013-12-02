@@ -17,6 +17,5 @@ namespace Mut.JS
 		public string Title { get; set; }
 		public string TagsStandIn { get; set; }
 		public string ReferenceName { get; set; }
-		public IEnumerable<int> PictureIds { get; set; }
 	}
 }

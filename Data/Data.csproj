@@ -97,7 +97,6 @@
     <Compile Include="Database.cs" />
     <Compile Include="Entities\Text.cs" />
     <Compile Include="Entities\NavigationItem.cs" />
-    <Compile Include="Entities\Picture.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\003_AddedFiles.sql" />
