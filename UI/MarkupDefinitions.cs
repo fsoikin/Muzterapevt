@@ -12,20 +12,32 @@ using erecruit.Utils;
 
 namespace Mut.UI
 {
-	public class MarkupDefinitions
+	public class MarkupParseArgs
 	{
-		private readonly MarkupParser<BBParseArgs> _parser = new MarkupParser<BBParseArgs>();
+		public erecruit.Mvc.MixinRouteBuilder<AttachmentUI.Mixin> AttachmentMixin { get; set; }
+	}
+
+	public class MarkupUI
+	{
+		private readonly MarkupParser<MarkupParseArgs> _parser = new MarkupParser<MarkupParseArgs>();
+
+		[Import] public VideoEmbedUI Video { get; set; }
+		[Import] public AttachmentUI Attachments { get; set; }
+
+		public string ToHtml( string text, MarkupParseArgs args ) {
+			return string.Join( "", _parser.Parse( text, args, Defs ).Select( n => n.Instance.ToHtml() ) );
+		}
 
 		[Export]
-		public IEnumerable<MarkupNodeDefinition<BBParseArgs>> Defs {
+		public IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> Defs {
 			get {
 				return new[] {
 					_parser.Wrap( "**", "b" ),
 					_parser.Wrap( "*", "i" ),
 					_parser.Wrap( "_", "u" ),
 
-					_parser.Wrap( "--", "h1" ),
-					_parser.Wrap( "-", "h2" ),
+					heading( @"\-", "h2" ),
+					heading( @"\-\-", "h1" ),
 
 					_parser.ComplexTag( "c", true, new[] { "" }, (ctx,atrs) => new Range<string> {
 						Start = "<span class=\"" + atrs.ValueOrDefault("") + "\">",
@@ -38,12 +50,33 @@ namespace Mut.UI
 					} ),
 
 					// List
-					new MarkupNodeDefinition<BBParseArgs>( @"((?<=([\n\r]+|^)(?![\r\n])\s*[^\s\*][^\r\n]+)(?=[\r\n]+\s+\*))|(^(?=\s+\*))", @"(?=[\r\n]+\s*[^\*\s])", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
+					new MarkupNodeDefinition<MarkupParseArgs>( @"((?<=([\n\r]+|^)(?![\r\n])\s*[^\s\*][^\r\n]+)(?=[\r\n]+\s+\*))|(^(?=\s+\*))", @"(?=[\r\n]+\s*[^\*\s])", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
 
 					// List item
-					new MarkupNodeDefinition<BBParseArgs>( @"(?<=([\n\r]+)|^)(?![\r\n])\s+\*", @"(?=[\r\n]+)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
+					new MarkupNodeDefinition<MarkupParseArgs>( @"(?<=([\n\r]+)|^)(?![\r\n])\s+\*", @"(?=[\r\n]+)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
+
+					Video.BBTag(),
+					Attachments.BBImageTag(),
+					Attachments.BBFileTag(),
+
+					_parser.ComplexTag( "html", true, new string[0], (ctx, attrs, inners) => {
+						var f = inners.FirstOrDefault();
+						var l = inners.LastOrDefault();
+						return f == null ? "" : f.SourceString.Substring( f.SourceStartIndex, l.SourceEndIndex - f.SourceStartIndex );
+					} ),
+
+					new MarkupNodeDefinition<MarkupParseArgs>( @"&[^;\s]+;", (ctx, regex, _, __) => new TextNode( regex.Value, false ) ),
+
+					new MarkupNodeDefinition<MarkupParseArgs>( @"[\r\n]{2}", (ctx, regex, _, __) => new TextNode( "<br>", false ) )
 				};
 			}
+		}
+
+		MarkupNodeDefinition<MarkupParseArgs> heading( string markup, string htmlTag ) {
+			return new MarkupNodeDefinition<MarkupParseArgs>(
+				@"(?<=([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"(?=[^\-]+" + markup + @"\s*([\r\n]|$))",
+				@"(?<=(([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"[^\-]+)" + markup + @"((?![\r\n])\s)*(?=([\r\n]|$))",
+				( ctx, _, __, inners ) => new WrapNode( htmlTag, inners ) );
 		}
 	}
 }

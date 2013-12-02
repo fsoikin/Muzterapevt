@@ -17,7 +17,7 @@ namespace Mut.Controllers
 	{
 		[Import] public IRepository<Text> Texts { get; set; }
 		[Import] public IAuthService Auth { get; set; }
-		[Import] public BBCodeUI BbCode { get; set; }
+		[Import] public MarkupUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 
 		public JsonResponse<JS.TextEditor> Load( string id ) {
@@ -34,7 +34,7 @@ namespace Mut.Controllers
 				if ( p == null ) p = Texts.Add( new Data.Text { Id = text.Id } );
 
 				p.BbText = text.Text;
-				p.HtmlText = BbCode.ToHtml( p.BbText ?? "", new BBParseArgs { AttachmentMixin = Url.Mixin( ( TextController c ) => c.Attachment( text.Id ) ) } );
+				p.HtmlText = Markup.ToHtml( p.BbText ?? "", new MarkupParseArgs { AttachmentMixin = Url.Mixin( ( TextController c ) => c.Attachment( text.Id ) ) } );
 				UnitOfWork.Commit();
 
 				return JsonResponse.Create( new JS.TextSaveResult { Html = p.HtmlText } );

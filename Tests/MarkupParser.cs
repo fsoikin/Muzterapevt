@@ -123,6 +123,16 @@ namespace Mut.Tests
 			t( "abc [link url=\"ab cd\"]text text[/link] xyz", "abc <a href=\"ab cd\">text text</a> xyz", new[] { _linkTag } );
 		}
 
+		[Fact]
+		public void Should_parse_in_complex_tag_with_content_and_unquoted_attribute() {
+			t( "abc [link url=abcd]text[/link] xyz", "abc <a href=\"abcd\">text</a> xyz", new[] { _linkTag } );
+		}
+
+		[Fact]
+		public void Should_parse_in_complex_tag_with_content_and_unquoted_default_attribute() {
+			t( "abc [link=abcd]text[/link] xyz", "abc <a href=\"abcd\">text</a> xyz", new[] { _defParamLinkTag } );
+		}
+
 		static MarkupNodeDefinition<string> _imgTag = new Mut.MarkupParser<string>().ComplexTag( "img", false, 
 			new[] { "", "width", "height" },
 			( ctx, atrs, _ ) => {
@@ -139,6 +149,12 @@ namespace Mut.Tests
 		static MarkupNodeDefinition<string> _linkTag = new Mut.MarkupParser<string>().ComplexTag( "link", true,
 			new[] { "url" }, (ctx, atrs) => new Range<string> {
 				Start = "<a href=\"" + atrs.ValueOrDefault( "url" ) + "\">",
+				End = "</a>"
+			} );
+
+		static MarkupNodeDefinition<string> _defParamLinkTag = new Mut.MarkupParser<string>().ComplexTag( "link", true,
+			new[] { "" }, ( ctx, atrs ) => new Range<string> {
+				Start = "<a href=\"" + atrs.ValueOrDefault( "" ) + "\">",
 				End = "</a>"
 			} );
 

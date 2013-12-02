@@ -95,31 +95,31 @@ namespace Mut
 			}
 		}
 
-		public static class BB
-		{
-			public static string Image( BBParseContext ctx ) {
-				var width = ctx.Node.AttrValue( "width" ).ToIntOrNull();
-				var height = ctx.Node.AttrValue( "height" ).ToIntOrNull();
-				var path = ctx.Node.AttrValue( "src" );
-				var url =
-					width == null && height == null ? ctx.Args.AttachmentMixin.Action( m => m.Img( path ) ) :
-					width != null ? ctx.Args.AttachmentMixin.Action( m => m.ScaleW( path, width.Value ) ) :
-					/* height != null */ ctx.Args.AttachmentMixin.Action( m => m.ScaleH( path, height.Value ) );
+		public MarkupNodeDefinition<MarkupParseArgs> BBImageTag() {
+			return new MarkupParser<MarkupParseArgs>().ComplexTag( "img", false, new[] { "", "width", "height" },
+				( ctx, attrs, inners ) => {
+					var width = attrs.ValueOrDefault( "width" ).ToIntOrNull();
+					var height = attrs.ValueOrDefault( "height" ).ToIntOrNull();
+					var path = attrs.ValueOrDefault( "" );
+					var url =
+						width == null && height == null ? ctx.AttachmentMixin.Action( m => m.Img( path ) ) :
+						width != null ? ctx.AttachmentMixin.Action( m => m.ScaleW( path, width.Value ) ) :
+						/* height != null */ ctx.AttachmentMixin.Action( m => m.ScaleH( path, height.Value ) );
 
-				return string.Format( "<img src='{0}' />", url, innerText( ctx.Node ) );
-			}
+					return string.Format( "<img src='{0}' />", url );
+				} );
+		}
 
-			public static string File( BBParseContext ctx ) {
-				return string.Format( "<a class='file-download-link' href='{0}'>{1}</a>", path( ctx, "path" ), innerText( ctx.Node ) );
-			}
-
-			static string innerText( TagNode node ) {
-				return HttpUtility.HtmlEncode( string.Join( "", node.SubNodes.Select( n => n.ToBBCode() ) ) );
-			}
-
-			static string path( BBParseContext ctx, string pathAttr ) {
-				return ctx.Args.AttachmentMixin.Action( m => m.Serve( ctx.Node.AttrValue( pathAttr ) ) );
-			}
+		public MarkupNodeDefinition<MarkupParseArgs> BBFileTag() {
+			return new MarkupParser<MarkupParseArgs>().ComplexTag( "file", true, new[] { "" },
+				( ctx, attrs ) => {
+					var file = attrs.ValueOrDefault( "" );
+					return new Range<string> {
+						Start = string.Format( "<a class='file-download-link' href='{0}'>",
+							ctx.AttachmentMixin.Action( m => m.Serve( file ) ) ),
+						End = "</a>"
+					};
+				} );
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace Mut
 	{
 		readonly string _text;
 		public TextNode( string text, bool encode = true ) { 
-			_text = encode ? HttpUtility.HtmlEncode( text ?? "" ) : (text ?? ""); 
+			_text = encode ? HttpUtility.HtmlEncode( text ?? "" ) : ( text ?? "" ); 
 		}
 		public string ToHtml() { return _text; }
 	}
@@ -80,6 +80,9 @@ namespace Mut
 	public class MarkupNode
 	{
 		public IMarkupNodeInstance Instance { get; set; }
+		public string SourceString { get; set; }
+		public int SourceStartIndex { get; set; }
+		public int SourceEndIndex { get; set; }
 	}
 
 	public class MarkupNode<TContext> : MarkupNode {
@@ -114,7 +117,7 @@ namespace Mut
 		}
 
 		static string attributeRegex( string attName ) {
-			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s]+)|(\\\"[^\\\"]+\\\"))";
+			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s\\]]+)|(\\\"[^\\\"\\]]+\\\"))";
 		}
 
 		public MarkupNodeDefinition<TContext> ComplexTag( 
@@ -158,7 +161,9 @@ namespace Mut
 		{
 			public MarkupNodeDefinition<TContext> Def { get; set; }
 			public Match Start { get; set; }
+			public int StartIndex { get; set; }
 			public Match End { get; set; }
+			public int EndIndex { get; set; }
 			public List<ParsingNode> Children { get; private set; }
 
 			public ParsingNode() {
@@ -189,7 +194,7 @@ namespace Mut
 				if ( x.start != null ) {
 					InsertTextNode( input, stack, currentIndex, nextIndex );
 					(x.d.End == null ? stack.Last().Children : stack)
-						.Add( new ParsingNode { Start = x.start, Def = x.d } );
+						.Add( new ParsingNode { Start = x.start, StartIndex = x.start.Index, EndIndex = x.start.Index + x.start.Length, Def = x.d } );
 					currentIndex = x.start.Index + x.start.Length;
 				}
 				else if ( x.end != null ) {
@@ -201,7 +206,11 @@ namespace Mut
 					InsertTextNode( input, stack, currentIndex, nextIndex );
 
 					stack[correspondingStartIndex].End = x.end;
-					for ( var i = stack.Count - 1; i >= correspondingStartIndex; i-- ) stack[i - 1].Children.Add( stack[i] );
+					stack[correspondingStartIndex].EndIndex = x.end.Index + x.end.Length - 1;
+					for ( var i = stack.Count - 1; i >= correspondingStartIndex; i-- ) {
+						stack[i - 1].Children.Add( stack[i] );
+						stack[i - 1].EndIndex = stack[correspondingStartIndex].EndIndex;
+					}
 					stack.RemoveRange( correspondingStartIndex, stack.Count - correspondingStartIndex );
 
 					currentIndex = x.end.Index + x.end.Length;
@@ -209,12 +218,22 @@ namespace Mut
 			}
 
 			if ( currentIndex < input.Length ) InsertTextNode( input, stack, currentIndex, input.Length );
-			for ( var i = stack.Count - 1; i > 0; i-- ) stack[i - 1].Children.Add( stack[i] );
+			for ( var i = stack.Count - 1; i > 0; i-- ) {
+				stack[i - 1].Children.Add( stack[i] );
+				stack[i - 1].EndIndex = input.Length;
+			}
 
 			Func<ParsingNode, MarkupNode<TContext>> map = null;
 			map = n => {
 				var inners = n.Children.Select( map ).ToList();
-				return new MarkupNode<TContext> { Def = n.Def, Instance = n.Def.CreateInstance( context, n.Start, n.End, inners ), Children = inners };
+				return new MarkupNode<TContext> { 
+					Def = n.Def, 
+					Instance = n.Def.CreateInstance( context, n.Start, n.End, inners ), 
+					Children = inners,
+					SourceString = input,
+					SourceStartIndex = n.StartIndex,
+					SourceEndIndex = n.EndIndex
+				};
 			};
 
 			return topNode.Children.Select( map ).ToList();
@@ -224,7 +243,9 @@ namespace Mut
 			if ( nextIndex <= currentIndex ) return;
 			var text = input.Substring( currentIndex, nextIndex - currentIndex );
 			stack.Last().Children.Add( new ParsingNode {
-				Def = new MarkupNodeDefinition<TContext> { CreateInstance = ( ctx, a, b, c ) => new TextNode( text ) }
+				StartIndex = currentIndex,
+				EndIndex = nextIndex,
+				Def = new MarkupNodeDefinition<TContext> { CreateInstance = ( ctx, a, b, c ) => new TextNode( text ) },
 			} );
 		}
 	}

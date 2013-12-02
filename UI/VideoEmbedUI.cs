@@ -11,8 +11,13 @@ using erecruit.Utils;
 
 namespace Mut.UI
 {
-	public static class VideoEmbedUI
+	public class VideoEmbedUI
 	{
+		public MarkupNodeDefinition<MarkupParseArgs> BBTag() {
+			return new MarkupParser<MarkupParseArgs>().ComplexTag( "video", false, new[] { "" },
+				( ctx, attrs, inners ) => HtmlFromUrl( attrs.ValueOrDefault( "" ) ) );
+		}
+
 		public static string HtmlFromUrl( string url ) {
 			if ( url.NullOrEmpty() ) return null;
 
