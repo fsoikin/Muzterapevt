@@ -207,6 +207,7 @@
     display: block;
     margin-bottom: 20px;
     border-top: 1px solid #C0C0C0;
+    position: relative;
 }
 
 .bb-quick-reference > div:first-child {
@@ -217,6 +218,7 @@
 .bb-quick-reference > div > span {
     display: inline-block;
     color: black;
+    margin-bottom: 0.8em;
 }
 
 .bb-quick-reference > div > label {
@@ -229,15 +231,26 @@
     margin-right: 10px;
 }
 
+.bb-quick-reference > div > span.clarification {
+    position: absolute;
+    left: 0;
+    top: 1.5em;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.bb-quick-reference > div > span.clarification:before {
+    content: '(';
+    margin: 0;
+}
+
+.bb-quick-reference > div > span.clarification:after {
+    content: ')';
+}
+
 .bb-quick-reference > div > .example {
     display: block;
     margin-left: 140px;
-}
-
-.bb-quick-reference > div > .more {
-    display: block;
-    margin-left: 110px;
-    margin-top: 5px;
 }
 
 .bb-quick-reference > div > .example {
@@ -254,6 +267,9 @@
 }
 
 .bb-quick-reference > div > .more {
+    display: block;
+    margin-left: 110px;
+    margin-top: 5px;
     white-space: normal;
 }
 
@@ -262,6 +278,5 @@
 }
 
 .bb-quick-reference > div > .more:before {
-    content: '--';
-    color: transparent;
+    content: '';
 }

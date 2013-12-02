@@ -204,6 +204,7 @@
 		display: block;
 		margin-bottom: 20px;
 		border-top: 1px solid #C0C0C0;
+		position: relative;
 
 		&:first-child {
 			border-top: none;
@@ -212,6 +213,7 @@
 		> label, > span {
 			display: inline-block;
 			color: black;
+			margin-bottom: 0.8em;
 		}
 
 		> label {
@@ -224,17 +226,26 @@
 				content: '--';
 				margin-right: 10px;
 			}
+
+			&.clarification {
+				position: absolute;
+				left: 0;
+				top: 1.5em;
+				font-size: 10px;
+				opacity: 0.5;
+				&:before {
+					content: '(';
+					margin: 0;
+				}
+				&:after {
+					content: ')';
+				}
+			}
 		}
 
 		> .example {
 			display: block;
 			margin-left: 140px;
-		}
-
-		> .more {
-			display: block;
-			margin-left: 110px;
-			margin-top: 5px;
 		}
 
 		> .example {
@@ -251,6 +262,9 @@
 		}
 
 		> .more {
+			display: block;
+			margin-left: 110px;
+			margin-top: 5px;
 			white-space: normal;
 
 			ul {
@@ -258,8 +272,7 @@
 			}
 
 			&:before {
-				content: '--';
-				color: transparent;
+				content: '';
 			}
 		}
 	}

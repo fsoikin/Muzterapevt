@@ -1,14 +1,31 @@
 <div class="bb-quick-reference" data-bind="assignTo: Element">
 	<div>
-		<label>[b], [i], [u]</label>
-		<span><b>bold</b>, <i>italic</i>, <u>underline</u></span>
-		<div class="example">[b]this is bold[/b]</div>
+		<label>**</label>
+		<span class="clarification">double asterisk</span>
+		<span><b>bold</b></span>
+		<div class="example">**this is bold**</div>
 	</div>
 
 	<div>
-		<label>[h] &amp; [h1]</label>
+		<label>*</label>
+		<span class="clarification">single asterisk</span>
+		<span><i>italic</i></span>
+		<div class="example">*this is italic*</div>
+	</div>
+
+	<div>
+		<label>_</label>
+		<span class="clarification">underscore character</span>
+		<span><u>underline</u></span>
+		<div class="example">_this is underlined_</div>
+	</div>
+
+	<div>
+		<label>--</label>
+		<span class="clarification">double or single dash</span>
 		<span>header &amp; big header</span>
-		<div class="example">[h]my header[/h]</div>
+		<div class="example">--my header--</div>
+		<div class="more">NOTE: The header must be the only thing on the line.</div>
 	</div>
 
 	<div>
@@ -32,10 +49,15 @@
 	</div>
 
 	<div>
-		<label>[list] &amp; [*]</label>
+		<label>*</label>
+		<span class="clarification">space+asterisk</span>
 		<span>Bullet list</span>
-		<div class="example">[list] [*]one [*]two [*]three [/list]</div>
-		<div class="more">NOTE: the [*] tag doesn't need to be closed.</div>
+		<div class="example"><br />
+			* one<br />
+			* two<br />
+			* three
+		</div>
+		<div class="more">NOTE: each asterisk should be on a new line, and there should be at least one space in front of each asterisk.</div>
 	</div>
 
 	<div>
@@ -46,7 +68,6 @@
 			A few hints:
 			<ul>
 				<li>Just copy&amp;paste the URL of the video.</li>
-				<li>The tag doesn't have to be closed.</li>
 				<li>This only works for YouTube right now, but support for other sites is possible.</li>
 			</ul>
 		</div>
@@ -59,15 +80,16 @@
 	</div>
 
 	<div>
-		<label>[br]</label>
-		<span>Force a line break</span>
-		<div class="example">Line with a[br]break.</div>
-		<div class="more">
-			NOTE:
-			<ul>
-				<li>Line breaks are already present where you hit Enter. No need to add an extra [br].</li>
-				<li>This tag doesn't need to be closed.</li>
-			</ul>
-		</div>
+		<label>[img]</label>
+		<span>Insert attached picture</span>
+		<div class="example">[img=my_picture.jpg]</div>
+		<div class="more">You must first attach the picture to the page by dragging&amp;dropping it on the text editor.</div>
+	</div>
+
+	<div>
+		<label>[file]</label>
+		<span>Insert a link to an attached file</span>
+		<div class="example">[file=brochure.jpg]Download brochure[/file]</div>
+		<div class="more">You must first attach the file to the page by dragging&amp;dropping it on the text editor.</div>
 	</div>
 </div>
