@@ -28,11 +28,7 @@ namespace Mut.Tests
 						* two
 						* three
 					xyz",
-					@"abc<ul>
-<li> one</li>
-<li> two</li>
-<li> three</li></ul>
-					xyz");
+					@"abc<ul><br/><li> one</li><br/><li> two</li><br/><li> three</li></ul><br/>					xyz" );
 		}
 
 		[Fact]
@@ -41,10 +37,7 @@ namespace Mut.Tests
 						* two
 						* three
 					xyz",
-					@"<ul><li> one</li>
-<li> two</li>
-<li> three</li></ul>
-					xyz" );
+					@"<ul><li> one</li><br/><li> two</li><br/><li> three</li></ul><br/>					xyz" );
 		}
 
 		[Fact]
@@ -53,10 +46,7 @@ namespace Mut.Tests
 	* one
 						* two
 						* three",
-					@" abc<ul>
-<li> one</li>
-<li> two</li>
-<li> three</li></ul>" );
+					@" abc<ul><br/><li> one</li><br/><li> two</li><br/><li> three</li></ul>" );
 		}
 
 		[Fact]
@@ -75,17 +65,12 @@ namespace Mut.Tests
 			t( string.Format( 
 				@"{0}abc{0}
 				fff", kind ), 
-				string.Format( 
-				@"<{0}>abc</{0}>
-				fff", tag ) );
+				string.Format( @"<{0}>abc</{0}><br/>				fff", tag ) );
 			t( string.Format( 
 				@"xyz
 				{0}abc{0}
 				fff", kind ),
-				string.Format( 
-				@"xyz
-<{0}>abc</{0}>
-				fff", tag ) );
+				string.Format( @"xyz<br/><{0}>abc</{0}><br/>				fff", tag ) );
 			t( string.Format( "one{0}abc{0}", kind ), string.Format( "one{0}abc{0}", kind ) );
 			t( string.Format( "one{0}abc", kind ), string.Format( "one{0}abc", kind ) );
 			t( string.Format( "xyz one{0}abc{0} xyz{0}", kind ), string.Format( "xyz one{0}abc{0} xyz{0}", kind ) );
