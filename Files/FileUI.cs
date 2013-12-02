@@ -44,7 +44,7 @@ namespace Name.Files
 			if ( file == null ) return new HttpNotFoundResult();
 
 			var ver = GetVersion( domain, path, versionKey, transform );
-			return new FileResult( ver == null ? file.Data : ver.Data, ver == null ? file.ContentType : ver.ContentType, forceDownload, file.File.OriginalFileName, file.File.CreatedOn );
+			return new FileResult( ver == null || ver.Data == null ? file.Data : ver.Data, ver == null ? file.ContentType : ver.ContentType, forceDownload, file.File.OriginalFileName, file.File.CreatedOn );
 		}
 
 		public IQueryable<File> GetAll( string domain ) {
