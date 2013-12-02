@@ -50,10 +50,10 @@ namespace Mut.UI
 					} ),
 
 					// List
-					new MarkupNodeDefinition<MarkupParseArgs>( @"((?<=([\n\r]+|^)(?![\r\n])\s*[^\s\*][^\r\n]+)(\r\n|\n\r|\r|\n)(?=(?![\r\n])\s+\*))|(^(?=\s+\*))", @"(?<=(\r\n|\n\r|\r|\n)|$)(?!\s+\*)", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
+					new MarkupNodeDefinition<MarkupParseArgs>( @"((?<=([\n\r]+|^)((?![\r\n])\s)*([^\s\*\r\n][^\r\n]+){0,1})(\r\n|\n\r|\r|\n)(?=((?![\r\n])\s)+\*))|(^(?=\s+\*))", @"(?<=(\r\n|\n\r|\r|\n)|$)(?!\s+\*)", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
 
 					// List item
-					new MarkupNodeDefinition<MarkupParseArgs>( @"(?<=([\n\r]+)|^)(?![\r\n])\s+\*(?=[^\r\n]+)", @"(?<=(([\n\r]+)|^)(?![\r\n])\s+\*[^\r\n]+)((\r\n|\n\r|\r|\n)|$)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
+					new MarkupNodeDefinition<MarkupParseArgs>( @"(?<=([\n\r]+)|^)((?![\r\n])\s)+\*(?=[^\r\n]+)", @"(?<=(([\n\r]+)|^)((?![\r\n])\s)+\*[^\r\n]+)((\r\n|\n\r|\r|\n)|$)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
 
 					Video.BBTag(),
 					Attachments.BBImageTag(),
@@ -78,8 +78,8 @@ namespace Mut.UI
 
 		MarkupNodeDefinition<MarkupParseArgs> heading( string markup, string htmlTag ) {
 			return new MarkupNodeDefinition<MarkupParseArgs>(
-				@"(?<=([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"(?=[^\-]+" + markup + @"\s*([\r\n]|$))",
-				@"(?<=(([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"[^\-]+)" + markup + @"((?![\r\n])\s)*(?=([\r\n]|$))",
+				@"(?<=([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"(?=[^\r\n]+" + markup + @"\s*([\r\n]|$))",
+				@"(?<=(([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"[^\r\n]+)" + markup + @"((?![\r\n])\s)*((\r\n|\n\r|\r|\n)|$)",
 				( ctx, _, __, inners ) => new WrapNode( htmlTag, inners ) );
 		}
 	}

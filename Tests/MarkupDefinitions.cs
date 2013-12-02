@@ -32,6 +32,17 @@ namespace Mut.Tests
 		}
 
 		[Fact]
+		public void List_prepended_by_empty_line() {
+			t( @"abc
+
+						* one
+						* two
+						* three
+					xyz",
+					@"abc<br/><ul><li> one</li><li> two</li><li> three</li></ul>					xyz" );
+		}
+
+		[Fact]
 		public void List_starting_at_first_line() {
 			t( @" * one
 						* two
@@ -74,12 +85,12 @@ namespace Mut.Tests
 			t( string.Format( 
 				@"{0}abc{0}
 				fff", kind ), 
-				string.Format( @"<{0}>abc</{0}><br/>				fff", tag ) );
+				string.Format( @"<{0}>abc</{0}>				fff", tag ) );
 			t( string.Format( 
 				@"xyz
 				{0}abc{0}
 				fff", kind ),
-				string.Format( @"xyz<br/><{0}>abc</{0}><br/>				fff", tag ) );
+				string.Format( @"xyz<br/><{0}>abc</{0}>				fff", tag ) );
 			t( string.Format( "one{0}abc{0}", kind ), string.Format( "one{0}abc{0}", kind ) );
 			t( string.Format( "one{0}abc", kind ), string.Format( "one{0}abc", kind ) );
 			t( string.Format( "xyz one{0}abc{0} xyz{0}", kind ), string.Format( "xyz one{0}abc{0} xyz{0}", kind ) );
@@ -108,6 +119,22 @@ namespace Mut.Tests
 			t( "- abc\n\r\r\n- def", "- abc<br/><br/>- def" );
 			t( "- abc\n\n\n\n\n- def", "- abc<br/><br/><br/><br/><br/>- def" );
 			t( "- abc\r\r- def", "- abc<br/><br/>- def" );
+		}
+
+		[Theory]
+		[InlineData( "" )]
+		[InlineData( " " )]
+		[InlineData( "   " )]
+		[InlineData( "\t" )]
+		public void Headings_with_lists( string emptyLine ) {
+			t( @"abc
+- head -
+" + emptyLine + @"
+ * one
+ * two
+ * three
+",
+				@"abc<br/><h2> head </h2>" + emptyLine + "<ul><li> one</li><li> two</li><li> three</li></ul>" );
 		}
 
 		void t( string source, string result = null ) {
