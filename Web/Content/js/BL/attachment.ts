@@ -25,7 +25,7 @@ export class File implements IAttachment {
 		return new Visual( this.Def, Templates.File );
 	}
 	AsBBCode() {
-		return "[file=" + this.Def.Path + "]" + this.Def.Path + "[/file]";
+		return "[file=\"" + this.Def.Path + "\"]" + this.Def.Path + "[/file]";
 	}
 }
 
@@ -36,7 +36,7 @@ export class Picture implements IAttachment {
 		return new Visual( this.Def, Templates.Picture );
 	}
 	AsBBCode() {
-		return "[img=" + this.Def.Path + "]";
+		return "[img=\"" + this.Def.Path + "\"]";
 	}
 }
 
