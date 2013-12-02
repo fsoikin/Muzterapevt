@@ -40,8 +40,8 @@ namespace Mut.Controllers
 				if ( p == null ) return JsonResponse<JS.PageEditor>.NotFound;
 
 				return JsonResponse.Create( new JS.PageEditor {
-					Id = id, Path = p.Url, Text = p.BbText, Title = p.Title,
-					TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName
+					Id = id, Path = p.Url, Text = p.BbText ?? "", Title = p.Title ?? "",
+					TagsStandIn = p.TagsStandIn, ReferenceName = p.ReferenceName ?? ""
 				} );
 			}, Log );
 		}
@@ -52,7 +52,7 @@ namespace Mut.Controllers
 				var p = Pages.Find( page.Id );
 				if ( p == null ) return JsonResponse<JS.PageSaveResult>.NotFound;
 
-				p.Title = page.Title;
+				p.Title = page.Title ?? "";
 				p.BbText = page.Text;
 				p.TagsStandIn = page.TagsStandIn;
 				p.ReferenceName = page.ReferenceName;

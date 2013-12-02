@@ -89,6 +89,18 @@ namespace Mut.Tests
 			t( "[html]&amp;[/html]", "&amp;" );
 		}
 
+		[Fact]
+		public void Newline() {
+			t( "- abc\r\n- def", "- abc<br/>- def" );
+			t( "- abc\n\r- def", "- abc<br/>- def" );
+			t( "- abc\n- def", "- abc<br/>- def" );
+			t( "- abc\r- def", "- abc<br/>- def" );
+			t( "- abc\r\n\r\n\r\n- def", "- abc<br/><br/><br/>- def" );
+			t( "- abc\n\r\r\n- def", "- abc<br/><br/>- def" );
+			t( "- abc\n\n\n\n\n- def", "- abc<br/><br/><br/><br/><br/>- def" );
+			t( "- abc\r\r- def", "- abc<br/><br/>- def" );
+		}
+
 		void t( string source, string result = null ) {
 			var res = new Mut.MarkupParser<Mut.UI.MarkupParseArgs>().Parse( source, null,
 				new Mut.UI.MarkupUI {
