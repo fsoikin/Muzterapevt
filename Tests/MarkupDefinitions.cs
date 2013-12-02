@@ -64,7 +64,7 @@ namespace Mut.Tests
 <li> three</li></ul>" );
 		}
 		void t( string source, string result = null ) {
-			var res = Mut.MarkupParser.Parse( source, new Mut.UI.MarkupDefinitions().Defs );
+			var res = new Mut.MarkupParser<Mut.UI.BBParseArgs>().Parse( source, null, new Mut.UI.MarkupDefinitions().Defs );
 			var actual = string.Join( "", res.Select( r => r.Instance.ToHtml() ) );
 			Assert.Equal( result, actual );
 		}

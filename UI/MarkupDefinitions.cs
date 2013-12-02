@@ -14,30 +14,36 @@ namespace Mut.UI
 {
 	public class MarkupDefinitions
 	{
+		private readonly MarkupParser<BBParseArgs> _parser = new MarkupParser<BBParseArgs>();
+
 		[Export]
-		public IEnumerable<MarkupNodeDefinition> Defs = new[] {
-				Mut.MarkupParser.Wrap( "**", "b" ),
-				Mut.MarkupParser.Wrap( "*", "i" ),
-				Mut.MarkupParser.Wrap( "_", "u" ),
+		public IEnumerable<MarkupNodeDefinition<BBParseArgs>> Defs {
+			get {
+				return new[] {
+					_parser.Wrap( "**", "b" ),
+					_parser.Wrap( "*", "i" ),
+					_parser.Wrap( "_", "u" ),
 
-				Mut.MarkupParser.Wrap( "--", "h1" ),
-				Mut.MarkupParser.Wrap( "-", "h2" ),
+					_parser.Wrap( "--", "h1" ),
+					_parser.Wrap( "-", "h2" ),
 
-				Mut.MarkupParser.ComplexTag( "c", true, new[] { "" }, atrs => new Range<string> {
-					Start = "<span class=\"" + atrs.ValueOrDefault("") + "\">",
-					End = "</span>"
-				} ),
+					_parser.ComplexTag( "c", true, new[] { "" }, (ctx,atrs) => new Range<string> {
+						Start = "<span class=\"" + atrs.ValueOrDefault("") + "\">",
+						End = "</span>"
+					} ),
 
-				Mut.MarkupParser.ComplexTag( "url", true, new[] { "" }, atrs => new Range<string> {
-					Start = "<a href=\"" + atrs.ValueOrDefault("") + "\">",
-					End = "</a>"
-				} ),
+					_parser.ComplexTag( "url", true, new[] { "" }, (ctx,atrs) => new Range<string> {
+						Start = "<a href=\"" + atrs.ValueOrDefault("") + "\">",
+						End = "</a>"
+					} ),
 
-				// List
-				new MarkupNodeDefinition( @"((?<=([\n\r]+|^)(?![\r\n])\s*[^\s\*][^\r\n]+)(?=[\r\n]+\s+\*))|(^(?=\s+\*))", @"(?=[\r\n]+\s*[^\*\s])", (_,__,inners) => new WrapNode( "ul", inners ) ),
+					// List
+					new MarkupNodeDefinition<BBParseArgs>( @"((?<=([\n\r]+|^)(?![\r\n])\s*[^\s\*][^\r\n]+)(?=[\r\n]+\s+\*))|(^(?=\s+\*))", @"(?=[\r\n]+\s*[^\*\s])", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
 
-				// List item
-				new MarkupNodeDefinition( @"(?<=([\n\r]+)|^)(?![\r\n])\s+\*", @"(?=[\r\n]+)", (_,__,inners) => new WrapNode( "li", inners ) ),
-		};
+					// List item
+					new MarkupNodeDefinition<BBParseArgs>( @"(?<=([\n\r]+)|^)(?![\r\n])\s+\*", @"(?=[\r\n]+)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
+				};
+			}
+		}
 	}
 }

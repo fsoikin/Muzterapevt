@@ -18,14 +18,14 @@ namespace Mut
 		string ToHtml();
 	}
 
-	public class MarkupNodeDefinition
+	public class MarkupNodeDefinition<TContext>
 	{
 		public Regex Start { get; set; }
 		public Regex End { get; set; }
-		public Func<Match, Match, IEnumerable<MarkupNode>, IMarkupNodeInstance> CreateInstance { get; set; }
+		public Func<TContext, Match, Match, IEnumerable<MarkupNode<TContext>>, IMarkupNodeInstance> CreateInstance { get; set; }
 
 		public MarkupNodeDefinition( string startRegex, string endRegex,
-			Func<Match, Match, IEnumerable<MarkupNode>, IMarkupNodeInstance> createInstance ) {
+			Func<TContext, Match, Match, IEnumerable<MarkupNode<TContext>>, IMarkupNodeInstance> createInstance ) {
 			Contract.Requires( startRegex != null );
 			Contract.Requires( createInstance != null );
 			this.Start = new Regex( startRegex, RegexOptions.Compiled );
@@ -34,7 +34,7 @@ namespace Mut
 		}
 
 		public MarkupNodeDefinition( string startRegex,
-			Func<Match, Match, IEnumerable<MarkupNode>, IMarkupNodeInstance> createInstance )
+			Func<TContext, Match, Match, IEnumerable<MarkupNode<TContext>>, IMarkupNodeInstance> createInstance )
 			: this( startRegex, null, createInstance ) { }
 
 		public MarkupNodeDefinition() {}
@@ -77,19 +77,23 @@ namespace Mut
 			return "<" + _htmlTag + ">" + base.ToHtml() + "</" + _htmlTag + ">";
 		}
 	}
-
-	public class MarkupNode {
-		public MarkupNodeDefinition Def { get; set; }
+	public class MarkupNode
+	{
 		public IMarkupNodeInstance Instance { get; set; }
-		public IEnumerable<MarkupNode> Children { get; set; }
 	}
 
-	public class MarkupParser
+	public class MarkupNode<TContext> : MarkupNode {
+		public MarkupNodeDefinition<TContext> Def { get; set; }
+		public IEnumerable<MarkupNode<TContext>> Children { get; set; }
+	}
+
+	[Export]
+	public class MarkupParser<TContext>
 	{
-		public static MarkupNodeDefinition SimpleTag( string tagName, string htmlTag = null ) {
+		public MarkupNodeDefinition<TContext> SimpleTag( string tagName, string htmlTag = null ) {
 			var escapedTagName = Regex.Escape( tagName );
-			return new MarkupNodeDefinition( "\\[" + escapedTagName + "\\]", "\\[\\/" + escapedTagName + "\\]",
-				(_, __, inners) => new WrapNode( htmlTag ?? tagName, inners ) );
+			return new MarkupNodeDefinition<TContext>( "\\[" + escapedTagName + "\\]", "\\[\\/" + escapedTagName + "\\]",
+				(ctx, _, __, inners) => new WrapNode( htmlTag ?? tagName, inners ) );
 		}
 
 		/// <summary>
@@ -101,11 +105,11 @@ namespace Mut
 		/// For example:
 		///			**bold**    ==		&lt;b&gt;bold&lt;/b&gt;
 		/// </remarks>
-		public static MarkupNodeDefinition Wrap( string wrappingSequence, string htmlTag ) {
+		public MarkupNodeDefinition<TContext> Wrap( string wrappingSequence, string htmlTag ) {
 			var regex = new Regex( Regex.Escape( wrappingSequence ) );
-			return new MarkupNodeDefinition {
+			return new MarkupNodeDefinition<TContext> {
 				Start = regex, End = regex,
-				CreateInstance = ( a, b, c ) => new WrapNode( htmlTag, c )
+				CreateInstance = ( ctx, a, b, c ) => new WrapNode( htmlTag, c )
 			};
 		}
 
@@ -113,21 +117,23 @@ namespace Mut
 			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s]+)|(\\\"[^\\\"]+\\\"))";
 		}
 
-		public static MarkupNodeDefinition ComplexTag( string tagName, bool hasClosing, string[] attributes, 
-			Func<IDictionary<string, string>, Range<string>> generateOpenAndCloseHtml ) {
-				return ComplexTag( tagName, hasClosing, attributes, ( atrs, inners ) => {
-					var html = generateOpenAndCloseHtml( atrs );
+		public MarkupNodeDefinition<TContext> ComplexTag( 
+			string tagName, bool hasClosing, string[] attributes, 
+			Func<TContext, IDictionary<string, string>, Range<string>> generateOpenAndCloseHtml ) {
+				return ComplexTag( tagName, hasClosing, attributes, ( ctx, atrs, inners ) => {
+					var html = generateOpenAndCloseHtml( ctx, atrs );
 					return html.Start + string.Join( "", inners.Select( i => i.Instance.ToHtml() ) ) + html.End;
 				} );
 		}
 
-		public static MarkupNodeDefinition ComplexTag( string tagName, bool hasClosing,
-			string[] attributes, Func<IDictionary<string, string>, IEnumerable<MarkupNode>, string> generateHtml ) {
+		public MarkupNodeDefinition<TContext> ComplexTag( 
+			string tagName, bool hasClosing, string[] attributes, 
+			Func<TContext, IDictionary<string, string>, IEnumerable<MarkupNode<TContext>>, string> generateHtml ) {
 
 			var defaultAttribute = attributes.Any( s => s.NullOrEmpty() );
 			tagName = Regex.Escape( tagName );
 
-			return new MarkupNodeDefinition {
+			return new MarkupNodeDefinition<TContext> {
 
 				Start = new Regex(
 					"\\[" + tagName +
@@ -137,20 +143,20 @@ namespace Mut
 
 				End = hasClosing ? new Regex( "\\[\\/" + tagName + "\\]" ) : null,
 
-				CreateInstance = ( start, _, inners ) => {
+				CreateInstance = ( ctx, start, _, inners ) => {
 					var attrs = (from a in attributes
 											 let g = start.Groups["att_" + a]
 											 where g != null && g.Success
 											 select new { a, g.Value }
 											).ToDictionary( x => x.a, x => x.Value.Trim( '\"' ) );
-					return new TextNode( generateHtml( attrs, inners ), false );
+					return new TextNode( generateHtml( ctx, attrs, inners ), false );
 				}
 			};
 		}
 
 		class ParsingNode
 		{
-			public MarkupNodeDefinition Def { get; set; }
+			public MarkupNodeDefinition<TContext> Def { get; set; }
 			public Match Start { get; set; }
 			public Match End { get; set; }
 			public List<ParsingNode> Children { get; private set; }
@@ -160,7 +166,9 @@ namespace Mut
 			}
 		}
 
-		public static IEnumerable<MarkupNode> Parse( string input, IEnumerable<MarkupNodeDefinition> defs ) {
+		public IEnumerable<MarkupNode<TContext>> Parse( 
+			string input, TContext context, IEnumerable<MarkupNodeDefinition<TContext>> defs ) {
+
 			var matches = 
 				defs.SelectMany( d => 
 					d.Start.Matches( input ).Cast<Match>()
@@ -203,10 +211,10 @@ namespace Mut
 			if ( currentIndex < input.Length ) InsertTextNode( input, stack, currentIndex, input.Length );
 			for ( var i = stack.Count - 1; i > 0; i-- ) stack[i - 1].Children.Add( stack[i] );
 
-			Func<ParsingNode, MarkupNode> map = null;
+			Func<ParsingNode, MarkupNode<TContext>> map = null;
 			map = n => {
 				var inners = n.Children.Select( map ).ToList();
-				return new MarkupNode { Def = n.Def, Instance = n.Def.CreateInstance( n.Start, n.End, inners ), Children = inners };
+				return new MarkupNode<TContext> { Def = n.Def, Instance = n.Def.CreateInstance( context, n.Start, n.End, inners ), Children = inners };
 			};
 
 			return topNode.Children.Select( map ).ToList();
@@ -216,7 +224,7 @@ namespace Mut
 			if ( nextIndex <= currentIndex ) return;
 			var text = input.Substring( currentIndex, nextIndex - currentIndex );
 			stack.Last().Children.Add( new ParsingNode {
-				Def = new MarkupNodeDefinition { CreateInstance = ( a, b, c ) => new TextNode( text ) }
+				Def = new MarkupNodeDefinition<TContext> { CreateInstance = ( ctx, a, b, c ) => new TextNode( text ) }
 			} );
 		}
 	}
