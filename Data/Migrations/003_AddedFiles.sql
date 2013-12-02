@@ -14,7 +14,7 @@ GO
 if not exists( select * from sys.tables where object_id = object_id('dbo.FileVersions') ) 
 	create table dbo.FileVersions (
 		Id int identity primary key,
-		[File_Id] int references Files not null,
+		[File_Id] int references dbo.Files not null,
 		[Key] nvarchar(500),
 		CreatedOn datetime2 not null,
 		Data varbinary(max),

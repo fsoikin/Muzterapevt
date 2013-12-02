@@ -195,7 +195,7 @@ class EditorVm<T> {
 	DropAttachments( _, je: JQueryEventObject ) {
 		this.IsAcceptingAttachments( false );
 
-		var e = <DragEvent>je.originalEvent;
+		var e = <DragEvent>(je.originalEvent || je);
 		e && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
 	}
 
