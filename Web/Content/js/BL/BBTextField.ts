@@ -36,7 +36,8 @@ export class BBTextFieldVm implements c.IControl {
 			'valueUpdate': 'keyup',
 			'event': {
 				drop: function ( _, e ) {
-					var dt = ( <DragEvent>e.originalEvent ).dataTransfer;
+					var de = <DragEvent>( e.originalEvent || e );
+					var dt = de.dataTransfer;
 					if ( dt ) this.NativeDrop.onNext( dt );
 				},
 				focus: () => this.IsFocused( true ),
