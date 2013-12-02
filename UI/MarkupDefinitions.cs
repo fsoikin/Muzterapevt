@@ -36,8 +36,8 @@ namespace Mut.UI
 					_parser.Wrap( "*", "i" ),
 					_parser.Wrap( "_", "u" ),
 
-					heading( @"\-", "h2" ),
 					heading( @"\-\-", "h1" ),
+					heading( @"\-", "h2" ),
 
 					_parser.ComplexTag( "c", true, new[] { "" }, (ctx,atrs) => new Range<string> {
 						Start = "<span class=\"" + atrs.ValueOrDefault("") + "\">",
