@@ -28,7 +28,7 @@ namespace Mut.Tests
 						* two
 						* three
 					xyz",
-					@"abc<ul><br/><li> one</li><br/><li> two</li><br/><li> three</li></ul><br/>					xyz" );
+					@"abc<ul><li> one</li><li> two</li><li> three</li></ul>					xyz" );
 		}
 
 		[Fact]
@@ -37,7 +37,7 @@ namespace Mut.Tests
 						* two
 						* three
 					xyz",
-					@"<ul><li> one</li><br/><li> two</li><br/><li> three</li></ul><br/>					xyz" );
+					@"<ul><li> one</li><li> two</li><li> three</li></ul>					xyz" );
 		}
 
 		[Fact]
@@ -46,7 +46,16 @@ namespace Mut.Tests
 	* one
 						* two
 						* three",
-					@" abc<ul><br/><li> one</li><br/><li> two</li><br/><li> three</li></ul>" );
+					@" abc<ul><li> one</li><li> two</li><li> three</li></ul>" );
+		}
+
+		[Fact]
+		public void List_not_a_list() {
+			t( @" abc
+* one
+* two
+* three",
+					@" abc<br/><i> one<br/></i> two<br/><i> three</i>" );
 		}
 
 		[Fact]
