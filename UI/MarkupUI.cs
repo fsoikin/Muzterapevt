@@ -49,6 +49,10 @@ namespace Mut.UI
 						End = "</a>"
 					} ),
 
+					_parser.ComplexTag( "anchor", false, new[] { "" }, (ctx,atrs,_) => "<a name=\"" + atrs.ValueOrDefault("") + "\" />" ),
+					_parser.ComplexTag( "jump", true, new[] { "" }, (ctx,atrs) => new Range<string> { 
+						Start = "<a href=\"#" + atrs.ValueOrDefault("") + "\">", End = "</a>" } ),
+
 					// List
 					new MarkupNodeDefinition<MarkupParseArgs>( @"((?<=([\n\r]+|^)((?![\r\n])\s)*([^\s\*\r\n][^\r\n]+){0,1})(\r\n|\n\r|\r|\n)(?=((?![\r\n])\s)+\*))|(^(?=\s+\*))", @"(?<=(\r\n|\n\r|\r|\n)|$)(?!\s+\*)", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
 

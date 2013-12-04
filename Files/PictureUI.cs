@@ -81,28 +81,27 @@ namespace Name.Files
 		}
 
 		Size FitCrop( Size originalSize, Size cropSize ) {
-			var scaleFactor = (double)originalSize.Height / cropSize.Height;
-			var width = cropSize.Width * scaleFactor;
-			if ( width <= originalSize.Width ) return new Size( (int)width, originalSize.Height );
+			var scaleFactor = (double)cropSize.Height / originalSize.Height;
+			var width = originalSize.Width * scaleFactor;
+			if ( width <= cropSize.Width ) return new Size( (int)width, cropSize.Height );
 
-			scaleFactor = (double)originalSize.Width / cropSize.Width;
-			var height = cropSize.Height * scaleFactor;
-			Contract.Assume( height <= originalSize.Height ); // This must be true - trivial to prove arithmetically
-			return new Size( originalSize.Width, (int)height );
+			scaleFactor = (double)cropSize.Width / originalSize.Width;
+			var height = originalSize.Height * scaleFactor;
+			Contract.Assume( height <= cropSize.Height ); // This must be true - trivial to prove arithmetically
+			return new Size( cropSize.Width, (int)height );
 		}
 
 		Func<FileData, FileVersion> Version( Func<FileData, BitmapSource> transform ) {
 			return fd => {
 				var bsrc = transform( fd );
+				if ( bsrc == null ) return null;
 
-				byte[] imageBytes = null;
-				if ( bsrc != null ) {
-					using ( var ms = new MemoryStream() ) {
-						var png = new PngBitmapEncoder();
-						png.Frames.Add( BitmapFrame.Create( bsrc ) );
-						png.Save( ms );
-						imageBytes = ms.GetBuffer().Take( (int)ms.Length ).ToArray();
-					}
+				byte[] imageBytes;
+				using ( var ms = new MemoryStream() ) {
+					var png = new PngBitmapEncoder();
+					png.Frames.Add( BitmapFrame.Create( bsrc ) );
+					png.Save( ms );
+					imageBytes = ms.GetBuffer().Take( (int)ms.Length ).ToArray();
 				}
 
 				return new FileVersion { Data = imageBytes, ContentType = "image/png" };

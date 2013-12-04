@@ -73,7 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarkupDefinitions.cs" />
+    <Compile Include="MarkupUI.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="AttachmentUI.cs" />
     <Compile Include="Infrastructure\EditPermissionAttribute.cs" />
