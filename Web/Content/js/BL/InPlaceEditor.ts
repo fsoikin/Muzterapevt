@@ -154,7 +154,7 @@ class EditorVm<T> {
 	EnsureLoaded() {
 		if( this.Loaded ) return;
 
-		this.InfoBox.Clear();
+		this.InfoBox.Info( "Loading..." );
 		c.Api.Get( this.Parent.Ajax.Load( this.Parent.ObjectId ), null, this.IsLoading,
 			this.InfoBox.Error, r => {
 				this.Data = r;
@@ -167,6 +167,7 @@ class EditorVm<T> {
 	}
 
 	Save() {
+		this.InfoBox.Info( "Saving..." );
 		c.Api.Post( this.Parent.Ajax.Update, this.ToJS(), this.IsLoading, this.InfoBox.Error, result => {
 			this.Close();
 			this.Parent.OnSaved( result );

@@ -219,11 +219,16 @@
     display: inline-block;
     color: black;
     margin-bottom: 0.8em;
+    vertical-align: top;
 }
 
 .bb-quick-reference > div > label {
     width: 100px;
     font-weight: bold;
+}
+
+.bb-quick-reference > div > span {
+    white-space: normal;
 }
 
 .bb-quick-reference > div > span:before {
