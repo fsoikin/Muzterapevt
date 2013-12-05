@@ -32,6 +32,9 @@ namespace Mut.UI
 		public IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> Defs {
 			get {
 				return new[] {
+					new MarkupNodeDefinition<MarkupParseArgs>( @"\[\[", (args,start,end,inners) => new TextNode( "[" ) ),
+					new MarkupNodeDefinition<MarkupParseArgs>( @"\]\]", (args,start,end,inners) => new TextNode( "]" ) ),
+
 					_parser.Wrap( "**", "b" ),
 					_parser.Wrap( "*", "i" ),
 					_parser.Wrap( "_", "u" ),
