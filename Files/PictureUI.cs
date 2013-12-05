@@ -57,14 +57,18 @@ namespace Name.Files
 		private Func<FileData, FileVersion> Crop( int width, int height ) {
 			return Version( pic => {
 				var original = BitmapFrame.Create( new MemoryStream( pic.Data ) );
-				var initialCropSize = FitCrop( new Size( original.PixelWidth, original.PixelHeight ), new Size( width, height ) );
+
+				var hScaleFactor = (double)width / original.PixelWidth;
+				var vScaleFactor = (double)height / original.PixelHeight;
+				var scaleFactor = Math.Max( hScaleFactor, vScaleFactor );
+				var initialCropSize = new Size( (int)(width / scaleFactor), (int)( height / scaleFactor ) );
 
 				if ( original.PixelWidth == initialCropSize.Width && original.PixelHeight == initialCropSize.Height ) return null;
 				if ( pic.Data == null ) return null;
 
 				return new TransformedBitmap(
 						new CroppedBitmap( original, new System.Windows.Int32Rect( (original.PixelWidth - initialCropSize.Width) / 2, (original.PixelHeight - initialCropSize.Height) / 2, initialCropSize.Width, initialCropSize.Height ) ),
-						new ScaleTransform( ((double)width) / initialCropSize.Width, ((double)height) / initialCropSize.Height ) );
+						new ScaleTransform( scaleFactor, scaleFactor ) );
 			} );
 		}
 
@@ -78,17 +82,6 @@ namespace Name.Files
 				return new TransformedBitmap( original,
 						new ScaleTransform( ((double)width) / original.PixelWidth, ((double)height) / original.PixelHeight ) );
 			} );
-		}
-
-		Size FitCrop( Size originalSize, Size cropSize ) {
-			var scaleFactor = (double)cropSize.Height / originalSize.Height;
-			var width = originalSize.Width * scaleFactor;
-			if ( width <= cropSize.Width ) return new Size( (int)width, cropSize.Height );
-
-			scaleFactor = (double)cropSize.Width / originalSize.Width;
-			var height = originalSize.Height * scaleFactor;
-			Contract.Assume( height <= cropSize.Height ); // This must be true - trivial to prove arithmetically
-			return new Size( cropSize.Width, (int)height );
 		}
 
 		Func<FileData, FileVersion> Version( Func<FileData, BitmapSource> transform ) {
