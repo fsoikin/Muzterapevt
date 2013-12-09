@@ -25,7 +25,7 @@ define( [
 function extend( rx, ko ) {
 	ko.subscribable.fn.asRx = function () {
 
-		var s = <Ko.Subscribable> this;
+		var s = <Ko.Subscribable<any>> this;
 
 		return rx.Observable.create( o => {
 			var d = s.subscribe( o.onNext, o );

@@ -1,4 +1,5 @@
 ﻿/// <amd-dependency path="css!styles/Menu.css" />
+/// <amd-dependency path="text!./Templates/menu.html" />
 import c = require( "../common" );
 import ctr = require( "../lib/template" );
 import contextMenu = require( "../Controls/ContextMenu" );
@@ -232,8 +233,7 @@ export class ItemVm
 	}
 }
 
-declare module "text!./Templates/menu.html" { }
-import _template = require( "text!./Templates/menu.html" );
+var _template = require( "text!./Templates/menu.html" );
 var _t = $( <string>_template );
 var Template = ctr.ApplyTemplate( _t.filter( ".menu" ) );
 var RootTemplate = ctr.ApplyTemplate( _t );

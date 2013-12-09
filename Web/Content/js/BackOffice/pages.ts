@@ -1,4 +1,5 @@
-﻿import c = require( "../common" );
+﻿/// <amd-dependency path="text!./Templates/pages.html" />
+import c = require( "../common" );
 import ko = require("ko");
 import map = require("ko.mapping");
 import $ = require( "jQuery" );
@@ -69,6 +70,5 @@ export class PageVm {
 	}
 }
 
-declare module "text!./Templates/pages.html" { }
-import _tpl = require( "text!./Templates/pages.html" );
+var _tpl = require( "text!./Templates/pages.html" );
 var _onLoaded = c.ApplyTemplate( <string>_tpl );

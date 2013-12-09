@@ -65,7 +65,7 @@ export function dataSourceFromEnum<TEnum>( theEnum: TEnum ): IDataSource<NameVal
 	};
 }
 
-export function dataSourceFromNameValuePair<T>( items: NameValuePair<T>[] ): IDataSource<T> {
+export function dataSourceFromNameValuePair<T>( items: NameValuePair<T>[] ): IDataSource<NameValuePair<T>> {
 	var ii = ko.observable<NameValuePair<T>[]>();
 	setImmediate( () => ii( items ) );
 	return {
@@ -73,16 +73,6 @@ export function dataSourceFromNameValuePair<T>( items: NameValuePair<T>[] ): IDa
 		GetId: ( i: NameValuePair<T> ) => i.Value,
 		ToString: ( i: NameValuePair<T> ) => i.Name,
 	};
-}
-
-export function dataSourceFromServer<T extends IHaveId<any>>( url: string, toString: ( t: T ) => string );
-export function dataSourceFromServer<T>( url: string, toString: ( t: T ) => string, getId: ( t: T ) => any );
-export function dataSourceFromServer<T extends IHaveNameAndId<any>>( url: string, toString?: ( t: T ) => string, getId?: (t:T) => any ) {
-	return () => new RemoteDataSource<T>( {
-		url: url,
-		getId: getId || ( u: T ) => u.Id,
-		toString: toString || u => u.Name
-	});
 }
 
 export class VmBase {
@@ -119,12 +109,12 @@ export class RemoteDataSource<T> implements IDataSource<T> {
 	}) {
 		// TODO: [fs] waiting for https://typescript.codeplex.com/workitem/1450
 		var me = <any>this;
-		me['GetId'] = args.getId || (i: T) => {
+		me['GetId'] = args.getId || ((i: T) => {
 			if( !i ) return null;
 			if( !( 'Id' in i ) ) throw new Error( "'Id' property not found on object " + JSON.stringify( i ) );
 			return i['Id'];
-		};
-		me['ToString'] = args.toString || i => ( i || "" ).toString();
+		});
+		me['ToString'] = args.toString || ((i: T) => ( i || "" ).toString());
 
 		this.Url = args.url;
 		this.LookupUrl = args.lookupUrl;
@@ -157,7 +147,7 @@ export class RemoteDataSource<T> implements IDataSource<T> {
 
 	GetById( id ) {
 		var dd = this.Items();
-		return dd && ko.utils.arrayFirst( dd, d => d.Id == id );
+		return dd && ko.utils.arrayFirst( dd, d => this.GetId( d ) == id );
 	}
 }
 
@@ -221,6 +211,15 @@ export function ApplyTemplate( template: any ) {
 
 }
 
+export class TemplatedControl implements IVirtualControl {
+	constructor( template: JQuery ) {
+		this.OnLoaded = ApplyTemplate( template );
+	}
+
+	OnLoaded: ( element: Element ) => void;
+	ControlsDescendantBindings = true;
+	SupportsVirtualElements = true;
+}
 
 export function rxToKo<T>( rx: Rx.IObservable<T> ): Ko.Observable<T> {
 	var res = ko.observable<T>();

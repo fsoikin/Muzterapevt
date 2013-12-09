@@ -36,7 +36,7 @@ export function bindMany( refs: linqjs.IEnumerable<ClassRef> ): Ko.Observable<an
 export function bindMany( refs: ClassRef[] ): Ko.Observable<any>[];
 export function bindMany( _refs ): Ko.Observable<any>[] {
 	if( !_refs ) return [];
-	var refs = linq.from( _refs );
+	var refs = linq.from( <ClassRef[]>_refs );
 	return refs.select( cr => {
 		var r = ko.observable( null );
 		if( cr ) req( linq.make( cr.Module ), m => r( instantiate( m, cr ) ) );
@@ -49,7 +49,7 @@ export function bindAll( refs: ClassRef[] ): Ko.Observable<any[]>;
 export function bindAll( refs: linqjs.IEnumerable<ClassRef> ): Ko.Observable<any[]>;
 export function bindAll( _refs ) {
 	if( !_refs ) return ko.observableArray();
-	var refs = linq.from( _refs );
+	var refs = linq.from( <ClassRef[]>_refs );
 
 	var result = ko.observableArray();
 	req( refs.select( r => r.Module ), function () {
@@ -88,7 +88,7 @@ var req = ( () => {
 
 	return function ( deps: linqjs.IEnumerable<string>, cb: Function ) {
 		var loaded = deps.select( d => loadedModules[d] );
-		if( loaded.all( d => d ) ) cb.apply( this, loaded.toArray() );
+		if( loaded.all( d => !!d ) ) cb.apply( this, loaded.toArray() );
 		else require( deps.toArray(), () => {
 			loaded = deps.zip( arguments, ( d, r ) => ( loadedModules[d] = r, r ) );
 			cb.apply( this, loaded.toArray() );

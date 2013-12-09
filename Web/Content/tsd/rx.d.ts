@@ -359,7 +359,8 @@ declare module Rx {
 		groupBy<TKey, TValue>( keySelector: ( value: T ) => TKey, elementSelector?: ( value: T ) => TValue, keySerializer?: ( key: TKey ) => string ): IObservable<IGrouping<TKey, TValue>>;
 		groupByUntil<TKey, TValue>( keySelector: ( value: T ) => TKey, elementSelector: ( value: T ) => TValue, durationSelector: ( group: IGrouping<TKey, TValue> ) => IObservable<any>, keySerializer?: ( key: TKey ) => string ): IObservable<IGrouping<TKey, TValue>>;
 		select<U>( selector: ( value: T, index: number ) => U ): IObservable<U>;
-		selectMany<U, R>( selector: ( value: T ) => IObservable<U>, resultSelector?: ( x: T, y: U ) => R ): IObservable<R>;
+		selectMany<U>( selector: ( value: T ) => IObservable<U> ): IObservable<U>;
+		selectMany<U, R>( selector: ( value: T ) => IObservable<U>, resultSelector: ( x: T, y: U ) => R ): IObservable<R>;
 		//selectMany<U>( other: IObservable<U> ): IObservable<U>;
 		skip( count: number ): IObservable<T>;
 		skipWhile( predicate: ( value: T, index?: number ) => boolean ): IObservable<T>;

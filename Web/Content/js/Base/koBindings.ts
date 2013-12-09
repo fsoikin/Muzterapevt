@@ -90,7 +90,7 @@ ko.bindingHandlers['hasFocus'] = {
 
 		if (ko.isObservable(v)) {
 			var evts = { focus: () => { v(true); }, blur: () => { v(false); } };
-			e.on(evts);
+			e.on( evts );
 			ko.utils.domNodeDisposal.addDisposeCallback(e, () => e.off(evts));
 		}
 		return null;

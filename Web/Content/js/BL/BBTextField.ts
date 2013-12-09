@@ -9,7 +9,7 @@ export class BBTextFieldVm implements c.IControl {
 	Element: Element;
 	_value = ko.observable( "" );
 	Value = ko.computed( {
-		read: this._value,
+		read: () => this._value(), //https://typescript.codeplex.com/workitem/1988
 		write: v => {
 			var txtarea = <HTMLTextAreaElement>this.Element;
 			if ( !( txtarea instanceof HTMLTextAreaElement ) )

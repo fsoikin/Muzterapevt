@@ -62,7 +62,8 @@ namespace Mut.UI
 					// List item
 					new MarkupNodeDefinition<MarkupParseArgs>( @"(?<=([\n\r]+)|^)((?![\r\n])\s)+\*(?=[^\r\n]+)", @"(?<=(([\n\r]+)|^)((?![\r\n])\s)+\*[^\r\n]+)((\r\n|\n\r|\r|\n)|$)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
 
-					Video.BBTag(),
+					Video.VideoBBTag(),
+					Video.PlaylistBBTag(),
 					Attachments.BBImageTag(),
 					Attachments.BBFileTag(),
 

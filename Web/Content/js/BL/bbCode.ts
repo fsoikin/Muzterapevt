@@ -8,7 +8,7 @@ var Ajax = {
 };
 
 export function toHtml( bbCode: string ): Rx.IObservable<string> {
-	return rx.Observable.create( ss => {
+	return rx.Observable.create<string>( ss => {
 		var err = ko.observable();
 		err.subscribe( e => ss.onError( e ) ); 
 

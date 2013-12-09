@@ -9,7 +9,7 @@ export class Uploader {
 	IsUploading = ko.computed( () => this.CurrentFiles().some( f => !f.IsFinished() ) );
 	ProgressPercent = ko.computed( () => {
 		var files = this.CurrentFiles();
-		return files.length ? files.reduce( ( sum, f ) => sum + f.Progress(), 0 )/files.length : 0;
+		return files.length ? files.reduce( ( sum: number, f ) => ( sum + f.Progress() ), 0 ) / files.length : 0; //https://typescript.codeplex.com/workitem/1989
 	} )
   private _input: HTMLInputElement;
 

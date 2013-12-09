@@ -88,11 +88,11 @@ class EditorVm<T> {
 	};
 
 	LastFocusedBBField: bbTextField.BBTextFieldVm;
-	FromJS: ( h: Hash ) => void = _ => { };
-	ToJS: () => Hash = () => ({ });
+	FromJS = (_: Hash) => void(0);
+	ToJS = () => (<Hash>{ });
 
 	Data: T;
-	DataControl: { [key: string]: any } = <c.IControl>{
+	DataControl: { [key: string]: any } = <any><c.IControl>{
 		OnLoaded: ( e: Element ) => {
 			this.Parent.EditorTemplate.call( this.DataControl, e );
 		},
@@ -128,7 +128,7 @@ class EditorVm<T> {
 	BindToFieldDrop( f: bbTextField.BBTextFieldVm ) {
 		f.JQueryDrop.subscribe( element => {
 			var ctx = ko.contextFor( element );
-			var att = ctx && <AttachmentVm>ctx.$data;
+			var att = ctx && <AttachmentVm<T>>ctx.$data;
 			if ( att instanceof AttachmentVm ) this.InsertAttachment( att, f );
 		});
 
@@ -142,7 +142,7 @@ class EditorVm<T> {
 		f.IsFocused.subscribe( focused => focused && ( this.LastFocusedBBField = f ) );
 	}
 
-	InsertAttachment( att: AttachmentVm, field: bbTextField.BBTextFieldVm ) {
+	InsertAttachment( att: AttachmentVm<T>, field: bbTextField.BBTextFieldVm ) {
 		field = field || this.LastFocusedBBField;
 		if ( !field || !att.ViewModel() ) return;
 
@@ -211,18 +211,18 @@ class EditorVm<T> {
 	}
 
 	Upload( files: FileList ): Rx.IObservable<AttachmentVm<T>> {
-		var result = new rx.Subject<AttachmentVm>();
+		var result = new rx.Subject<AttachmentVm<T>>();
 		this.Uploader.Upload( c.Api.AbsoluteUrl( this.Parent.Ajax.UploadAttachment( this.Data ) ), null, files )
 			.selectMany( res => {
 				if ( res.Success ) {
-					return rx.Observable.fromArray( <att.AttachmentDef[]>( res.Result || [] ) );
+					return rx.Observable.fromArray( <dyn.ClassRef[]>( res.Result || [] ) );
 				} else {
 					this.InfoBox.Error( ( res.Messages || [] ).join() );
-					return rx.Observable.fromArray( <att.AttachmentDef[]>[] );
+					return rx.Observable.fromArray( <dyn.ClassRef[]>[] );
 				}
 			})
 			.select( a => {
-				var res = new AttachmentVm( this, a );
+				var res = new AttachmentVm<T>( this, a );
 				this.Attachments.push( res );
 				return res;
 			})

@@ -543,11 +543,11 @@ interface JQuery {
     mouseup(handler: (eventObject: JQueryEventObject) => any): JQuery;
 
     off(events?: string, selector?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
-    off(eventsMap: { [key: string]: any; }, selector?: any): JQuery;
+    off(eventsMap: { }, selector?: any): JQuery;
 
     on(events: string, selector?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
     on(events: string, selector?: any, data?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
-    on(eventsMap: { [key: string]: any; }, selector?: any, data?: any): JQuery;
+    on(eventsMap: {}, selector?: any, data?: any): JQuery;
 
     one(events: string, handler?: (eventObject: JQueryEventObject) => any): JQuery;
     one(events: string, selector?: any, data?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;

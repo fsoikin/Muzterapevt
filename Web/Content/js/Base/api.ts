@@ -1,5 +1,6 @@
 ﻿/// <reference path="../../tsd/jquery.amd.d.ts"/>
 /// <reference path="../../tsd/knockout-2.2.d.ts"/>
+/// <amd-dependency path="RootUrl" />
 import $ = require( "jQuery" );
 
 // TODO: [fs] provide RX-based API alternative
@@ -51,8 +52,7 @@ export function AbsoluteUrl( url: string ) {
 	return RootUrl + '-/' + url;
 }
 
-declare module "RootUrl" { };
-import _root = require( "RootUrl" );
+var _root = require( "RootUrl" );
 
 export var RootUrl = ((r: string) =>
 	typeof r !== "string" || !r.length

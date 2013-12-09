@@ -231,6 +231,12 @@
     <Content Include="Content\js\BL\Templates\Attachment.html" />
     <Content Include="Content\js\BL\Templates\text-editor.html" />
     <TypeScriptCompile Include="Content\js\BL\BBTextField.ts" />
+    <None Include="Content\js\BL\Widgets\Templates\youtubePlaylist.less" />
+    <Content Include="Content\js\BL\Widgets\Templates\youtubePlaylist.css">
+      <DependentUpon>youtubePlaylist.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\BL\Widgets\Templates\youtubePlaylist.html" />
+    <TypeScriptCompile Include="Content\js\BL\Widgets\youtubePlaylist.ts" />
     <TypeScriptCompile Include="Content\js\BL\text.ts" />
     <TypeScriptCompile Include="Content\js\BL\InPlaceEditor.ts" />
     <TypeScriptCompile Include="Content\js\BL\menu.ts" />
