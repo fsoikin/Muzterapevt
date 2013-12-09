@@ -52,7 +52,7 @@ namespace Mut.UI
 						End = "</a>"
 					} ),
 
-					_parser.ComplexTag( "anchor", false, new[] { "" }, (ctx,atrs,_) => "<a name=\"" + atrs.ValueOrDefault("") + "\" />" ),
+					_parser.ComplexTag( "anchor", false, new[] { "" }, (ctx,atrs,_) => "<a name=\"" + atrs.ValueOrDefault("") + "\"></a>" ),
 					_parser.ComplexTag( "jump", true, new[] { "" }, (ctx,atrs) => new Range<string> { 
 						Start = "<a href=\"#" + atrs.ValueOrDefault("") + "\">", End = "</a>" } ),
 
