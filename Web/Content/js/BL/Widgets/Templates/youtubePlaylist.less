@@ -1,0 +1,23 @@
+﻿.youtube-playlist {
+	> .video {
+		padding-top: 10px;
+		border-bottom: 1px solid gray;
+		padding-bottom: 10px;
+
+		&:after {
+			clear: both;
+			display: block;
+			content: ' ';
+		}
+
+		> img {
+			float: left;
+			margin-right: 10px;
+		}
+
+		&:first-child {
+			margin-top: 0;
+			border-top: 1px solid gray;
+		}
+	}
+}
