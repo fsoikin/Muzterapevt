@@ -3,14 +3,16 @@
 
 @{ ViewBag.Title = Model.Page.Title; }
 @section LeftSidebar {
-		@if ( Model.ChildPages.Any() ) { <h1>В этом разделе</h1> }
-		<div class="sidenav">
-			<ul>
-				@foreach( var p in Model.ChildPages ) {
-					<li><a href="@Url.Content( p.Url )">@( p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName )</a></li>
-				}
-			</ul>
-		</div>
+		@if ( Model.ChildPages.Any() ) { 
+			<h1>В этом разделе</h1>
+			<div class="sidenav">
+				<ul>
+					@foreach( var p in Model.ChildPages ) {
+						<li><a href="@Url.Content( p.Url )">@( p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName )</a></li>
+					}
+				</ul>
+			</div>
+		}
 }
 
 @if ( Model.AllowEdit ) {
