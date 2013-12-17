@@ -6,6 +6,6 @@ namespace Mut.Models
 	{
 		public bool AllowEdit { get; set; }
 		public Data.Page Page { get; set; }
-		public IEnumerable<Data.Page> ChildPages { get; set; }
+		public IEnumerable<PageModel> ChildPages { get; set; }
 	}
 }

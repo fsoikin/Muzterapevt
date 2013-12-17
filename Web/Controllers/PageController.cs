@@ -29,8 +29,27 @@ namespace Mut.Controllers
 			else return View( "~/Views/Page.cshtml", new PageModel { 
 				Page = p, 
 				AllowEdit = Auth.CurrentActor.IsAdmin, 
-				ChildPages = PagesService.GetChildPages( p ).ToList()
+				ChildPages = GetChildren( p )
 			} );
+		}
+
+		private IEnumerable<PageModel> GetChildren( Data.Page p ) {
+			var firstLevel = new[] { p }.ToList();
+			var levels = EnumerableEx.Generate( new { pages = firstLevel, depth = 4 }, x => x.depth >= 0 && x.pages.Any(), 
+				x => new { pages = PagesService.GetChildPages( x.pages ).ToList(), depth = x.depth - 1 },
+				x => x.pages )
+				.ToList();
+			return MergeChildPages( p, levels.Skip( 1 ) );
+		}
+
+		private IEnumerable<PageModel> MergeChildPages( Data.Page parent, IEnumerable<List<Data.Page>> levels ) {
+			var prefix = parent.Url + "/";
+			return from c in levels.FirstOrDefault().EmptyIfNull()
+						 where c.Url.StartsWith( prefix )
+						 select new PageModel {
+							 Page = c,
+							 ChildPages = MergeChildPages( c, levels.Skip( 1 ) )
+						 };
 		}
 
 		[EditPermission]

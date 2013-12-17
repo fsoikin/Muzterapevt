@@ -4,14 +4,8 @@
 @{ ViewBag.Title = Model.Page.Title; }
 @section LeftSidebar {
 		@if ( Model.ChildPages.Any() ) { 
-			<h1>В этом разделе</h1>
-			<div class="sidenav">
-				<ul>
-					@foreach( var p in Model.ChildPages ) {
-						<li><a href="@Url.Content( p.Url )">@( p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName )</a></li>
-					}
-				</ul>
-			</div>
+			<h1 class="left-sidebar-title">В этом разделе</h1>
+			<div class="sidenav">@Pages( Model.ChildPages )</div>
 		}
 }
 
@@ -24,4 +18,15 @@
 else {
 	<h2>@Model.Page.Title</h2>
 	@Html.Raw( Model.Page.HtmlText )
+}
+
+@helper Pages( IEnumerable<PageModel> pages ) {
+	<ul>
+		@foreach ( var p in pages ) {
+			<li>
+				<a href="@Url.Content( p.Page.Url )">@( p.Page.ReferenceName.NullOrEmpty() ? p.Page.Title : p.Page.ReferenceName)</a>
+				@if ( !p.ChildPages.NullOrEmpty() ) { <text>@Pages( p.ChildPages )</text> }
+			</li>
+		}
+	</ul>
 }
