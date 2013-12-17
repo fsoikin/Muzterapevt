@@ -4,7 +4,7 @@
 @{ ViewBag.Title = Model.Page.Title; }
 @section LeftSidebar {
 		@if ( Model.ChildPages.Any() ) { 
-			<h1 class="left-sidebar-title">В этом разделе</h1>
+			<h1 class="left-sidebar-title">@PageLink( Model.TopParent )</h1>
 			<div class="sidenav">@Pages( Model.ChildPages )</div>
 		}
 }
@@ -24,9 +24,19 @@ else {
 	<ul>
 		@foreach ( var p in pages ) {
 			<li>
-				<a href="@Url.Content( p.Page.Url )">@( p.Page.ReferenceName.NullOrEmpty() ? p.Page.Title : p.Page.ReferenceName)</a>
+				@PageLink( p.Page )
 				@if ( !p.ChildPages.NullOrEmpty() ) { <text>@Pages( p.ChildPages )</text> }
 			</li>
 		}
 	</ul>
+}
+
+@helper PageLink( Mut.Data.Page p ) {
+	<a href="@(p == Model.Page ? null : Url.Content( "~/" + p.Url ))">@PageName( p )</a>
+}
+
+@functions {
+	string PageName( Mut.Data.Page p ) {
+		return p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName;
+	}
 }

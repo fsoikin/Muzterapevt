@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -26,16 +27,20 @@ namespace Mut.Controllers
 		{
 			var p = PagesService.GetPage( url, Auth.CurrentActor.IsAdmin );
 			if ( p == null ) return RedirectToAction( "Page", new { url = "" } );
-			else return View( "~/Views/Page.cshtml", new PageModel { 
+
+			var parents = PagesService.GetParentPages( p );
+			var topParent = parents.Where( pr => pr.Url != null && pr.Url != "" ).OrderBy( pr => pr.Url.Length ).FirstOrDefault() ?? p;
+			return View( "~/Views/Page.cshtml", new PageModel { 
 				Page = p, 
+				TopParent = topParent,
 				AllowEdit = Auth.CurrentActor.IsAdmin, 
-				ChildPages = GetChildren( p )
+				ChildPages = GetChildren( topParent, parents.Count() )
 			} );
 		}
 
-		private IEnumerable<PageModel> GetChildren( Data.Page p ) {
+		private IEnumerable<PageModel> GetChildren( Data.Page p, int depth ) {
 			var firstLevel = new[] { p }.ToList();
-			var levels = EnumerableEx.Generate( new { pages = firstLevel, depth = 4 }, x => x.depth >= 0 && x.pages.Any(), 
+			var levels = EnumerableEx.Generate( new { pages = firstLevel, depth = Math.Max( 4, depth ) }, x => x.depth >= 0 && x.pages.Any(), 
 				x => new { pages = PagesService.GetChildPages( x.pages ).ToList(), depth = x.depth - 1 },
 				x => x.pages )
 				.ToList();
