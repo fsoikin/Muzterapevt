@@ -54,6 +54,7 @@ export class RegistrationVm extends c.TemplatedControl {
 	IsSending = ko.observable( false );
 	Sent = ko.observable( false );
 	DoneText = new text.TextView( { id: 'Specialist.RegistrationSent' } );
+	PromptText = new text.TextView( { id: 'Specialist.RegistrationPrompt' });
 
 	constructor( args: { id: number }) {
 		super( Template );

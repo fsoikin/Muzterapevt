@@ -3,6 +3,8 @@
 <div class="specialist-registration" data-bind="visible: !Sent()">
 	<!-- ko control: InfoBox --><!-- /ko -->
 
+	<div data-bind="control: PromptText"></div>
+
 	<div class="field col3 required">
 		<label>Имя:</label>
 		<input type="text" data-bind="value: FirstName" />
