@@ -10,8 +10,8 @@ import map = require( "ko.mapping" );
 import rx = require( "rx" );
 import $ = require( "jQuery" );
 import bb = require( "./bbCode" );
-import dyn = require( "../lib/dynamic" ); ( () => dyn )();
-import uploader = require( "../lib/Uploader" );
+import dyn = require( "../Lib/dynamic" ); ( () => dyn )();
+import uploader = require( "../Lib/Uploader" );
 import att = require( "./attachment" );
 import bbTextField = require( "./BBTextField" );
 
@@ -164,7 +164,7 @@ class EditorVm<T> {
 				this.Loaded = true;
 
 				c.Api.Get( this.Parent.Ajax.GetAttachments( this.Data ), null, this.IsLoadingAttachments,
-					this.InfoBox.Error, ( r: dyn.ClassRef[] ) => this.Attachments( r.map( cr => new AttachmentVm<T>( this, cr ) ) ) );
+					this.InfoBox.Error, ( r: dyn.ClassRef[] ) => this.Attachments( r.map( cr => new AttachmentVm<T>( this, dyn.bind( cr ) ) ) ) );
 			});
 	}
 
@@ -212,15 +212,8 @@ class EditorVm<T> {
 
 	Upload( files: FileList ): Rx.IObservable<AttachmentVm<T>> {
 		var result = new rx.Subject<AttachmentVm<T>>();
-		this.Uploader.Upload( c.Api.AbsoluteUrl( this.Parent.Ajax.UploadAttachment( this.Data ) ), null, files )
-			.selectMany( res => {
-				if ( res.Success ) {
-					return rx.Observable.fromArray( <dyn.ClassRef[]>( res.Result || [] ) );
-				} else {
-					this.InfoBox.Error( ( res.Messages || [] ).join() );
-					return rx.Observable.fromArray( <dyn.ClassRef[]>[] );
-				}
-			})
+		this.Uploader.Upload( this.Parent.Ajax.UploadAttachment( this.Data ), null, files )
+			.selectMany( att.fromUploadResult )
 			.select( a => {
 				var res = new AttachmentVm<T>( this, a );
 				this.Attachments.push( res );
@@ -249,7 +242,6 @@ class EditorVm<T> {
 }
 
 class AttachmentVm<T> {
-	ViewModel = <Ko.Observable<att.IAttachment>> dyn.bind( this._ref );
 	private Visual = ko.computed( () => this.ViewModel() && this.ViewModel().Render() );
 
 	private DraggableDefinition: JQueryUI.DraggableOptions = {
@@ -259,7 +251,7 @@ class AttachmentVm<T> {
 		})()
 	};
 
-	constructor( private Parent: EditorVm<T>, private _ref: dyn.ClassRef ) { }
+	constructor( private Parent: EditorVm<T>, public ViewModel: Ko.Observable<att.IAttachment> ) { }
 
 	Remove() {
 	}

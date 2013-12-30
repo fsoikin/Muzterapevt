@@ -62,8 +62,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Interactive">
-      <HintPath>..\packages\Ix-Main.0.9.0.2\lib\Net45\System.Interactive.dll</HintPath>
+    <Reference Include="System.Interactive, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ix-Main.1.2.2\lib\net45\System.Interactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -74,6 +75,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\TypeScriptModuleAttribute.cs" />
+    <Compile Include="JS\Specialists\SpecialistSpecialization.cs" />
+    <Compile Include="JS\Specialists\SpecialistProfession.cs" />
+    <Compile Include="JS\Specialists\Country.cs" />
+    <Compile Include="JS\Specialists\Organization.cs" />
+    <Compile Include="JS\Specialists\SpecialistRegistrationRequest.cs" />
+    <Compile Include="JS\Text\TextView.cs" />
     <Compile Include="MarkupUI.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="AttachmentUI.cs" />
@@ -101,6 +109,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core.Data\Core.Data.csproj">
+      <Project>{19c55acc-efd4-4c5c-b15a-a7c611b1270c}</Project>
+      <Name>Core.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{98511bd8-e239-474e-b9a9-08dee421e1de}</Project>
       <Name>Core</Name>
@@ -109,10 +121,34 @@
       <Project>{7f236c96-359a-468c-9f1e-db4a67511264}</Project>
       <Name>Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Files.Data\Files.Data.csproj">
+      <Project>{b723b80a-c0a9-4121-9f1a-4fd361636095}</Project>
+      <Name>Files.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Files\Files.csproj">
       <Project>{6cb0fe7e-d6ed-4a8c-8d55-c2e278880a32}</Project>
       <Name>Files</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="JS\Specialists\Country.cs.d.ts">
+      <DependentUpon>Country.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\Organization.cs.d.ts">
+      <DependentUpon>Organization.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistProfession.cs.d.ts">
+      <DependentUpon>SpecialistProfession.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistRegistrationRequest.cs.d.ts">
+      <DependentUpon>SpecialistRegistrationRequest.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistSpecialization.cs.d.ts">
+      <DependentUpon>SpecialistSpecialization.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Text\TextView.cs.d.ts">
+      <DependentUpon>TextView.cs</DependentUpon>
+    </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

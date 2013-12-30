@@ -1,7 +1,7 @@
 ﻿/// <amd-dependency path="css!styles/Menu.css" />
 /// <amd-dependency path="text!./Templates/menu.html" />
 import c = require( "../common" );
-import ctr = require( "../lib/template" );
+import ctr = require( "../Lib/template" );
 import contextMenu = require( "../Controls/ContextMenu" );
 import infoBox = require( "../Controls/InfoBox" );
 import ko = require( "ko" );
@@ -50,7 +50,7 @@ export class MenuVm implements c.IControl {
 		this.AllowEdit = args.allowEdit;
 
 		// When EffectiveMustBeVisible goes to false, I wait 1000ms and then hide myself.
-		this.EffectiveMustBeVisible.asRx()
+		c.koToRx( this.EffectiveMustBeVisible )
 			.throttle( 1000 )
 			.subscribe( v => !v && this.IsVisible( false ) );
 

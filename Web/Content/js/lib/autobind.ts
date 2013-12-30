@@ -34,8 +34,7 @@ export function autobind( ref: dyn.ClassRef,
 	element: () => JQuery, onDone?: ( JQuery, viewModel: any ) => void );
 
 export function autobind( ref: dyn.ClassRef, element: any, onDone?: ( JQuery, viewModel: any ) => void ) {
-	dyn.bind( ref )
-		.asRx()
+	er.koToRx( dyn.bind( ref ) )
 		.where( o => !!o )
 		.subscribe( obj =>
 		{

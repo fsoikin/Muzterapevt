@@ -14,56 +14,58 @@ declare module Ko {
 	export function applyBindingsToDescendants( viewModel: any, rootNode: any ): void;
 	export function applyBindingsToNode( node: Element, options: any, viewModel: any ): void;
 
-	export var subscribable: Ko.SubscribableStatic;
-	export var observable: Ko.ObservableStatic;
-	export var computed: Ko.ComputedStatic;
-	export var observableArray: Ko.ObservableArrayStatic;
+	export var subscribable: SubscribableStatic;
+	export var observable: ObservableStatic;
+	export var computed: ComputedStatic;
+	export var observableArray: ObservableArrayStatic;
 
-	export function contextFor( node: Element ): BindingContext;
-	export function contextFor( node: Ko.VirtualElement ): BindingContext;
+	export function contextFor( node: Element ): any;
+	export function contextFor( node: Ko.VirtualElement ): any;
 	export function isSubscribable( instance: any ): boolean;
 	export function toJSON( viewModel: any, replacer?: Function, space?: any ): string;
 	export function toJS( viewModel: any ): any;
 	export function isObservable( instance: any ): boolean;
 	export function isComputed( instance: any ): boolean;
 	export function dataFor( node: any ): any;
-	export function removeNode( node: Element );
-	export function cleanNode( node: Element );
+	export function removeNode( node: Element ): void;
+	export function cleanNode( node: Element ): void;
 
-	export interface SubscribableFunctionsBase<T> {
+	export interface Disposable {
+		dispose(): void;
+	}
+
+	export interface Subscribable<T> {
 		dispose(): void;
 		peek(): T;
 		valueHasMutated(): void;
 		valueWillMutate(): void;
+		notifySubscribers( value: T ): void;
+		subscribe( callback: ( value: T ) => void, context?: any ): Disposable;
 	}
 
-	export interface SubscribableFunctions<T> extends SubscribableFunctionsBase<T> {
-		extend( source ): Subscribable<T>;
+	export interface Observable<T> extends Subscribable<T> {
+		(): T;
+		( value: T ): any;
 	}
 
-	export interface ComputedFunctions<T> extends SubscribableFunctionsBase<T> {
-		extend( source ): Computed<T>;
+	export interface Computed<T> extends Observable<T> {
 		getDependenciesCount(): number;
 		hasWriteFunction(): boolean;
 	}
 
-	export interface ObservableFunctions<T> extends SubscribableFunctionsBase<T> {
-		extend( source ): Observable<T>;
-	}
-
-	export interface ObservableArrayFunctions<T> extends ObservableFunctions<T[]> {
+	export interface ObservableArray<T> extends Observable<T[]> {
 		// General Array functions
-		indexOf( searchElement, fromIndex?: number ): number;
+		indexOf( searchElement: T, fromIndex?: number ): number;
 		slice( start: number, end?: number ): T[];
 		splice( start: number ): T[];
 		splice( start: number, deleteCount: number, ...items: T[] ): T[];
-		pop();
+		pop(): T;
 		push( ...items: T[] ): void;
-		shift();
+		shift(): T;
 		unshift( ...items: T[] ): number;
 		reverse(): T[];
 		sort(): void;
-		sort( compareFunction: (a: T, b: T) => number ): void;
+		sort( compareFunction: ( a: T, b: T ) => number ): void;
 
 		// Ko specific
 		replace( oldItem: T, newItem: T ): void;
@@ -72,66 +74,22 @@ declare module Ko {
 		removeAll( items: T[] ): T[];
 		removeAll(): T[];
 
-		destroy( item ): void;
+		destroy( item: T ): void;
 		destroyAll( items: T[] ): void;
 		destroyAll(): void;
 	}
 
-	export interface SubscribableStatic {
-		fn: SubscribableFunctions<any>;
-		new <T>(): Subscribable<T>;
-	}
-
-	export interface Disposable {
-		dispose(): void;
-	}
-
-	export interface Subscribable<T> extends SubscribableFunctions<T> {
-		subscribe( callback: ( newValue: T ) => void , target?: any, topic?: string ): Disposable;
-		notifySubscribers( valueToWrite: T, topic?: string );
-	}
-
-	export interface ComputedStatic {
-		fn: ComputedFunctions<any>;
-
-		(): Computed<any>;
-		<T>( func: () => T, context?: any ): Computed<T>;
-		<T>( def: ComputedDefine<T> ): Computed<T>;
-	}
-
-	export interface Computed<T> extends ComputedFunctions<T> {
-		(): T;
-		( value: T ): void;
-
-		subscribe( callback: ( newValue: T ) => void , target?: any, topic?: string ): Disposable;
-		notifySubscribers( valueToWrite: T, topic?: string );
-		extend( extenders: any ): Computed<T>;
-	}
-
-	export interface ObservableArrayStatic {
-		fn: ObservableArrayFunctions<any>;
-		<T>(): ObservableArray<T>;
-	}
-
-	export interface ObservableArray<T> extends ObservableArrayFunctions<T> {
-		(): T[];
-		( value: T[] ): void;
-
-		subscribe( callback: ( newValue: T[] ) => void , target?: any, topic?: string ): Disposable;
-		notifySubscribers( valueToWrite: T[], topic?: string );
-	}
-
 	export interface ObservableStatic {
-		fn: ObservableFunctions<any>;
 		<T>( value?: T ): Observable<T>;
 	}
 
-	export interface Observable<T> extends ObservableFunctions<T> {
-		(): T;
-		( value: T ): any;
+	export interface SubscribableStatic {
+		new <T>(): Subscribable<T>;
+	}
 
-		subscribe( callback: ( newValue: T ) => void , target?: any, topic?: string ): Disposable;
-		notifySubscribers( valueToWrite: T, topic?: string );
+	export interface ComputedStatic {
+		<T>( read: () => T ): Computed<T>;
+		<T>( options: ComputedDefine<T> ): Computed<T>;
 	}
 
 	export interface ComputedDefine<T> {
@@ -143,6 +101,10 @@ declare module Ko {
 		disposeWhenNodeIsRemoved?: Element;
 	}
 
+	export interface ObservableArrayStatic {
+		<T>( value?: T[] ): ObservableArray<T>;
+	}
+
 	export interface BindingContext {
 		$parent: any;
 		$parents: any[];
@@ -151,8 +113,8 @@ declare module Ko {
 		$index?: number;
 		$parentContext?: BindingContext;
 
-		extend( any ): any;
-		createChildContext( any ): any;
+		extend( source: any ): any;
+		createChildContext( x: any ): any;
 	}
 
 	export interface BindingHandlerResult {
@@ -208,22 +170,22 @@ declare module Ko {
 	}
 
 	export interface Memoization {
-		memoize( callback );
-		unmemoize( memoId, callbackParams );
-		unmemoizeDomNodeAndDescendants( domNode, extraCallbackParamsArray );
-		parseMemoText( memoText );
+		memoize( callback: Function ): Function;
+		unmemoize( memoId: any, callbackParams: any ): void;
+		unmemoizeDomNodeAndDescendants( domNode: any, extraCallbackParamsArray: any ): void;
+		parseMemoText( memoText: string ): any;
 	}
 
 	export interface VirtualElement { }
 
 	export interface VirtualElements {
 		allowedBindings: { [bindingName: string]: boolean; };
-		emptyNode( e: VirtualElement );
-		firstChild( e: VirtualElement );
-		insertAfter( container: VirtualElement, nodeToInsert: HTMLElement, insertAfter: HTMLElement );
-		nextSibling( e: VirtualElement );
-		prepend( e: VirtualElement, toInsert: HTMLElement );
-		setDomNodeChildren( e: VirtualElement, newChildren: { length: number;[index: number]: HTMLElement; });
+		emptyNode( e: VirtualElement ): void;
+		firstChild( e: VirtualElement ): void;
+		insertAfter( container: VirtualElement, nodeToInsert: HTMLElement, insertAfter: HTMLElement ): void;
+		nextSibling( e: VirtualElement ): void;
+		prepend( e: VirtualElement, toInsert: HTMLElement ): void;
+		setDomNodeChildren( e: VirtualElement, newChildren: { length: number;[index: number]: HTMLElement; }): void;
 		childNodes( e: VirtualElement ): HTMLElement[];
 	}
 
@@ -238,16 +200,16 @@ declare module Ko {
 
 		arrayForEach<T>( array: T[], action: ( i: T ) => void ): void;
 		arrayIndexOf<T>( array: T[], item: T ): number;
-		arrayFirst<T>( array: T[], predicate: ( item: T ) => boolean, predicateOwner?: any ): any;
+		arrayFirst<T>( array: T[], predicate: ( item: T ) => boolean, predicateOwner?: any ): T;
 		arrayRemoveItem<T>( array: T[], itemToRemove: T ): void;
 		arrayGetDistinctValues<T>( array: T[] ): T[];
 		arrayMap<T, U>( array: T[], mapping: ( item: T ) => U ): U[];
 		arrayFilter<T>( array: T[], predicate: ( item: T ) => boolean ): T[];
 		arrayPushAll<T>( array: T[], valuesToPush: T[] ): T[];
 
-		extend( target, source );
+		extend( target: any, source: any ): void;
 
-		emptyDomNode( domNode ): void;
+		emptyDomNode( domNode: any ): void;
 		moveCleanedNodesToContainerElement( nodes: any[] ): HTMLElement;
 		cloneNodes( nodesArray: any[], shouldCleanNodes: boolean ): any[];
 		setDomNodeChildren( domNode: any, childNodes: any[] ): void;
@@ -261,7 +223,7 @@ declare module Ko {
 		tagNameLower( element: any ): string;
 		registerEventHandler( element: any, eventType: any, handler: Function ): void;
 		triggerEvent( element: any, eventType: any ): void;
-		
+
 		unwrapObservable( value: any ): any;
 		unwrapObservable<T>( value: T ): T;
 		unwrapObservable<T>( value: Observable<T> ): T;
@@ -271,7 +233,7 @@ declare module Ko {
 		peekObservable<T>( value: Observable<T> ): T;
 
 		makeArray( arrayLikeObject: any ): any[];
-		makeArray<T>( arrayLikeObject: { length: number; [idx: number]: T; } ): T[];
+		makeArray<T>( arrayLikeObject: { length: number;[idx: number]: T; }): T[];
 
 		toggleDomNodeCssClass( node: any, className: string, shouldHaveClass: boolean ): void;
 		setTextContent( element: any, textContent: string ): void;
@@ -289,6 +251,8 @@ declare module Ko {
 		isIe6: boolean;
 		isIe7: boolean;
 
-		domNodeDisposal;
+		domNodeDisposal: {
+			addDisposeCallback( e: Element, cb: (e: Element) => void );
+		};
 	}
 }

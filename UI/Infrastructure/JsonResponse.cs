@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using erecruit.Utils;
@@ -22,6 +23,7 @@ namespace Mut.Web
 		public static readonly JsonResponse<T> NotFound = new JsonResponse<T> { Success = false, Messages = { "Not found" } };
 		public static readonly JsonResponse<T> AccessDenied = new JsonResponse<T> { Success = false, Messages = { "Access Denied" } };
 		public static JsonResponse<T> Error( params string[] messages ) { return new JsonResponse<T> { Success = false, Messages = messages }; }
+		public static JsonResponse<T> Error( IEnumerable<string> messages ) { return new JsonResponse<T> { Success = false, Messages = messages.ToList() }; }
 
 		public bool Success { get; set; }
 		public T Result { get; set; }
@@ -43,16 +45,31 @@ namespace Mut.Web
 		}
 	}
 
+
 	public static class JsonResponse
 	{
 		public static JsonResponse<T> Error<T>( params string[] messages ) { return JsonResponse<T>.Error( messages ); }
+		public static JsonResponse<T> Error<T>( IEnumerable<string> messages ) { return JsonResponse<T>.Error( messages ); }
 		public static JsonResponse<T> Create<T>( T result ) { return new JsonResponse<T> { Success = true, Result = result }; }
 		public static JsonResponse<T> Catch<T>( Func<T> f, ILog log ) { return Catch( () => Create( f() ), log ); }
 		public static JsonResponse<T> Catch<T>( Action f, ILog log ) { return Catch( () => { f(); return JsonResponse<T>.Void; }, log ); }
-		public static JsonResponse<T> Catch<T>( Func<JsonResponse<T>> f, ILog log )
-		{
+		public static JsonResponse<T> Catch<T>( Func<JsonResponse<T>> f, ILog log ) {
 			try { return f(); }
 			catch ( Exception ex ) { log.Error( ex ); return Error<T>( ex.Message ); }
+		}
+
+		public static IJsonResponse<T> AsJsonResponse<T>( this Maybe<IJsonResponse<T>> m ) {
+			return
+				m.Kind == Maybe.Kind.Value ? m.Value :
+				m.Kind == Maybe.Kind.Error ? Error<T>( m.Error.Messages ) :
+				Create( default( T ) );
+		}
+
+		public static JsonResponse<T> AsJsonResponse<T>( this Maybe<T> m ) {
+			return
+				m.Kind == Maybe.Kind.Value ? Create( m.Value ) :
+				m.Kind == Maybe.Kind.Error ? Error<T>( m.Error.Messages ) :
+				Create( default( T ) );
 		}
 	}
 }

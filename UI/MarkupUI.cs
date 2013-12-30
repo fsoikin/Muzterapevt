@@ -17,6 +17,7 @@ namespace Mut.UI
 		public erecruit.Mvc.MixinRouteBuilder<AttachmentUI.Mixin> AttachmentMixin { get; set; }
 	}
 
+	[Export, TransactionScoped]
 	public class MarkupUI
 	{
 		private readonly MarkupParser<MarkupParseArgs> _parser = new MarkupParser<MarkupParseArgs>();

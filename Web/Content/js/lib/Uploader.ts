@@ -13,7 +13,7 @@ export class Uploader {
 	} )
   private _input: HTMLInputElement;
 
-	public Upload( url: string, data: { [key: string]: string; }, files?: FileList ): Rx.IObservable<api.JsonResponse> {
+	public Upload( url: string, data?: { [key: string]: string; }, files?: FileList ): Rx.IObservable<api.JsonResponse> {
 		this.CleanFinishedFiles();
 
 		if ( files ) {
@@ -87,7 +87,7 @@ export class UploadingFile {
 		this._xhr.onerror = e => this.Error( this._xhr.responseText );
 		this._xhr.onabort = e => this.Error( "Upload aborted" );
 		this._xhr.ontimeout = e => this.Error( "Upload timed out" );
-		this._xhr.open( "POST", url, true );
+		this._xhr.open( "POST", er.Api.AbsoluteUrl( url ), true );
 		if ( headers ) for ( var h in headers ) this._xhr.setRequestHeader( h, headers[h] );
 		this._xhr.send( form );
 	}

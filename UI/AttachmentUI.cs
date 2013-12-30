@@ -52,9 +52,9 @@ namespace Mut
 			public IJsonResponse<IEnumerable<object>> GetAll() {
 				return JsonResponse.Catch( () => _ui
 					.Files.GetAll( _domain )
-					.Select( f => new { f.FilePath, f.Data.ContentType } )
+					.Select( f => new { f.Id, f.FilePath, f.Data.ContentType } )
 					.AsEnumerable()
-					.Select( f => AttachmentJson( f.FilePath, f.ContentType ) ), _ui.Log );
+					.Select( f => AttachmentJson( f.Id, f.FilePath, f.ContentType ) ), _ui.Log );
 			}
 
 			[EditPermission, HttpPost]
@@ -62,11 +62,11 @@ namespace Mut
 				return JsonResponse.Catch( () => {
 					var res = _ui.Files.UploadFiles( _domain, pathPrefix, file ).ToList();
 					_ui.UnitOfWork.Commit();
-					return res.Select( f => AttachmentJson( f.FilePath, f.Data.ContentType ) );
+					return res.Select( f => AttachmentJson( f.Id, f.FilePath, f.Data.ContentType ) );
 				}, _ui.Log );
 			}
 
-			private object AttachmentJson( string path, string contentType ) {
+			private object AttachmentJson( int fileId, string path, string contentType ) {
 				var pic = IsPicture( contentType );
 
 				return new {
@@ -74,12 +74,14 @@ namespace Mut
 					Class = pic ? "Picture" : "File",
 					Arguments = pic
 						? (object)new {
+							FileId = fileId,
 							Path = path,
 							Download = Url( c => c.Serve( path ) ),
 							SmallThumb = Url( c => c.Crop( path, 50, 50 ) ),
 							BigThumb = Url( c => c.Crop( path, 150, 150 ) )
 						}
 						: (object)new {
+							FileId = fileId,
 							Path = path,
 							Download = Url( c => c.Serve( path ) )
 						}

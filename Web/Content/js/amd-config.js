@@ -12,7 +12,9 @@ require.config( {
 		// RequireJS plugins
 		'text': '../require/text',
 		'css': '../require/css',
-		'normalize': '../require/normalize'
+		'normalize': '../require/normalize',
+
+		'select2': 'External/Select2/select2_locale_ru'
 	},
 
 	deps: [
@@ -30,6 +32,10 @@ require.config( {
 		'ko.mapping': {
 			knockout: 'ko'
 		}
+	},
+
+	shim: {
+		'select2': ['jQuery', 'css!External/Select2/select2.css', 'External/Select2/select2.min']
 	},
 
 	packages: [

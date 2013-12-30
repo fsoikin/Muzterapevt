@@ -91,7 +91,7 @@ ko.bindingHandlers['hasFocus'] = {
 		if (ko.isObservable(v)) {
 			var evts = { focus: () => { v(true); }, blur: () => { v(false); } };
 			e.on( evts );
-			ko.utils.domNodeDisposal.addDisposeCallback(e, () => e.off(evts));
+			ko.utils.domNodeDisposal.addDisposeCallback(e[0], () => e.off(evts));
 		}
 		return null;
 	},
@@ -108,7 +108,7 @@ ko.bindingHandlers['assignTo'] = {
 
 (() => {
 	ko.bindingHandlers['jqWidget'] = {
-		init: e => ko.utils.domNodeDisposal.addDisposeCallback( e, destroyWidgets ),
+		init: (e: Element) => ko.utils.domNodeDisposal.addDisposeCallback( e, destroyWidgets ),
 		update: setWidgets
 	};
 

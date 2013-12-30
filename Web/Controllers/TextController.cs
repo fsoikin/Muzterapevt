@@ -27,6 +27,13 @@ namespace Mut.Controllers
 			}, Log );
 		}
 
+		public JsonResponse<JS.TextView> LoadHtml( string id ) {
+			return JsonResponse.Catch( () => {
+				var p = Texts.Find( id );
+				return new JS.TextView { Text = p == null ? "" : p.HtmlText, AllowEdit = Auth.CurrentActor.IsAdmin };
+			}, Log );
+		}
+
 		[HttpPost]
 		public JsonResponse<JS.TextSaveResult> Update( [JsonRequestBody] JS.TextEditor text ) {
 			return JsonResponse.Catch( () => {

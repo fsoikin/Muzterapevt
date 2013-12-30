@@ -8,6 +8,7 @@
 /// <reference path="../tsd/rx-ko.d.ts" />
 /// <reference path="../tsd/linq.d.ts"/>
 /// <reference path="../tsd/linq.amd.d.ts"/>
+/// <reference path="../tsd/serverTypes.d.ts"/>
 
 import rx = require( "rx" );
 import ko = require( "ko" );
@@ -80,75 +81,50 @@ export class VmBase {
 	IsSaving = ko.observable( false );
 }
 
+/**
+ * Represents virtual sequence of items of a certain type
+ */
 export interface IDataSource<T> {
+	/**
+	 * The items comprising the datasource
+	 */
 	Items: Ko.Observable<T[]>;
+
+	/** Extract unique identifier from a given item */
 	GetId( i: T ): any;
+
+	/** Convert a given item to a user-friendly string */
 	ToString( i: T ): string;
 
+
+	/** Signifies whether this datasource loads all of its items
+	 *  right after creation or only some of them (or even none).
+	 *  When this property is true, the datasource usually supports
+	 *  lookup (see the Lookup method).
+	 */
+	HasPartialItems?: boolean;
+
+	/** Returns a subset of items filtered by the given substring */
+	Lookup?: ( term: string ) => Rx.IObservable<T[]>;
+
+	/** Returns a subset of items by given ids */
+	GetById?: ( ids: any[] ) => Rx.IObservable<T[]>;
+
+	/** This flag will be set to true when the datasource has finished
+	 * loading/preparing items (or whatever other preparation it has to do).
+	 * If this flag is not present, then the datasource will be considered
+	 * always "ready". See the "dataSourceReady" function.
+	 */
+	IsReady?: Ko.Observable<boolean>;
+
+
+	/** True when the items are being fetched from the server, False when done. */
 	IsLoading?: Ko.Observable<boolean>;
+
+	/** Pushes messages about errors occurring while fetching items from the
+	 *  server.
+	 */
 	Error?: Ko.Subscribable<string>;
-}
-
-export class RemoteDataSource<T> implements IDataSource<T> {
-	IsLoading = ko.observable( false );
-	Error = new ko.subscribable<string>();
-
-	Items = ko.observableArray<T>();
-
-	GetId( i: T ) { return null; } // TODO: [fs] waiting for https://typescript.codeplex.com/workitem/1450
-	ToString( i: T ) { return ""; }
-
-	private Url: string;
-	private LookupUrl: (term:string) => string;
-
-	constructor( args: {
-		url: string;
-		lookupUrl?: ( term: string ) => string;
-		getId?: Function; // ( i: T ) => any; // TODO: [fs] waiting for https://typescript.codeplex.com/workitem/1450
-		toString?: Function; // ( i: T ) => string;
-	}) {
-		// TODO: [fs] waiting for https://typescript.codeplex.com/workitem/1450
-		var me = <any>this;
-		me['GetId'] = args.getId || ((i: T) => {
-			if( !i ) return null;
-			if( !( 'Id' in i ) ) throw new Error( "'Id' property not found on object " + JSON.stringify( i ) );
-			return i['Id'];
-		});
-		me['ToString'] = args.toString || ((i: T) => ( i || "" ).toString());
-
-		this.Url = args.url;
-		this.LookupUrl = args.lookupUrl;
-		this.Reload();
-	}
-
-	Reload() {
-		Api.Get( this.Url, null, this.IsLoading, err => this.Error.notifySubscribers( err ), this.Items );
-	}
-
-	Lookup( term: string ) {
-		if( !this.LookupUrl ) {
-			term = ( term || "" ).toLowerCase();
-			return this.Items.asRx()
-				.select( ( items: any[] ) => items.filter( item => {
-					var t = this.ToString( item );
-					return t && t.toLowerCase().indexOf( term ) >= 0;
-				}) )
-				.take( 1 );
-		}
-
-		return rx.Observable.create<T[]>( o => {
-			var xhr = Api.Get( this.LookupUrl( term ), null, this.IsLoading,
-				err => { o.onError( err ); this.Error.notifySubscribers( err ); },
-				res => { o.onNext( res ); o.onCompleted(); });
-
-			return () => xhr.abort();
-		} );
-	}
-
-	GetById( id ) {
-		var dd = this.Items();
-		return dd && ko.utils.arrayFirst( dd, d => this.GetId( d ) == id );
-	}
 }
 
 export function compareArrays<T>( a: T[], b: T[],
@@ -233,4 +209,120 @@ export function koToRx<T>( ko: Ko.Subscribable<T> ): Rx.IObservable<T> {
 		o.onNext( ko.peek() );
 		return () => d.dispose();
 	});
+}
+
+/**
+ * Creates a Computed Observable, which is initially bound to 'initialObservable',
+ * but after at least one pulse from ALL (not any!) of 'triggers' gets switched
+ * to 'nextObservable'.
+ *
+ * This is useful for defining a class with a complex property, whose value is
+ * constructed in a complex way from many asynchronous sources, but the initial
+ * value of that property must be kept in a temporary location until those
+ * asynchronous sources become available. In this scenario, 'initialObservable'
+ * is the temporary location, 'triggers' pulse when the asynchronous sources
+ * become available, and 'nextObservable' represents the actual computation of
+ * the complex property.
+ */
+export function switchObservable<T>( triggers: Ko.Subscribable<any>[],
+	initialObservable: Ko.Observable<T>, nextObservable: Ko.Observable<T> )
+	: Ko.Observable<T>;
+
+/**
+ * Creates a Computed Observable, which is initially bound to 'initialObservable',
+ * but after at least one pulse from ALL (not any!) of 'triggers' gets switched
+ * to 'nextObservable'.
+ *
+ * This is useful for defining a class with a complex property, whose value is
+ * constructed in a complex way from many asynchronous sources, but the initial
+ * value of that property must be kept in a temporary location until those
+ * asynchronous sources become available. In this scenario, 'initialObservable'
+ * is the temporary location, 'triggers' pulse when the asynchronous sources
+ * become available, and 'nextObservable' represents the actual computation of
+ * the complex property.
+ */
+export function switchObservable<T>( triggers: Rx.IObservable<any>[],
+	initialObservable: Ko.Observable<T>, nextObservable: Ko.Observable<T> )
+	: Ko.Observable<T>;
+
+/**
+ * Creates a Computed Observable, which is initially bound to 'initialObservable',
+ * but after a pulse from 'trigger' gets switched to 'nextObservable'
+ *
+ * This is useful for defining a class with a complex property, whose value is
+ * constructed in a complex way from many asynchronous sources, but the initial
+ * value of that property must be kept in a temporary location until those
+ * asynchronous sources become available. In this scenario, 'initialObservable'
+ * is the temporary location, 'trigger' pulses when the asynchronous sources
+ * become available, and 'nextObservable' represents the actual computation of
+ * the complex property.
+ */
+export function switchObservable<T>( trigger: Ko.Subscribable<any>,
+	initialObservable: Ko.Observable<T>, nextObservable: Ko.Observable<T> )
+	: Ko.Observable<T>;
+
+/**
+ * Creates a Computed Observable, which is initially bound to 'initialObservable',
+ * but after a pulse from 'trigger' gets switched to 'nextObservable'
+ *
+ * This is useful for defining a class with a complex property, whose value is
+ * constructed in a complex way from many asynchronous sources, but the initial
+ * value of that property must be kept in a temporary location until those
+ * asynchronous sources become available. In this scenario, 'initialObservable'
+ * is the temporary location, 'trigger' pulses when the asynchronous sources
+ * become available, and 'nextObservable' represents the actual computation of
+ * the complex property.
+ */
+export function switchObservable<T>( trigger: Rx.IObservable<any>,
+	initialObservable: Ko.Observable<T>, nextObservable: Ko.Observable<T> )
+	: Ko.Observable<T>;
+
+export function switchObservable<T>( triggers: any,
+	initialObservable: Ko.Observable<T>, nextObservable: Ko.Observable<T> )
+	: Ko.Observable<T> {
+	var tgrs: Rx.IObservable<any>[] =
+		( $.isArray( triggers ) ? triggers : [triggers] )
+			.map( o => {
+				if ( ko.isSubscribable( o ) ) {
+					var obs = <Ko.Observable<any>>o;
+					if ( ko.isObservable( obs ) && obs() === true ) return rx.Observable.returnValue( null );
+					return koToRx( obs ).skip( 1 ).where( x => x !== false );
+				}
+				return <Rx.IObservable<any>>o;
+			});
+
+	var whenTriggerFired = tgrs
+		.reduce( ( zipped: Rx.IObservable<any>, s: Rx.IObservable<any> ) =>
+			zipped.zip( s, () => 0 ), rx.Observable.returnValue( 0 ) )
+		.take( 1 );
+
+	var write = initialObservable;
+	var read = rxToKo(
+		koToRx( initialObservable )
+			.takeUntil( whenTriggerFired )
+			.concat( rx.Observable.defer( () => {
+				write = nextObservable;
+				nextObservable( initialObservable() );
+				return rx.Observable.empty<T>();
+			}) )
+			.concat( koToRx( nextObservable ).skip( 1 ) ) );
+
+	return ko.computed( { read: read, write: ( v: T ) => write( v ) });
+}
+
+/**
+ * This function takes in an observable and creates a wrapper for it that only lets
+ * through change notifications that carry a new value. That is, if the inner observable
+ * produces several notifications with the same value in a row, only one of them will get
+ * through.
+ */
+export function distinctObservable<T>( o: Ko.Observable<T>,
+	comparer: ( a: T, b: T ) => boolean = ( a, b ) => a == b ): Ko.Observable<T> {
+
+	var read = rxToKo( koToRx( o ).distinctUntilChanged( x => x, comparer ) );
+	return ko.computed( {
+		read: () => <T>read(),
+		write: ( x: T ) => o( x )
+	});
+
 }

@@ -85,8 +85,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Interactive">
-      <HintPath>..\packages\Ix-Main.0.9.0.2\lib\Net45\System.Interactive.dll</HintPath>
+    <Reference Include="System.Interactive, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ix-Main.1.2.2\lib\net45\System.Interactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -100,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileDomain.cs" />
-    <Compile Include="File.cs" />
     <Compile Include="PictureUI.cs" />
     <Compile Include="FileUI.cs" />
     <Compile Include="FileVersionsEngine.cs" />
@@ -111,9 +111,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core.Data\Core.Data.csproj">
+      <Project>{19c55acc-efd4-4c5c-b15a-a7c611b1270c}</Project>
+      <Name>Core.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{7f236c96-359a-468c-9f1e-db4a67511264}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files.Data\Files.Data.csproj">
+      <Project>{b723b80a-c0a9-4121-9f1a-4fd361636095}</Project>
+      <Name>Files.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

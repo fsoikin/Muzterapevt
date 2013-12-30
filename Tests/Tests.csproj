@@ -71,6 +71,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core.Data\Core.Data.csproj">
+      <Project>{19c55acc-efd4-4c5c-b15a-a7c611b1270c}</Project>
+      <Name>Core.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{98511bd8-e239-474e-b9a9-08dee421e1de}</Project>
       <Name>Core</Name>
