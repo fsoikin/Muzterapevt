@@ -42,7 +42,8 @@ namespace Mut
 			}
 
 			[DefaultMixinAction]
-			public ActionResult Serve( string path ) { return _ui.Files.ServeFile( _domain, path, true ); }
+			public ActionResult Serve( string path ) { return _ui.Files.ServeFile( _domain, path, false ); }
+			public ActionResult Download( string path ) { return _ui.Files.ServeFile( _domain, path, true ); }
 			public ActionResult Img( string path ) { return _ui.Files.ServeFile( _domain, path, false ); }
 			public ActionResult Crop( string path, int width, int height ) { return _ui.Pictures.ServeCropped( _domain, path, width, height ); }
 			public ActionResult Stretch( string path, int width, int height ) { return _ui.Pictures.ServeStretched( _domain, path, width, height ); }
@@ -83,7 +84,7 @@ namespace Mut
 						: (object)new {
 							FileId = fileId,
 							Path = path,
-							Download = Url( c => c.Serve( path ) )
+							Download = Url( c => c.Download( path ) )
 						}
 				};
 			}
@@ -112,14 +113,29 @@ namespace Mut
 				} );
 		}
 
+		static readonly ISet<string> _yes = new HashSet<string>( StringComparer.InvariantCultureIgnoreCase ) {
+			"yes", "1", "true", "да"
+		};
+
 		public MarkupNodeDefinition<MarkupParseArgs> BBFileTag() {
-			return new MarkupParser<MarkupParseArgs>().ComplexTag( "file", true, new[] { "" },
+			return new MarkupParser<MarkupParseArgs>().ComplexTag( "file", true, new[] { "", "download", "window", "tab" },
 				( ctx, attrs ) => {
 					var file = attrs.ValueOrDefault( "" );
+					var download = _yes.Contains( attrs.ValueOrDefault( "download" ) ?? "" );
+					var newWindow = 
+						string.Equals( attrs.ValueOrDefault( "window" ), "new", StringComparison.InvariantCultureIgnoreCase ) ||
+						string.Equals( attrs.ValueOrDefault( "tab" ), "new", StringComparison.InvariantCultureIgnoreCase );
+
 					return new Range<string> {
-						Start = string.Format( "<a class='file-download-link' href='{0}'>",
-							ctx.AttachmentMixin.Action( m => m.Serve( file ) ) ),
+						
+						Start = string.Format( "<a class='file-download-link' href='{0}'{1}>",
+							download 
+								? ctx.AttachmentMixin.Action( m => m.Download( file ) )
+								: ctx.AttachmentMixin.Action( m => m.Serve( file ) ),
+							newWindow ? " target='_new'" : "" ),
+
 						End = "</a>"
+					
 					};
 				} );
 		}
