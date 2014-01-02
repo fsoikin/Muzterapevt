@@ -188,11 +188,12 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
-    <None Include="Content\js\BL\Templates\Specialist.less" />
-    <Content Include="Content\js\BL\Templates\Specialist.css">
+    <None Include="Content\js\BL\Specialist\Templates\Specialist.less" />
+    <Content Include="Content\js\BL\Specialist\Templates\Moderator.html" />
+    <Content Include="Content\js\BL\Specialist\Templates\Specialist.css">
       <DependentUpon>Specialist.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Templates\Specialist.html" />
+    <Content Include="Content\js\BL\Specialist\Templates\Specialist.html" />
     <Content Include="Content\js\BL\Templates\Attachment.css">
       <DependentUpon>Attachment.less</DependentUpon>
     </Content>
@@ -236,6 +237,7 @@
     <Content Include="Content\js\External\Select2\select2x2.png" />
     <Content Include="Content\js\External\Select2\select2_locale_ru.js" />
     <Content Include="Views\Specialist\Page.cshtml" />
+    <Content Include="Views\Specialist\Moderator.cshtml" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />
@@ -250,7 +252,8 @@
       <DependentUpon>youtubePlaylist.less</DependentUpon>
     </Content>
     <Content Include="Content\js\BL\Widgets\Templates\youtubePlaylist.html" />
-    <TypeScriptCompile Include="Content\js\BL\specialist.ts" />
+    <TypeScriptCompile Include="Content\js\BL\Specialist\moderator.ts" />
+    <TypeScriptCompile Include="Content\js\BL\Specialist\application.ts" />
     <TypeScriptCompile Include="Content\js\BL\Widgets\youtubePlaylist.ts" />
     <TypeScriptCompile Include="Content\js\BL\text.ts" />
     <TypeScriptCompile Include="Content\js\BL\InPlaceEditor.ts" />

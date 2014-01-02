@@ -11,6 +11,7 @@ namespace Mut.Data
 	{
 		public int Id { get; set; }
 		public bool Approved { get; set; }
+		public bool Ignored { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string PatronymicName { get; set; }

@@ -101,6 +101,7 @@
     <Compile Include="Entities\NavigationItem.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
+    <Content Include="Migrations\005_Added_Specialist.Ignored.sql" />
     <Content Include="Migrations\004_AddedSpecialists.sql" />
     <Content Include="Migrations\003_AddedFiles.sql" />
     <Content Include="Migrations\002.AddedTagsStandInAndReferenceNameToPage.sql" />

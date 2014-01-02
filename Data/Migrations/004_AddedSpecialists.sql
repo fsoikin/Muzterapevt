@@ -75,7 +75,7 @@ GO
 
 if not exists( select * from sys.tables where object_id = object_id('dbo.SpecialistCountries') ) 
 	create table dbo.SpecialistCountries (
-		Specialist_Id int not null references dbo.Specialists,
-		Country_Id int not null references dbo.Countries
+		Specialist_Id int not null references dbo.Specialists on delete cascade,
+		Country_Id int not null references dbo.Countries on delete cascade
 	)
 GO

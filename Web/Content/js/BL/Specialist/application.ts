@@ -1,14 +1,14 @@
 ﻿/// <amd-dependency path="css!./Templates/Specialist.css" />
 /// <amd-dependency path="text!./Templates/Specialist.html" />
-import c = require( "../common" );
+import c = require( "../../common" );
 import $ = require( "jQuery" );
 import ko = require( "ko" );
-import upl = require( "../Lib/Uploader" );
-import infoBox = require( "../Controls/InfoBox" );
-import sel = require( "../Controls/Select" );
-import dsApi = require( "../Lib/DataSourceApi" );
-import att = require( "./attachment" );
-import text = require( "./text" );
+import upl = require( "../../Lib/Uploader" );
+import infoBox = require( "../../Controls/InfoBox" );
+import sel = require( "../../Controls/Select" );
+import dsApi = require( "../../Lib/DataSourceApi" );
+import att = require( "../attachment" );
+import text = require( "../text" );
 
 var Ds = {
 	orgs: dsApi.createLookup.fromStdUrlScheme<server.Organization>( "specialist/organizations-" ),
@@ -26,7 +26,7 @@ var addTermOptions: sel.SelectExtraOptions<{ Name: string; Id: number; }> = {
 	minimumInputLength: 2
 };
 
-export class RegistrationVm extends c.TemplatedControl {
+export class ApplicationVm extends c.TemplatedControl {
 	FirstName = ko.observable( "" );
 	LastName = ko.observable( "" );
 	PatronymicName = ko.observable( "" );

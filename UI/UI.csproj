@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\TypeScriptModuleAttribute.cs" />
+    <Compile Include="JS\Specialists\SpecialistView.cs" />
     <Compile Include="JS\Specialists\SpecialistSpecialization.cs" />
     <Compile Include="JS\Specialists\SpecialistProfession.cs" />
     <Compile Include="JS\Specialists\Country.cs" />
@@ -145,6 +146,9 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Specialists\SpecialistSpecialization.cs.d.ts">
       <DependentUpon>SpecialistSpecialization.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistView.cs.d.ts">
+      <DependentUpon>SpecialistView.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Text\TextView.cs.d.ts">
       <DependentUpon>TextView.cs</DependentUpon>
