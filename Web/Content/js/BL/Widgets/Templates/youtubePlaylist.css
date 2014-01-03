@@ -5,7 +5,7 @@
 }
 
 .youtube-playlist > .video:after {
-    clear: both;
+    clear: left;
     display: block;
     content: ' ';
 }
