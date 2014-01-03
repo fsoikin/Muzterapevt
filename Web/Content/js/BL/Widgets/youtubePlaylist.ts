@@ -31,6 +31,7 @@ class Vm extends c.TemplatedControl {
 		var entries = linq
 			.from( $( xml ).find( "entry" ) )
 			.select( x => $( x ) ) //https://typescript.codeplex.com/workitem/1988
+			.where( x => x.find("state[name=restricted]").length == 0 )
 			.select( e => <Video>{
 				Title: e.children( "title" ).text(),
 				Description: e.children( "content" ).text(),
