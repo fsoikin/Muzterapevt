@@ -13,7 +13,6 @@ namespace Mut.Controllers
 	public class MenuController : Controller
 	{
 		[Import] public IRepository<NavigationItem> MenuItems { get; set; }
-		[Import] public IAuthService Auth { get; set; }
 
 		public JsonResponse<IEnumerable<JS.Menu.Item>> Load( string menuId )
 		{

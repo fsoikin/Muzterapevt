@@ -1,4 +1,4 @@
-﻿/// <amd-dependency path="css!./Templates/ModerationList.css" />
+﻿/// <amd-dependency path="css!./Templates/Moderator.css" />
 /// <amd-dependency path="text!./Templates/Moderator.html" />
 import c = require( "../../common" );
 import $ = require( "jQuery" );

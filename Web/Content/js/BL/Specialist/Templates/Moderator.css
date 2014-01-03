@@ -1,0 +1,48 @@
+﻿.specialist-moderator > .specialist {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.specialist-moderator > .specialist:hover {
+    background: #f3f3f3;
+}
+
+.specialist-moderator > .specialist > .photo {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.specialist-moderator > .specialist > .name {
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.specialist-moderator > .specialist > .name > div {
+    display: inline-block;
+    margin-right: 0.2em;
+}
+
+.specialist-moderator > .specialist > .location {
+    display: inline-block;
+}
+
+.specialist-moderator > .specialist > .location > .city:after {
+    content: ', ';
+}
+
+.specialist-moderator > .specialist > .buttons {
+    float: right;
+    width: 150px;
+    display: inline-block;
+}
+
+.specialist-moderator > .specialist > .buttons > button {
+    width: 100%;
+    display: block;
+    text-align: left;
+    padding-left: 40px;
+}

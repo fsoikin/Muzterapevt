@@ -188,6 +188,10 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
+    <Content Include="Content\js\BL\Specialist\Templates\Moderator.css">
+      <DependentUpon>Moderator.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\BL\Specialist\Templates\Moderator.less" />
     <None Include="Content\js\BL\Specialist\Templates\Specialist.less" />
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.html" />
     <Content Include="Content\js\BL\Specialist\Templates\Specialist.css">
@@ -236,6 +240,11 @@
     <Content Include="Content\js\External\Select2\select2.png" />
     <Content Include="Content\js\External\Select2\select2x2.png" />
     <Content Include="Content\js\External\Select2\select2_locale_ru.js" />
+    <None Include="Content\js\Templates\AdminMenu.less" />
+    <Content Include="Content\js\Templates\AdminMenu.css">
+      <DependentUpon>AdminMenu.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\Templates\AdminMenu.html" />
     <Content Include="Views\Specialist\Page.cshtml" />
     <Content Include="Views\Specialist\Moderator.cshtml" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
@@ -262,6 +271,7 @@
     <Content Include="Content\js\BL\Templates\InPlaceEditor-DefaultMenu.html" />
     <Content Include="Content\js\BL\Templates\menu.html" />
     <Content Include="Content\js\BL\Templates\page-editor.html" />
+    <TypeScriptCompile Include="Content\js\AdminMenu.ts" />
     <TypeScriptCompile Include="Content\js\common.ts" />
     <TypeScriptCompile Include="Content\js\bootstrap.ts" />
     <TypeScriptCompile Include="Content\js\Controls\ContextMenu.ts" />

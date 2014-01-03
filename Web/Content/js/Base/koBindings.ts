@@ -31,10 +31,11 @@ ko.bindingHandlers['control'] = {
 ko.bindingHandlers['visible'] = ( () => {
 	function parse( valueAccessor: () => any ) {
 		var v = u( valueAccessor() );
+		var flag = v && v.flag;
 		return {
-			flag: u( v.flag == undefined ? v : v.flag ),
-			effect: v.effect,
-			on: v.on, off: v.off
+			flag: u( flag == undefined ? v : flag ),
+			effect: v && v.effect,
+			on: v && v.on, off: v && v.off
 		};
 	}
 

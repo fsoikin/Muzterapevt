@@ -30,5 +30,8 @@
 			</div>
 			<div class="footer"> <a href="@Url.Content("~/")">homepage</a> | <a href="mailto:alisa@apreleva.com">contact</a> | &copy; 2013 Alisa Apreleva<br/></div>
 		</div>
+		@if ( model.ShowAdminMenu ) {
+			<div class="autobind" data-controller="AdminMenu" />
+		}		
 	</body>
 </html>

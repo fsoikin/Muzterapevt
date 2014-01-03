@@ -12,10 +12,16 @@ namespace Mut.Controllers
 {
 	public class Controller : System.Web.Mvc.Controller
 	{
-		[Import] public ILog Log { get; set; }
-		[Import] public ITopMenuUI TopMenu { get; set; }
-		[Import] public TextUI Text { get; set; }
-		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import]
+		public IAuthService Auth { get; set; }
+		[Import]
+		public ILog Log { get; set; }
+		[Import]
+		public ITopMenuUI TopMenu { get; set; }
+		[Import]
+		public TextUI Text { get; set; }
+		[Import]
+		public IUnitOfWork UnitOfWork { get; set; }
 
 		protected override void OnException( ExceptionContext filterContext ) {
 			this.Log.Error( filterContext.Exception );
@@ -24,8 +30,9 @@ namespace Mut.Controllers
 
 		protected override void OnActionExecuting( ActionExecutingContext filterContext ) {
 			Log.DebugFormat( "START: {0}", filterContext.ActionDescriptor.ActionName );
-			
+
 			ViewBag.LayoutModel = new LayoutModel {
+				ShowAdminMenu = Auth.CurrentActor.IsAdmin,
 				TopMenu = TopMenu.GetTopMenu( "TopMenu.First" ),
 				SecondTopMenu = TopMenu.GetTopMenu( "TopMenu.Second" ),
 				Left = Text.TextModel( "Layout.Left" ),

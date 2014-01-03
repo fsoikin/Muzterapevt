@@ -19,7 +19,6 @@ namespace Mut.Controllers
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
 		[Import] public PagesService PagesService { get; set; }
-		[Import] public IAuthService Auth { get; set; }
 		[Import] public MarkupUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 

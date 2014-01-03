@@ -16,7 +16,6 @@ namespace Mut.Controllers
 	public class TextController : Controller
 	{
 		[Import] public IRepository<Text> Texts { get; set; }
-		[Import] public IAuthService Auth { get; set; }
 		[Import] public MarkupUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 

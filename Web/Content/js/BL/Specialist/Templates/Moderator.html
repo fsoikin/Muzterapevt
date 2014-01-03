@@ -1,9 +1,14 @@
-﻿<div class="specialist-list">
+﻿<div class="specialist-moderator">
 	<!-- ko control: InfoBox --><!-- /ko -->
 
 	<!-- ko foreach: Specialists -->
 	<div class="specialist">
-		<img src="photo" data-bind="attr: { src: PhotoUrl }" />
+		<img src="photo" data-bind="attr: { src: PhotoUrl }, visible: PhotoUrl" />
+		<div class="buttons">
+			<button class="icon-ok" data-bind="click: $parent.Approve">Approve</button>
+			<button class="icon-no" data-bind="click: $parent.Archive">Hide</button>
+			<button class="icon-no warning" data-bind="click: $parent.Delete">Delete</button>
+		</div>
 		<div class="name">
 			<div class="first" data-bind="text: FirstName"></div>
 			<div class="patronymic" data-bind="text: PatronymicName"></div>
@@ -26,11 +31,6 @@
 			<div class="email" data-bind="text: Email"></div>
 			<div class="phone" data-bind="text: Phone"></div>
 			<a class="url" data-bind="text: Url, attr: { href: Url }"></a>
-		</div>
-		<div class="buttons">
-			<button data-bind="click: $parent.Approve">Approve</button>
-			<button data-bind="click: $parent.Archive">Archive</button>
-			<button data-bind="click: $parent.Delete">Delete</button>
 		</div>
 	</div>
 	<!-- /ko -->
