@@ -5,11 +5,17 @@
     overflow: hidden;
 }
 
+.specialist-moderator > .specialist:after {
+    clear: left;
+    content: ' ';
+    display: block;
+}
+
 .specialist-moderator > .specialist:hover {
     background: #f3f3f3;
 }
 
-.specialist-moderator > .specialist > .photo {
+.specialist-moderator > .specialist > img {
     float: left;
     margin-right: 10px;
     margin-bottom: 10px;
