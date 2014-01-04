@@ -7,8 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
-using CodeKicker.BBCode;
-using CodeKicker.BBCode.SyntaxTree;
 using erecruit.Composition;
 using erecruit.Utils;
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
-using CodeKicker.BBCode.SyntaxTree;
 using erecruit.Composition;
 using erecruit.Mvc;
 using erecruit.Mvc.Mixins;

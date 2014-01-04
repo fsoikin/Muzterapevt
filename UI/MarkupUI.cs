@@ -5,10 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using CodeKicker.BBCode;
-using CodeKicker.BBCode.SyntaxTree;
+using System.Web;
 using erecruit.Composition;
 using erecruit.Utils;
+using Newtonsoft.Json;
 
 namespace Mut.UI
 {
@@ -29,7 +29,7 @@ namespace Mut.UI
 			return string.Join( "", _parser.Parse( text, args, Defs ).Select( n => n.Instance.ToHtml() ) );
 		}
 
-		[Export]
+		// TODO: These should be defined via faceted composition
 		public IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> Defs {
 			get {
 				return new[] {
@@ -81,8 +81,33 @@ namespace Mut.UI
 					// Legacy:
 					_parser.SimpleTag("b"), _parser.SimpleTag("i"), _parser.SimpleTag("u"),
 					_parser.SimpleTag("h", "h2"), _parser.SimpleTag("h1")
-				};
+				}
+				.Concat( GetTriviaTags() );
 			}
+		}
+
+		// TODO: this should be defined in the Web project, because it's coupled with the client-side code
+		private IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> GetTriviaTags() {
+			var responseMarker = new MarkupNodeDefinition<MarkupParseArgs>( "::RESPONSE:", (_1,_2,_3,_4) => new TextNode("") );
+			var triviaTag = _parser.ComplexTag( "trivia", true, new[] { "answers" }, ( args, attrs, inners ) => {
+				var question = inners.TakeWhile( x => x.Def != responseMarker );
+				var response = inners.SkipWhile( x => x.Def != responseMarker );
+				return string.Format( @"
+					<div class='autobind trivia' data-controller='Vm, BL/Widgets/trivia' data-args=""{0}"">
+						<div class='question'>{1}</div>
+						<div class='response'>{2}</div>
+					</div>",
+					HttpUtility.HtmlEncode( JsonConvert.SerializeObject( new {
+						answers = from s in (attrs.ValueOrDefault( "answers" ) ?? "").Split( ',' )
+											let t = s.Trim()
+											where !t.NullOrEmpty()
+											select t
+					} ) ),
+					string.Join( "", question.Select( n => n.Instance.ToHtml() ) ),
+					string.Join( "", response.Select( n => n.Instance.ToHtml() ) ) );
+			} );
+
+			return new[] { responseMarker, triviaTag };
 		}
 
 		MarkupNodeDefinition<MarkupParseArgs> heading( string markup, string htmlTag ) {
