@@ -42,9 +42,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeKicker.BBCode">
-      <HintPath>..\External\CodeKicker.BBCode.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -232,6 +229,11 @@
     <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
     <Content Include="Content\js\BL\Templates\Attachment.less" />
+    <None Include="Content\js\BL\Widgets\Templates\trivia.less" />
+    <Content Include="Content\js\BL\Widgets\Templates\trivia.css">
+      <DependentUpon>trivia.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\BL\Widgets\Templates\trivia.html" />
     <Content Include="Content\js\External\Select2\select2-bootstrap.css" />
     <Content Include="Content\js\External\Select2\select2-spinner.gif" />
     <Content Include="Content\js\External\Select2\select2.css" />
@@ -250,6 +252,7 @@
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />
+    <TypeScriptCompile Include="Content\js\BL\Widgets\trivia.ts" />
     <TypeScriptCompile Include="Content\js\BL\bbCode.ts" />
     <TypeScriptCompile Include="Content\js\BL\base.ts" />
     <Content Include="Content\js\BL\Templates\InPlaceEditor.html" />
