@@ -141,7 +141,7 @@ div.scroll {
     color: #036;
 }
 
-.sidenav ul li a:hover {
+.sidenav ul li a:link:hover {
     text-decoration: underline;
 }
 
