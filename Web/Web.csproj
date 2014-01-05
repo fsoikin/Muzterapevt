@@ -160,7 +160,6 @@
     </Compile>
     <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\PageListModel.cs" />
-    <Compile Include="Models\PageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +248,7 @@
     <Content Include="Content\js\Templates\AdminMenu.html" />
     <Content Include="Views\Specialist\Page.cshtml" />
     <Content Include="Views\Specialist\Moderator.cshtml" />
+    <Content Include="Views\ChildPagesTree.cshtml" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />

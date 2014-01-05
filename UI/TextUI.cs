@@ -2,7 +2,7 @@
 using erecruit.Composition;
 using Mut.Data;
 
-namespace Mut.Models
+namespace Mut
 {
 	[Export, TransactionScoped]
 	public class TextUI

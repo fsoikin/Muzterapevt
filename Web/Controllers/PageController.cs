@@ -18,42 +18,17 @@ namespace Mut.Controllers
 	public class PageController : Controller
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
-		[Import] public PagesService PagesService { get; set; }
+		[Import] public PageUI PageUI { get; set; }
 		[Import] public MarkupUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 
 		public ActionResult Page( string url )
 		{
-			var p = PagesService.GetPage( url, Auth.CurrentActor.IsAdmin );
-			if ( p == null ) return RedirectToAction( "Page", new { url = "" } );
-
-			var parents = PagesService.GetParentPages( p );
-			var topParent = parents.Where( pr => pr.Url != null && pr.Url != "" ).OrderBy( pr => pr.Url.Length ).FirstOrDefault() ?? p;
-			return View( "~/Views/Page.cshtml", new PageModel { 
-				Page = p, 
-				TopParent = topParent,
-				AllowEdit = Auth.CurrentActor.IsAdmin, 
-				ChildPages = GetChildren( topParent, parents.Count() )
-			} );
-		}
-
-		private IEnumerable<PageModel> GetChildren( Data.Page p, int depth ) {
-			var firstLevel = new[] { p }.ToList();
-			var levels = EnumerableEx.Generate( new { pages = firstLevel, depth = Math.Max( 4, depth ) }, x => x.depth >= 0 && x.pages.Any(), 
-				x => new { pages = PagesService.GetChildPages( x.pages ).ToList(), depth = x.depth - 1 },
-				x => x.pages )
-				.ToList();
-			return MergeChildPages( p, levels.Skip( 1 ) );
-		}
-
-		private IEnumerable<PageModel> MergeChildPages( Data.Page parent, IEnumerable<List<Data.Page>> levels ) {
-			var prefix = parent.Url + "/";
-			return from c in levels.FirstOrDefault().EmptyIfNull()
-						 where c.Url.StartsWith( prefix )
-						 select new PageModel {
-							 Page = c,
-							 ChildPages = MergeChildPages( c, levels.Skip( 1 ) )
-						 };
+			return PageUI.PageModel( url )
+				.Select( model => View( "~/Views/Page.cshtml", model ) as ActionResult )
+				.Or( () => Redirect( Url.Action( ( PageController c ) => c.Page( "" ) ) ) )
+				.LogErrors( Log.Error )
+				.Value;
 		}
 
 		[EditPermission]

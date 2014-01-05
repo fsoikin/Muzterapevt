@@ -7,6 +7,7 @@ using erecruit.Composition;
 using erecruit.Mvc;
 using erecruit.Utils;
 using Mut.Data;
+using Mut.Models;
 using Mut.UI;
 using Mut.Web;
 
@@ -21,9 +22,14 @@ namespace Mut.Controllers
 		[Import] public IRepository<SpecialistSpecialization> Specializations { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 		[Import] public IRepository<Name.Files.File> Files { get; set; }
+		[Import] public PageUI PageUI { get; set; }
 
-		public ViewResult Page() {
-			return View();
+		public ActionResult Page() {
+			return PageUI.PageModel( "specialists/introduction" )
+				.Select( model => View( model ) as ActionResult )
+				.Or( () => Redirect( Url.Action( (PageController c) => c.Page( "" ) ) ) )
+				.LogErrors( Log.Error )
+				.Value;
 		}
 
 		[EditPermission]

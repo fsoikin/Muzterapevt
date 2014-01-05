@@ -3,10 +3,7 @@
 
 @{ ViewBag.Title = Model.Page.Title; }
 @section LeftSidebar {
-		@if ( Model.ChildPages.Any() ) { 
-			<h1 class="left-sidebar-title">@PageLink( Model.TopParent )</h1>
-			<div class="sidenav">@Pages( Model.ChildPages )</div>
-		}
+		@Html.Partial( "~/Views/ChildPagesTree.cshtml" )
 }
 
 @if ( Model.AllowEdit ) {
@@ -18,25 +15,4 @@
 else {
 	<h2>@Model.Page.Title</h2>
 	@Html.Raw( Model.Page.HtmlText )
-}
-
-@helper Pages( IEnumerable<PageModel> pages ) {
-	<ul>
-		@foreach ( var p in pages ) {
-			<li>
-				@PageLink( p.Page )
-				@if ( !p.ChildPages.NullOrEmpty() ) { <text>@Pages( p.ChildPages )</text> }
-			</li>
-		}
-	</ul>
-}
-
-@helper PageLink( Mut.Data.Page p ) {
-	<a href="@(p == Model.Page ? null : Url.Content( "~/" + p.Url ))">@PageName( p )</a>
-}
-
-@functions {
-	string PageName( Mut.Data.Page p ) {
-		return p.ReferenceName.NullOrEmpty() ? p.Title : p.ReferenceName;
-	}
 }
