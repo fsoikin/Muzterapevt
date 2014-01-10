@@ -94,6 +94,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\EmailServiceConfig.cs" />
+    <Compile Include="Entities\Email.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Organization.cs" />
     <Compile Include="Entities\Specialist.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Entities\NavigationItem.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
+    <Content Include="Migrations\005_Added_Email.sql" />
     <Content Include="Migrations\005_Added_Specialist.Ignored.sql" />
     <Content Include="Migrations\004_AddedSpecialists.sql" />
     <Content Include="Migrations\003_AddedFiles.sql" />

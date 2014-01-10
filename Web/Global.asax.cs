@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -25,6 +26,16 @@ namespace Mut
 		class DbConfig : IDatabaseConfig
 		{
 			public string ConnectionString { get { return "Mut"; } }
+		}
+	}
+
+	[Export]
+	class EmailServiceModule : IHttpModule
+	{
+		public void Dispose() {}
+
+		public void Init( HttpApplication context ) {
+			context.Context.Composition().Get<EmailService>();
 		}
 	}
 }
