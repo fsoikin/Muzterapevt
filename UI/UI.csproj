@@ -97,7 +97,7 @@
     <Compile Include="Infrastructure\LoggingModule.cs" />
     <Compile Include="JS\Menu\Item.cs" />
     <Compile Include="JS\Menu\SubItemsSaveRequest.cs" />
-    <Compile Include="JS\Page\PageEditor.cs" />
+    <Compile Include="JS\Page\PageEditModel.cs" />
     <Compile Include="JS\Page\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextUI.cs" />

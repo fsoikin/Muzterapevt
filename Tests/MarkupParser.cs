@@ -51,16 +51,16 @@ namespace Mut.Tests
 		[Fact]
 		public void Should_tolerate_undefined_end_regex() {
 			t( "abc[img]d[i]exyz", "abc<img>d<i>exyz</i>", new[] {
-				new Mut.MarkupParser<string>().SimpleTag( "i" ),
-				new MarkupNodeDefinition<string>( "\\[img\\]", (_,a,b,c) => new TextNode( "<img>", false ) )
+				new Mut.MarkdownParser<string>().SimpleTag( "i" ),
+				new MarkdownNodeDefinition<string>( "\\[img\\]", (_,a,b,c) => new TextNode( "<img>", false ) )
 			});
 		}
 
 		[Fact]
 		public void Should_tolerate_overlapping_start_definitions() {
 			t( "abc**d**ex*y*z", "abc<b>d</b>ex<i>y</i>z", new[] {
-				new Mut.MarkupParser<string>().Wrap( "**", "b" ),
-				new Mut.MarkupParser<string>().Wrap( "*", "i" )
+				new Mut.MarkdownParser<string>().Wrap( "**", "b" ),
+				new Mut.MarkdownParser<string>().Wrap( "*", "i" )
 			} );
 		}
 
@@ -133,7 +133,7 @@ namespace Mut.Tests
 			t( "abc [link=abcd]text[/link] xyz", "abc <a href=\"abcd\">text</a> xyz", new[] { _defParamLinkTag } );
 		}
 
-		static MarkupNodeDefinition<string> _imgTag = new Mut.MarkupParser<string>().ComplexTag( "img", false, 
+		static MarkdownNodeDefinition<string> _imgTag = new Mut.MarkdownParser<string>().ComplexTag( "img", false, 
 			new[] { "", "width", "height" },
 			( ctx, atrs, _ ) => {
 				var width = atrs.ValueOrDefault( "width" );
@@ -143,31 +143,31 @@ namespace Mut.Tests
 				return string.Format( "<img src=\"{0}\"{1}{2} />", atrs.ValueOrDefault( "" ), width, height );
 			} );
 
-		static MarkupNodeDefinition<string> _unclosedLinkTag = new Mut.MarkupParser<string>().ComplexTag( "link", false,
+		static MarkdownNodeDefinition<string> _unclosedLinkTag = new Mut.MarkdownParser<string>().ComplexTag( "link", false,
 			new[] { "url" }, ( ctx, atrs, _ ) => "<a href=\"" + atrs.ValueOrDefault( "url" ) + "\">" );
 
-		static MarkupNodeDefinition<string> _linkTag = new Mut.MarkupParser<string>().ComplexTag( "link", true,
+		static MarkdownNodeDefinition<string> _linkTag = new Mut.MarkdownParser<string>().ComplexTag( "link", true,
 			new[] { "url" }, (ctx, atrs) => new Range<string> {
 				Start = "<a href=\"" + atrs.ValueOrDefault( "url" ) + "\">",
 				End = "</a>"
 			} );
 
-		static MarkupNodeDefinition<string> _defParamLinkTag = new Mut.MarkupParser<string>().ComplexTag( "link", true,
+		static MarkdownNodeDefinition<string> _defParamLinkTag = new Mut.MarkdownParser<string>().ComplexTag( "link", true,
 			new[] { "" }, ( ctx, atrs ) => new Range<string> {
 				Start = "<a href=\"" + atrs.ValueOrDefault( "" ) + "\">",
 				End = "</a>"
 			} );
 
-		void t( string source, string result = null, IEnumerable<MarkupNodeDefinition<string>> defs = null ) {
+		void t( string source, string result = null, IEnumerable<MarkdownNodeDefinition<string>> defs = null ) {
 			if ( result == null ) result = source.Replace( '[', '<' ).Replace( ']', '>' );
-			var res = new Mut.MarkupParser<string>().Parse( source, "", defs ?? StdDefs );
+			var res = new Mut.MarkdownParser<string>().Parse( source, "", defs ?? StdDefs );
 			Assert.Equal( result, string.Join( "", res.Select( r => r.Instance.ToHtml() ) ) );
 		}
 
-		static readonly MarkupNodeDefinition<string>[] StdDefs = new[] {
-			new Mut.MarkupParser<string>().SimpleTag( "b" ),
-			new Mut.MarkupParser<string>().SimpleTag( "i" ),
-			new Mut.MarkupParser<string>().SimpleTag( "u" )
+		static readonly MarkdownNodeDefinition<string>[] StdDefs = new[] {
+			new Mut.MarkdownParser<string>().SimpleTag( "b" ),
+			new Mut.MarkdownParser<string>().SimpleTag( "i" ),
+			new Mut.MarkdownParser<string>().SimpleTag( "u" )
 		};
 	}
 }

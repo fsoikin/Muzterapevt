@@ -17,8 +17,6 @@ namespace Mut
 			routes.MapRoute( "TextAttachment", "--/text/{textId}/{action}", new { controller = "Text" }, new { action = "^Attachment.+" } );
 
 			routes.MapRoute( "Default", "-/{controller}/{action}", new { controller = "BackOffice", action = "Index" } );
-
-			routes.MapRoute( "Specialist", "specialists/introduction", new { controller = "Specialist", action = "Page" } );
 			routes.MapRoute( "Page", "{*url}", new { controller = "Page", action = "Page", url = UrlParameter.Optional } );
 		}
 	}

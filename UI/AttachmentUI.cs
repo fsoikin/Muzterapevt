@@ -97,8 +97,8 @@ namespace Mut
 			}
 		}
 
-		public MarkupNodeDefinition<MarkupParseArgs> BBImageTag() {
-			return new MarkupParser<MarkupParseArgs>().ComplexTag( "img", false, new[] { "", "width", "height" },
+		public MarkdownNodeDefinition<MarkdownParseArgs> BBImageTag() {
+			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "img", false, new[] { "", "width", "height" },
 				( ctx, attrs, inners ) => {
 					var width = attrs.ValueOrDefault( "width" ).ToIntOrNull();
 					var height = attrs.ValueOrDefault( "height" ).ToIntOrNull();
@@ -116,8 +116,8 @@ namespace Mut
 			"yes", "1", "true", "да"
 		};
 
-		public MarkupNodeDefinition<MarkupParseArgs> BBFileTag() {
-			return new MarkupParser<MarkupParseArgs>().ComplexTag( "file", true, new[] { "", "download", "window", "tab" },
+		public MarkdownNodeDefinition<MarkdownParseArgs> BBFileTag() {
+			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "file", true, new[] { "", "download", "window", "tab" },
 				( ctx, attrs ) => {
 					var file = attrs.ValueOrDefault( "" );
 					var download = _yes.Contains( attrs.ValueOrDefault( "download" ) ?? "" );

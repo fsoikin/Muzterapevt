@@ -158,6 +158,7 @@
     <Compile Include="Controllers\BackOffice\PagesController.cs" />
     <Compile Include="Controllers\BBCodeController.cs" />
     <Compile Include="Controllers\BackOfficeController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\SpecialistController.cs" />
     <Compile Include="Controllers\TextController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -253,7 +254,6 @@
       <DependentUpon>AdminMenu.less</DependentUpon>
     </Content>
     <Content Include="Content\js\Templates\AdminMenu.html" />
-    <Content Include="Views\Specialist\Page.cshtml" />
     <Content Include="Views\Specialist\Moderator.cshtml" />
     <Content Include="Views\ChildPagesTree.cshtml" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />

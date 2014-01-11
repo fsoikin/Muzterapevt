@@ -19,7 +19,7 @@ namespace Mut.Controllers
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
 		[Import] public PageUI PageUI { get; set; }
-		[Import] public MarkupUI Markup { get; set; }
+		[Import] public MarkdownUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 
 		public ActionResult Page( string url )
@@ -54,7 +54,7 @@ namespace Mut.Controllers
 				p.BbText = page.Text;
 				p.TagsStandIn = page.TagsStandIn;
 				p.ReferenceName = page.ReferenceName;
-				p.HtmlText = Markup.ToHtml( p.BbText ?? "", new MarkupParseArgs { AttachmentMixin = Url.Mixin( (PageController c) => c.Attachment( page.Id ) ) } );
+				p.HtmlText = Markup.ToHtml( p.BbText ?? "", new MarkdownParseArgs { AttachmentMixin = Url.Mixin( (PageController c) => c.Attachment( page.Id ) ) } );
 				UnitOfWork.Commit();
 
 				return JsonResponse.Create( new JS.PageSaveResult { Title = p.Title, Html = p.HtmlText } );

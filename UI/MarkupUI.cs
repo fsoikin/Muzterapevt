@@ -7,34 +7,43 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using erecruit.Composition;
+using erecruit.JS;
 using erecruit.Utils;
 using Newtonsoft.Json;
 
 namespace Mut.UI
 {
-	public class MarkupParseArgs
+	public class MarkdownParseArgs
 	{
 		public erecruit.Mvc.MixinRouteBuilder<AttachmentUI.Mixin> AttachmentMixin { get; set; }
 	}
 
-	[Export, TransactionScoped]
-	public class MarkupUI
+	public interface IMarkdownCustomModule
 	{
-		private readonly MarkupParser<MarkupParseArgs> _parser = new MarkupParser<MarkupParseArgs>();
+		string Name { get; }
+		IEnumerable<string> Parameters { get; }
+		ClassRef GetClassRef( IDictionary<string, string> args );
+	}
+
+	[Export, TransactionScoped]
+	public class MarkdownUI
+	{
+		private readonly MarkdownParser<MarkdownParseArgs> _parser = new MarkdownParser<MarkdownParseArgs>();
 
 		[Import] public VideoEmbedUI Video { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
+		[Import] public IEnumerable<IMarkdownCustomModule> CustomModules { get; set; }
 
-		public string ToHtml( string text, MarkupParseArgs args ) {
+		public string ToHtml( string text, MarkdownParseArgs args ) {
 			return string.Join( "", _parser.Parse( text, args, Defs ).Select( n => n.Instance.ToHtml() ) );
 		}
 
 		// TODO: These should be defined via faceted composition
-		public IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> Defs {
+		public IEnumerable<MarkdownNodeDefinition<MarkdownParseArgs>> Defs {
 			get {
 				return new[] {
-					new MarkupNodeDefinition<MarkupParseArgs>( @"\[\[", (args,start,end,inners) => new TextNode( "[" ) ),
-					new MarkupNodeDefinition<MarkupParseArgs>( @"\]\]", (args,start,end,inners) => new TextNode( "]" ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"\[\[", (args,start,end,inners) => new TextNode( "[" ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"\]\]", (args,start,end,inners) => new TextNode( "]" ) ),
 
 					_parser.Wrap( "**", "b" ),
 					_parser.Wrap( "*", "i" ),
@@ -58,10 +67,10 @@ namespace Mut.UI
 						Start = "<a href=\"#" + atrs.ValueOrDefault("") + "\">", End = "</a>" } ),
 
 					// List
-					new MarkupNodeDefinition<MarkupParseArgs>( @"((?<=([\n\r]+|^)((?![\r\n])\s)*([^\s\*\r\n][^\r\n]+){0,1})(\r\n|\n\r|\r|\n)(?=((?![\r\n])\s)+\*))|(^(?=\s+\*))", @"(?<=(\r\n|\n\r|\r|\n)|$)(?!\s+\*)", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"((?<=([\n\r]+|^)((?![\r\n])\s)*([^\s\*\r\n][^\r\n]+){0,1})(\r\n|\n\r|\r|\n)(?=((?![\r\n])\s)+\*))|(^(?=\s+\*))", @"(?<=(\r\n|\n\r|\r|\n)|$)(?!\s+\*)", (ctx,_,__,inners) => new WrapNode( "ul", inners ) ),
 
 					// List item
-					new MarkupNodeDefinition<MarkupParseArgs>( @"(?<=([\n\r]+)|^)((?![\r\n])\s)+\*(?=[^\r\n]+)", @"(?<=(([\n\r]+)|^)((?![\r\n])\s)+\*[^\r\n]+)((\r\n|\n\r|\r|\n)|$)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"(?<=([\n\r]+)|^)((?![\r\n])\s)+\*(?=[^\r\n]+)", @"(?<=(([\n\r]+)|^)((?![\r\n])\s)+\*[^\r\n]+)((\r\n|\n\r|\r|\n)|$)", (ctx,_,__,inners) => new WrapNode( "li", inners ) ),
 
 					Video.VideoBBTag(),
 					Video.PlaylistBBTag(),
@@ -74,21 +83,28 @@ namespace Mut.UI
 						return f == null ? "" : f.SourceString.Substring( f.SourceStartIndex, l.SourceEndIndex - f.SourceStartIndex );
 					} ),
 
-					new MarkupNodeDefinition<MarkupParseArgs>( @"&[^;\s]+;", (ctx, regex, _, __) => new TextNode( regex.Value, false ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"&[^;\s]+;", (ctx, regex, _, __) => new TextNode( regex.Value, false ) ),
 
-					new MarkupNodeDefinition<MarkupParseArgs>( @"\r\n|\n\r|\n|\r", (ctx, regex, _, __) => new TextNode( "<br/>", false ) ),
+					new MarkdownNodeDefinition<MarkdownParseArgs>( @"\r\n|\n\r|\n|\r", (ctx, regex, _, __) => new TextNode( "<br/>", false ) ),
 
 					// Legacy:
 					_parser.SimpleTag("b"), _parser.SimpleTag("i"), _parser.SimpleTag("u"),
 					_parser.SimpleTag("h", "h2"), _parser.SimpleTag("h1")
 				}
-				.Concat( GetTriviaTags() );
+				.Concat( GetTriviaTags() )
+				.Concat( from m in CustomModules
+								 select _parser.ComplexTag( m.Name, false, m.Parameters.ToArray(), ( _, args, inners ) => {
+									 var classRef = m.GetClassRef( args );
+									 return string.Format( "<div class='autobind' data-controller='{0}, {1}' data-args='{2}'></div>", classRef.Class, classRef.Module,
+											HttpUtility.HtmlAttributeEncode( JsonConvert.SerializeObject( classRef.Arguments ) ) );
+								 } ) );
+
 			}
 		}
 
 		// TODO: this should be defined in the Web project, because it's coupled with the client-side code
-		private IEnumerable<MarkupNodeDefinition<MarkupParseArgs>> GetTriviaTags() {
-			var responseMarker = new MarkupNodeDefinition<MarkupParseArgs>( "::RESPONSE:", (_1,_2,_3,_4) => new TextNode("") );
+		private IEnumerable<MarkdownNodeDefinition<MarkdownParseArgs>> GetTriviaTags() {
+			var responseMarker = new MarkdownNodeDefinition<MarkdownParseArgs>( "::RESPONSE:", (_1,_2,_3,_4) => new TextNode("") );
 			var triviaTag = _parser.ComplexTag( "trivia", true, new[] { "answers" }, ( args, attrs, inners ) => {
 				var question = inners.TakeWhile( x => x.Def != responseMarker );
 				var response = inners.SkipWhile( x => x.Def != responseMarker );
@@ -97,7 +113,7 @@ namespace Mut.UI
 						<div class='question'>{1}</div>
 						<div class='response'>{2}</div>
 					</div>",
-					HttpUtility.HtmlEncode( JsonConvert.SerializeObject( new {
+					HttpUtility.HtmlAttributeEncode( JsonConvert.SerializeObject( new {
 						answers = from s in (attrs.ValueOrDefault( "answers" ) ?? "").Split( ',' )
 											let t = s.Trim()
 											where !t.NullOrEmpty()
@@ -110,11 +126,47 @@ namespace Mut.UI
 			return new[] { responseMarker, triviaTag };
 		}
 
-		MarkupNodeDefinition<MarkupParseArgs> heading( string markup, string htmlTag ) {
-			return new MarkupNodeDefinition<MarkupParseArgs>(
+		MarkdownNodeDefinition<MarkdownParseArgs> heading( string markup, string htmlTag ) {
+			return new MarkdownNodeDefinition<MarkdownParseArgs>(
 				@"(?<=([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"(?=[^\r\n]+" + markup + @"\s*([\r\n]|$))",
 				@"(?<=(([\r\n]+)|^)((?![\r\n])\s)*" + markup + @"[^\r\n]+)" + markup + @"((?![\r\n])\s)*((\r\n|\n\r|\r|\n)|$)",
 				( ctx, _, __, inners ) => new WrapNode( htmlTag, inners ) );
 		}
+	}
+
+	public static class MarkdownCustomModule
+	{
+		public static IMarkdownCustomModule Create( string name, ClassRef classRef ) {
+			Contract.Requires( !String.IsNullOrEmpty( name ) );
+			Contract.Requires( classRef != null );
+			Contract.Ensures( Contract.Result<IMarkdownCustomModule>() != null );
+			return Create( name, null, _ => classRef );
+		}
+			
+		public static IMarkdownCustomModule Create( string name, IEnumerable<string> args, Func<IDictionary<string, string>, ClassRef> getClassRef ) {
+			Contract.Requires( getClassRef != null );
+			Contract.Requires( !String.IsNullOrEmpty( name ) );
+			Contract.Ensures( Contract.Result<IMarkdownCustomModule>() != null );
+			return new Implementation( name, args, getClassRef );
+		}
+
+		class Implementation : IMarkdownCustomModule
+		{
+			public string Name { get; private set; }
+
+			public IEnumerable<string> Parameters { get; private set; }
+
+			private readonly Func<IDictionary<string, string>, ClassRef> _getClassRef;
+			public ClassRef GetClassRef( IDictionary<string, string> args ) {
+				return _getClassRef( args );
+			}
+
+			public Implementation( string name, IEnumerable<string> args, Func<IDictionary<string, string>, ClassRef> getClassRef ) {
+				Name = name;
+				Parameters = args.EmptyIfNull();
+				_getClassRef = getClassRef;
+			}
+		}
+
 	}
 }

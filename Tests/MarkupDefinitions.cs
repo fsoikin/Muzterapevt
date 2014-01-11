@@ -138,8 +138,8 @@ namespace Mut.Tests
 		}
 
 		void t( string source, string result = null ) {
-			var res = new Mut.MarkupParser<Mut.UI.MarkupParseArgs>().Parse( source, null,
-				new Mut.UI.MarkupUI {
+			var res = new Mut.MarkdownParser<Mut.UI.MarkdownParseArgs>().Parse( source, null,
+				new Mut.UI.MarkdownUI {
 					Video = new UI.VideoEmbedUI(),
 					Attachments = new AttachmentUI()
 				}.Defs );

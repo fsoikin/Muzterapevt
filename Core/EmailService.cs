@@ -17,21 +17,37 @@ namespace Mut
 	[Export]
 	public class EmailService : IDisposable
 	{
-		public void ForceEmailCheck() {
+		public void SendPendingEmailsNow() {
 			_kick.OnNext( Unit.Default );
 		}
 
-		public EmailService( Func<IRepository<Email>> emails, Func<IRepository<EmailServiceConfig>> config,
-			Func<IUnitOfWork> unitOfwork, ITransactionService tran, ILog log ) {
+		public void SendEmail( Email e ) {
+			using ( _tran.OpenTransaction() ) {
+				_emails().Add( e );
+				_unitOfwork().Commit();
+			}
+			SendPendingEmailsNow();
+		}
 
-			var checkPeriod = TimeSpan.FromMilliseconds( FetchConfig( tran, config, unitOfwork ).CheckPeriodMilliseconds );
+		readonly Func<IRepository<Email>> _emails;
+		readonly Func<IUnitOfWork> _unitOfwork;
+		readonly ITransactionService _tran;
+
+		public EmailService( ITransactionService tran, Func<IUnitOfWork> unitOfwork, Func<IRepository<Email>> emails,
+			Func<IRepository<EmailServiceConfig>> config, ILog log ) {
+
+			this._emails = emails;
+			this._tran = tran;
+			this._unitOfwork = unitOfwork;
+
+			var checkPeriod = TimeSpan.FromMilliseconds( FetchConfig( config ).CheckPeriodMilliseconds );
 			var onNeedToCheck = _kick.Merge( Observable.Interval( checkPeriod ).Select( _ => Unit.Default ) );
 
 			_running = onNeedToCheck.ObserveOn( ThreadPoolScheduler.Instance )
 				.SelectMany( _1 => Observable.Using( () => tran.OpenTransaction(), tranScope =>
 					from _4 in Observable.Return( 0 )
 					let cfg = GetConfig( config() )
-					let batch = emails().All.Where( e => e.Id > cfg.LastProcessedEmailId ).OrderBy( x => x.Id ).Take( cfg.BatchSize )
+					let batch = _emails().All.Where( e => e.Id > cfg.LastProcessedEmailId ).OrderBy( x => x.Id ).Take( cfg.BatchSize )
 
 					from e in batch
 						.ToList()
@@ -43,12 +59,12 @@ namespace Mut
 						.Do( _5 => {
 							using ( tranScope.Transaction.OpenScope() ) { // This is needed, because Send may return on a different thread
 								cfg.LastProcessedEmailId = e.Id;
-								unitOfwork().Commit();
+								_unitOfwork().Commit();
 							}
 						} )
 
 					select Unit.Default ) )
-				.Catch( (Exception ex) => {
+				.Catch( ( Exception ex ) => {
 					log.Error( ex );
 					return Observable.Timer( TimeSpan.FromSeconds( 1 ) ).Select( __ => Unit.Default );
 				} )
@@ -79,10 +95,10 @@ namespace Mut
 			return config.All.FirstOrDefault() ?? config.Add( new EmailServiceConfig() );
 		}
 
-		private EmailServiceConfig FetchConfig( ITransactionService tran, Func<IRepository<EmailServiceConfig>> config, Func<IUnitOfWork> unitOfWork ) {
-			using ( tran.OpenTransaction() ) {
+		private EmailServiceConfig FetchConfig( Func<IRepository<EmailServiceConfig>> config ) {
+			using ( _tran.OpenTransaction() ) {
 				var res = GetConfig( config() );
-				unitOfWork().Commit();
+				_unitOfwork().Commit();
 				return res;
 			}
 		}

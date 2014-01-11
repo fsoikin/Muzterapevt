@@ -12,13 +12,13 @@ namespace Mut.UI
 {
 	public class VideoEmbedUI
 	{
-		public MarkupNodeDefinition<MarkupParseArgs> VideoBBTag() {
-			return new MarkupParser<MarkupParseArgs>().ComplexTag( "video", false, new[] { "" },
+		public MarkdownNodeDefinition<MarkdownParseArgs> VideoBBTag() {
+			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "video", false, new[] { "" },
 				( ctx, attrs, inners ) => HtmlFromUrl( attrs.ValueOrDefault( "" ) ) );
 		}
 
-		public MarkupNodeDefinition<MarkupParseArgs> PlaylistBBTag() {
-			return new MarkupParser<MarkupParseArgs>().ComplexTag( "playlist", false, new[] { "" },
+		public MarkdownNodeDefinition<MarkdownParseArgs> PlaylistBBTag() {
+			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "playlist", false, new[] { "" },
 				( ctx, attrs, inners ) => {
 					var m = _youtubePlaylist.Match( attrs.ValueOrDefault( "" ) ?? "" );
 					if ( m.Success ) return "<div class='autobind' data-controller='BL/Widgets/youtubePlaylist' data-args='{ id: \"" + m.Groups["id"] + "\" }'></div>";

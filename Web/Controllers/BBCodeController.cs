@@ -9,12 +9,12 @@ namespace Mut.Controllers
 	[EditPermission]
 	public class BBCodeController : Controller
 	{
-		[Import] public MarkupUI UI { get; set; }
+		[Import] public MarkdownUI UI { get; set; }
 
 		public IJsonResponse<string> ToHtml( string bbText )
 		{
 			return JsonResponse.Catch( () => 
-				UI.ToHtml( bbText, new MarkupParseArgs() ), Log );
+				UI.ToHtml( bbText, new MarkdownParseArgs() ), Log );
 		}
 	}
 }
