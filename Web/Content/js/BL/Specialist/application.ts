@@ -56,7 +56,7 @@ export class ApplicationVm extends c.TemplatedControl {
 	DoneText = new text.TextView( { id: 'Specialist.RegistrationSent' } );
 	PromptText = new text.TextView( { id: 'Specialist.RegistrationPrompt' });
 
-	constructor( args: { id: number }) {
+	constructor() {
 		super( Template );
 	}
 

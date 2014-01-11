@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\TypeScriptModuleAttribute.cs" />
+    <Compile Include="JS\Feedback\FeedbackQuestion.cs" />
     <Compile Include="JS\Specialists\SpecialistView.cs" />
     <Compile Include="JS\Specialists\SpecialistSpecialization.cs" />
     <Compile Include="JS\Specialists\SpecialistProfession.cs" />
@@ -130,6 +131,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="JS\Feedback\FeedbackQuestion.cs.d.ts">
+      <DependentUpon>FeedbackQuestion.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Specialists\Country.cs.d.ts">
       <DependentUpon>Country.cs</DependentUpon>
     </TypeScriptCompile>

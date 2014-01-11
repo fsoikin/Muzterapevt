@@ -192,10 +192,18 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
+    <Content Include="Content\js\BL\Feedback\Templates\questionForm.css">
+      <DependentUpon>questionForm.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\BL\Feedback\Templates\Specialist.css">
+      <DependentUpon>questionForm.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\BL\Feedback\Templates\questionForm.html" />
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.css">
       <DependentUpon>Moderator.less</DependentUpon>
     </Content>
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.less" />
+    <Content Include="Content\js\BL\Feedback\Templates\questionForm.less" />
     <None Include="Content\js\BL\Specialist\Templates\Specialist.less" />
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.html" />
     <Content Include="Content\js\BL\Specialist\Templates\Specialist.css">
@@ -259,6 +267,7 @@
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />
+    <TypeScriptCompile Include="Content\js\BL\Feedback\questionForm.ts" />
     <TypeScriptCompile Include="Content\js\BL\Widgets\trivia.ts" />
     <TypeScriptCompile Include="Content\js\BL\bbCode.ts" />
     <TypeScriptCompile Include="Content\js\BL\base.ts" />

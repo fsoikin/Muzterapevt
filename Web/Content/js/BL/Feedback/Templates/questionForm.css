@@ -1,0 +1,8 @@
+﻿.feedback-question-form .field {
+    width: 95%;
+    margin-bottom: 10px;
+}
+
+.feedback-question-form .field textarea {
+    height: 10em;
+}
