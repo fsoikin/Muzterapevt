@@ -195,9 +195,6 @@
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.css">
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Feedback\Templates\Specialist.css">
-      <DependentUpon>questionForm.less</DependentUpon>
-    </Content>
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.html" />
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.css">
       <DependentUpon>Moderator.less</DependentUpon>
