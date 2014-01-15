@@ -2,6 +2,7 @@
 /// <reference path="../../tsd/knockout-2.2.d.ts"/>
 /// <amd-dependency path="RootUrl" />
 import $ = require( "jQuery" );
+import rx = require( "rx" );
 
 // TODO: [fs] provide RX-based API alternative
 
@@ -33,13 +34,38 @@ export function Call( method: string, url: string, data: any,
 	onSuccess: ( result: any ) => void, options?: {} )
 {
 	inProgress && inProgress( true );
-	return $
-		.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' }) )
+	return makeXhr( method, url, data, options )
 		.fail( e => onError && onError( e.statusText ) )
 		.always( () => inProgress && inProgress( false ) )
 		.done( ( e: JsonResponse ) => e.Success
 			? ( onSuccess && onSuccess( e.Result ) )
 			: ( onError && onError( ( e.Messages || [] ).join() ) ) );
+}
+
+
+export function GetAsRx<T>( url: string, data?: any, options?: any ) {
+	return CallAsRx<T>( "GET", url, data, options );
+}
+
+export function PostAsRx<T>( url: string, data?: any, options?: any ) {
+	return CallAsRx<T>( "POST", url, JSON.stringify( data ), options );
+}
+
+export function CallAsRx<T>( method: string, url: string, data?: any, options?: any ) {
+	return rx.Observable.create<T>( o => {
+		var xhr = makeXhr( method, url, data, options )
+			.fail( e => o.onError( e ) )
+			.done( ( x: JsonResponse ) => x.Success
+				? ( o.onNext( x.Result ) )
+				: ( o.onError( ( x.Messages || [] ).join() ) ) )
+			.always( e => o.onCompleted() );
+		return () => xhr.abort();
+	});
+}
+
+function makeXhr( method: string, url: string, data: any, options?: {} )
+{
+	return $.ajax( $.extend( options || {}, { type: method, url: AbsoluteUrl( url ), data: data, contentType: 'application/json' }) );
 }
 
 export function PageUrl( url: string ) {

@@ -1,0 +1,42 @@
+﻿.login-popup {
+	position: fixed;
+	left: 40%;
+	right: 40%;
+	top: 40%;
+	bottom: 40%;
+	border: 1px solid black;
+	background: white;
+	padding: 30px;
+
+	.button {
+		cursor: pointer;
+		display: inline-block;
+		border: 1px solid transparent;
+
+		&:hover {
+			border: 1px solid #E5E5E5;
+		}
+
+		.title {
+			text-align: center;
+		}
+
+		.logo {
+			background-repeat: no-repeat;
+			background-position: center;
+			width: 100px;
+			height: 50px;
+
+			.logo(@name) {
+				&.@{name} {
+					background-image: url("../../img/login/@{name}.jpg");
+				}
+			}
+
+			.logo(google);
+			.logo(facebook);
+			.logo(yahoo);
+			.logo(yandex);
+		}
+	}
+}

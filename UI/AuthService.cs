@@ -17,6 +17,7 @@ namespace Mut
 	{
 		string Name { get; }
 		bool IsAdmin { get; }
+		bool IsAuthenticated { get; }
 	}
 
 	public interface IUserActor : ISecurityActor
@@ -71,11 +72,12 @@ namespace Mut
 
 			public string Name { get { return User.Name; } }
 			public bool IsAdmin { get { return User.IsAdmin; } }
+			public bool IsAuthenticated { get { return true; } }
 
 			public Principal ( User u )
 			{
 				User = u;
-				Identity = new GenericIdentity( u.Name );
+				Identity = new GenericIdentity( u.Name ?? "" );
 			}
 		}
 
@@ -83,6 +85,7 @@ namespace Mut
 		{
 			public string Name { get { return "Guest"; } }
 			public bool IsAdmin { get { return true; } } // TODO: Mock
+			public bool IsAuthenticated { get { return false; } }
 		}
 	}
 }

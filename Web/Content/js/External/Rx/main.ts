@@ -7,6 +7,12 @@ require.config( {
 	map: {
 		'External/Rx/rx.time.min': {
 			rx: 'External/Rx/rx.min'
+		},
+		'External/Rx/rx.dom.min': {
+			rx: 'External/Rx/rx.min'
+		},
+		'External/Rx/rx.binding.min': {
+			rx: 'External/Rx/rx.min'
 		}
 	}
 });
@@ -14,7 +20,9 @@ require.config( {
 define( [
 	'External/Rx/rx.min',
 	'ko',
-	'External/Rx/rx.time.min'],
+	'External/Rx/rx.time.min',
+	'External/Rx/rx.binding.min',
+	'External/Rx/rx.dom.min'],
 ( rx, ko ) => {
 	extend( rx, ko );
 	return rx;

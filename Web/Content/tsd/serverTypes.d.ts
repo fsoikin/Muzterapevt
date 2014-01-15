@@ -8,3 +8,6 @@
 /// <reference path="../../../UI/JS/Feedback/FeedbackQuestion.cs.d.ts" />
 
 /// <reference path="../../../UI/JS/Text/TextView.cs.d.ts" />
+
+/// <reference path="../../Models/Login/LoginMethodModel.cs.d.ts" />
+/// <reference path="../../Models/Login/LoginResultModel.cs.d.ts" />

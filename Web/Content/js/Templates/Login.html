@@ -1,0 +1,8 @@
+﻿<div class="login-popup">
+	<!-- ko control: InfoBox --><!-- /ko -->
+	<div data-bind="foreach: Methods">
+		<div class="button" data-bind="click: $parent.OnMethodChosen( $data )">
+			<div data-bind="attr: { 'class': 'logo ' + LogoClass }">&nbsp;</div>
+		</div>
+	</div>
+</div>

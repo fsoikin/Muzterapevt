@@ -10,5 +10,6 @@ namespace Mut.Models
 		public TextModel TopRight { get; set; }
 		public TextModel Left { get; set; }
 		public TextModel Right { get; set; }
+		public ISecurityActor CurrentUser { get; set; }
 	}
 }

@@ -5,6 +5,7 @@
 /// <reference path="../tsd/knockout-2.2.d.ts"/>
 /// <reference path="../tsd/knockout.mapping-2.0.d.ts"/>
 /// <reference path="../tsd/rx.d.ts" />
+/// <reference path="../tsd/rx.dom.d.ts" />
 /// <reference path="../tsd/rx-ko.d.ts" />
 /// <reference path="../tsd/linq.d.ts"/>
 /// <reference path="../tsd/linq.amd.d.ts"/>

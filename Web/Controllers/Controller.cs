@@ -37,7 +37,8 @@ namespace Mut.Controllers
 				SecondTopMenu = TopMenu.GetTopMenu( "TopMenu.Second" ),
 				Left = Text.TextModel( "Layout.Left" ),
 				Right = Text.TextModel( "Layout.Right" ),
-				TopRight = Text.TextModel( "Layout.TopRight" )
+				TopRight = Text.TextModel( "Layout.TopRight" ),
+				CurrentUser = Auth.CurrentActor
 			};
 
 			base.OnActionExecuting( filterContext );

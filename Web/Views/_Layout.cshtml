@@ -10,28 +10,38 @@
 		<script type="text/javascript">define('RootUrl', [], function () { return '@Url.Content("~/")'; });</script>
 		<link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/css/template-style.css")" />
 	</head>
-	<body>
-		<div class="container">
-			@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
-			<div class="banner"><img src="@Url.Content( "~/Content/img/template/banner.jpg" )" alt="Muzterapevt.RU" title="Muzterapevt.RU"/> </div>
-			<div class="bannerb">
-				@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
-			</div>
-			@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
-			<div class="sidebar">
-				@RenderSection("LeftSidebar", false)
-				@Html.Partial( "~/Views/Text.cshtml", model.Left )
-			</div>
-			<div class="sidebar-b">
-				@Html.Partial( "~/Views/Text.cshtml", model.Right )
-			</div>
-			<div class="content">
-				@RenderBody()
-			</div>
-			<div class="footer"> <a href="@Url.Content("~/")">homepage</a> | <a href="mailto:alisa@apreleva.com">contact</a> | &copy; 2013 Alisa Apreleva<br/></div>
+<body>
+	<div class="container">
+		@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
+		<div class="banner"><img src="@Url.Content( "~/Content/img/template/banner.jpg" )" alt="Muzterapevt.RU" title="Muzterapevt.RU" /> </div>
+		<div class="bannerb">
+			@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
 		</div>
-		@if ( model.ShowAdminMenu ) {
-			<div class="autobind" data-controller="AdminMenu" />
-		}		
-	</body>
+		@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
+		<div class="sidebar">
+			@RenderSection( "LeftSidebar", false )
+			@Html.Partial( "~/Views/Text.cshtml", model.Left )
+		</div>
+		<div class="sidebar-b">
+			@Html.Partial( "~/Views/Text.cshtml", model.Right )
+		</div>
+		<div class="content">
+			@RenderBody()
+		</div>
+		<div class="footer">
+			@if ( model.CurrentUser.IsAuthenticated ) {
+				<div class="current-user">Logged in as: <span>@(model.CurrentUser.Name)</span></div>
+			}
+			<a href="@Url.Content("~/")">homepage</a> |
+			<a href="mailto:alisa@apreleva.com">contact</a> |
+			@if ( !model.CurrentUser.IsAuthenticated ) { <a href="#" class="autobind" data-controller="LoginButton, Login">login</a> }
+			else { <a href="@Url.Action( (Mut.Controllers.LoginController c) => c.Logout( Request.Url.ToString() ) )">logout</a> }
+			|
+			&copy; 2013 Alisa Apreleva<br />
+		</div>
+	</div>
+	@if ( model.ShowAdminMenu ) {
+		<div class="autobind" data-controller="AdminMenu" />
+	}
+</body>
 </html>

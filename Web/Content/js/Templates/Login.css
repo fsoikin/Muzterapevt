@@ -1,0 +1,47 @@
+﻿.login-popup {
+    position: fixed;
+    left: 40%;
+    right: 40%;
+    top: 40%;
+    bottom: 40%;
+    border: 1px solid black;
+    background: white;
+    padding: 30px;
+}
+
+.login-popup .button {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
+.login-popup .button:hover {
+    border: 1px solid #E5E5E5;
+}
+
+.login-popup .button .title {
+    text-align: center;
+}
+
+.login-popup .button .logo {
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100px;
+    height: 50px;
+}
+
+.login-popup .button .logo.google {
+    background-image: url(../../img/login/google.jpg);
+}
+
+.login-popup .button .logo.facebook {
+    background-image: url(../../img/login/facebook.jpg);
+}
+
+.login-popup .button .logo.yahoo {
+    background-image: url(../../img/login/yahoo.jpg);
+}
+
+.login-popup .button .logo.yandex {
+    background-image: url(../../img/login/yandex.jpg);
+}

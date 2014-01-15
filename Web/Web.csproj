@@ -45,6 +45,24 @@
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.Client">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.Client.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.ClientAuthorization.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
     <Reference Include="erecruit.Composition">
       <HintPath>..\External\erecruit.Composition.dll</HintPath>
     </Reference>
@@ -154,6 +172,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\Controller.cs" />
     <Compile Include="Controllers\BackOffice\PagesController.cs" />
     <Compile Include="Controllers\BBCodeController.cs" />
@@ -166,6 +185,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Login\LoginResultModel.cs" />
+    <Compile Include="Models\Login\LoginMethodModel.cs" />
     <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\PageListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -196,6 +217,15 @@
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.html" />
+    <None Include="Content\js\Templates\Login.less" />
+    <Content Include="Content\js\External\Rx\rx.binding.js" />
+    <Content Include="Content\js\External\Rx\rx.binding.min.js" />
+    <Content Include="Content\js\External\Rx\rx.dom.js" />
+    <Content Include="Content\js\External\Rx\rx.dom.min.js" />
+    <Content Include="Content\js\Templates\Login.css">
+      <DependentUpon>Login.less</DependentUpon>
+    </Content>
+    <Content Include="Content\js\Templates\Login.html" />
     <Content Include="Content\js\BL\Specialist\Templates\Moderator.css">
       <DependentUpon>Moderator.less</DependentUpon>
     </Content>
@@ -261,10 +291,12 @@
     <Content Include="Content\js\Templates\AdminMenu.html" />
     <Content Include="Views\Specialist\Moderator.cshtml" />
     <Content Include="Views\ChildPagesTree.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />
     <TypeScriptCompile Include="Content\js\BL\Feedback\questionForm.ts" />
+    <TypeScriptCompile Include="Content\js\Login.ts" />
     <TypeScriptCompile Include="Content\js\BL\Widgets\trivia.ts" />
     <TypeScriptCompile Include="Content\js\BL\bbCode.ts" />
     <TypeScriptCompile Include="Content\js\BL\base.ts" />
@@ -345,16 +377,20 @@
     <Content Include="web_smtp.config" />
     <Content Include="Views\TopMenu.cshtml" />
     <Content Include="Views\Text.cshtml" />
+    <Content Include="Content\tsd\rx.dom.d.ts" />
     <TypeScriptCompile Include="Content\tsd\serverTypes.d.ts" />
+    <TypeScriptCompile Include="Models\Login\LoginMethodModel.cs.d.ts">
+      <DependentUpon>LoginMethodModel.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Models\Login\LoginResultModel.cs.d.ts">
+      <DependentUpon>LoginResultModel.cs</DependentUpon>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\js\External\Rx\rx.time.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core.Data\Core.Data.csproj">

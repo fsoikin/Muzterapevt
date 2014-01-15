@@ -238,3 +238,7 @@ a:hover {
 .clear {
     clear: both;
 }
+
+.current-user {
+    float: right;
+}
