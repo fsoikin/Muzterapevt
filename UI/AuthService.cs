@@ -84,7 +84,7 @@ namespace Mut
 		class Guest : ISecurityActor
 		{
 			public string Name { get { return "Guest"; } }
-			public bool IsAdmin { get { return true; } } // TODO: Mock
+			public bool IsAdmin { get { return false; } }
 			public bool IsAuthenticated { get { return false; } }
 		}
 	}
