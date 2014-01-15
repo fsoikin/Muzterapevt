@@ -40,6 +40,7 @@ export class MenuVm implements c.IControl {
 		this.MustBeVisible() ||
 		this.Items().some( i => i.Children.EffectiveMustBeVisible() ) );
 	IsVisible = ko.observable( false );
+	EffectiveIsVisible = ko.computed( () => this.IsVisible() && ( this.AllowEdit || this.Items().length ) );
 
 	constructor( args?: {
 		items?: Item[];

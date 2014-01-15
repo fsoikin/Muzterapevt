@@ -7,7 +7,7 @@
 	><li data-bind="event: { mouseover: Children.OnMustShow, mouseout: Children.OnCanHide }, assignTo: Element">
 		<a data-bind="attr: { href: AbsoluteLink }, text: Text"></a>
 	</li><div class="sub-menu" data-bind="
-	visible: { flag: Children.IsVisible, effect: 'fade' },
+	visible: { flag: Children.EffectiveIsVisible, effect: 'fade' },
 	assignTo: ChildrenElement,
 	control: Children,
 	event: { mouseover: Children.OnMustShow, mouseout: Children.OnCanHide }
