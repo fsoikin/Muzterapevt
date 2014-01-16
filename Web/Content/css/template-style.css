@@ -54,7 +54,12 @@ div.scroll {
     float: right;
     width: 250px;
     margin: 0 0 10px 0;
-    padding: 0;
+    padding: 20px;
+    background: white;
+}
+
+.bannerb > img {
+    display: block;
 }
 
 /*TOP NAVIGATION*/
