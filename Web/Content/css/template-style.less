@@ -61,22 +61,28 @@ div.scroll {
 
 /*TOP NAVIGATION*/
 .navcontainer {
-	clear: both;
 	width: 100%;
+	min-height: 28px;
+	background: #F36207;
+
+	> ul.menu {
+		height: 28px;
+	}
 
 	ul {
 		padding-left: 0;
 		margin-left: 0;
-		background: #F36207;
 		color: #fff;
 		float: left;
 		width: 100%;
 		line-height: 1.4em;
+		-webkit-margin-before: 0;
+		-webkit-margin-after: 0;
 
-		li {
+		> li {
 			display: inline-block;
 
-			a {
+			> a {
 				min-width: 80px;
 				display: inline-block;
 				-ms-text-overflow: ellipsis;
@@ -87,6 +93,7 @@ div.scroll {
 				color: #fff;
 				text-decoration: none;
 				border-left: 1px solid #fff;
+				width: 100%;
 
 				&:hover {
 					background: #036;
@@ -94,7 +101,7 @@ div.scroll {
 				}
 			}
 
-			&:first-child a {
+			&:first-child > a {
 				border-left: none;
 			}
 		}
@@ -233,6 +240,7 @@ a {
 
 .clear {
 	clear: both;
+	height: 1px;
 }
 
 .current-user {

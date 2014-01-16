@@ -18,6 +18,7 @@
 			<a href="@Url.Content("~/")"><img src="@Url.Content( "~/Content/img/logo.png" )" /></a>
 			@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
 		</div>
+		<div class="clear">&nbsp;</div>
 		@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
 		<div class="sidebar">
 			@RenderSection( "LeftSidebar", false )
