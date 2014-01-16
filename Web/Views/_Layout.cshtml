@@ -15,7 +15,7 @@
 		@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
 		<div class="banner"><img src="@Url.Content( "~/Content/img/template/banner.jpg" )" alt="Muzterapevt.RU" title="Muzterapevt.RU" /> </div>
 		<div class="bannerb">
-			<img src="@Url.Content( "~/Content/img/logo.png" )" />
+			<a href="@Url.Content("~/")"><img src="@Url.Content( "~/Content/img/logo.png" )" /></a>
 			@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
 		</div>
 		@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
