@@ -32,12 +32,12 @@
 			@if ( model.CurrentUser.IsAuthenticated ) {
 				<div class="current-user">Logged in as: <span>@(model.CurrentUser.Name)</span></div>
 			}
-			<a href="@Url.Content("~/")">homepage</a> |
-			<a href="mailto:alisa@apreleva.com">contact</a> |
+			<a href="@Url.Content("~/")">Музтерапевт.Ру</a> |
+			<a href="mailto:muzterapevt@gmail.com">contact</a> |
 			@if ( !model.CurrentUser.IsAuthenticated ) { <a href="#" class="autobind" data-controller="LoginButton, Login">login</a> }
 			else { <a href="@Url.Action( (Mut.Controllers.LoginController c) => c.Logout( Request.Url.ToString() ) )">logout</a> }
 			|
-			&copy; 2013 Alisa Apreleva<br />
+			&copy; 2013-2014 Alisa Apreleva<br />
 		</div>
 	</div>
 	@if ( model.ShowAdminMenu ) {

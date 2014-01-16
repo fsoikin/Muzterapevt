@@ -213,6 +213,11 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
+    <Content Include="Content\img\login\facebook.jpg" />
+    <Content Include="Content\img\login\google.jpg" />
+    <Content Include="Content\img\login\livejournal.jpg" />
+    <Content Include="Content\img\login\yahoo.jpg" />
+    <Content Include="Content\img\login\yandex.jpg" />
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.css">
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
