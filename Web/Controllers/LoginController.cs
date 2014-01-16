@@ -121,7 +121,7 @@ namespace Mut.Controllers
 		Uri Realm() {
 			var url = HttpContext().Request.Url;
 			var host = url.Host;
-			if ( host.StartsWith( "www.", StringComparison.InvariantCultureIgnoreCase ) ) host = host.Substring( "www.".Length );
+			//if ( host.StartsWith( "www.", StringComparison.InvariantCultureIgnoreCase ) ) host = host.Substring( "www.".Length );
 			return new Uri( url.Scheme + "://" + host );
 		}
 
