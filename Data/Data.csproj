@@ -104,6 +104,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\005_Added_Email.sql" />
+    <Content Include="Migrations\008_Added_Page_SortOrder.sql" />
     <Content Include="Migrations\007_Implementing_Fedrated_Login.sql" />
     <Content Include="Migrations\006_Added_Specialist.Ignored.sql" />
     <Content Include="Migrations\004_AddedSpecialists.sql" />

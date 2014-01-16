@@ -3,15 +3,17 @@
 
 @if ( Model.ChildPages.Any() ) { 
 	<h1 class="left-sidebar-title">@PageLink( Model.TopParent )</h1>
-	<div class="sidenav">@Pages( Model.ChildPages )</div>
+	<div class="sidenav">@Pages( Model.TopParent.Id, Model.ChildPages )</div>
 }
 
-@helper Pages( IEnumerable<PageModel> pages ) {
-	<ul>
+@helper Pages( int parentId, IEnumerable<PageModel> pages ) {
+	<ul@{ if ( Model.AllowEdit ) {
+		<text> class="autobind" data-controller="ChildPagesVm, BL/page" data-args="{ pageId: @parentId }"</text>
+	} }>
 		@foreach ( var p in pages ) {
-			<li>
+			<li@{ if ( Model.AllowEdit ) { <text> data-pageid="@p.Page.Id"</text> } }>
 				@PageLink( p.Page )
-				@if ( !p.ChildPages.NullOrEmpty() ) { <text>@Pages( p.ChildPages )</text> }
+				@if ( !p.ChildPages.NullOrEmpty() ) { <text>@Pages( p.Page.Id, p.ChildPages )</text> }
 			</li>
 		}
 	</ul>

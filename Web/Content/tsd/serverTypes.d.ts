@@ -11,3 +11,5 @@
 
 /// <reference path="../../Models/Login/LoginMethodModel.cs.d.ts" />
 /// <reference path="../../Models/Login/LoginResultModel.cs.d.ts" />
+
+/// <reference path="../../../UI/JS/Page/PageReorderRequest.cs.d.ts" />

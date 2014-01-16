@@ -43,6 +43,7 @@ namespace Mut
 			var prefix = parent.Url + "/";
 			return from c in levels.FirstOrDefault().EmptyIfNull()
 						 where c.Url.StartsWith( prefix )
+						 orderby c.SortOrder
 						 select new PageModel {
 							 Page = c,
 							 ChildPages = MergeChildPages( c, levels.Skip( 1 ) )

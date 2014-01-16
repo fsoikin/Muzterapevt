@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 using erecruit.Composition;
 using erecruit.Mvc;
 using erecruit.Utils;
@@ -19,6 +20,7 @@ namespace Mut.Controllers
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
 		[Import] public PageUI PageUI { get; set; }
+		[Import] public PagesService PageService { get; set; }
 		[Import] public MarkdownUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
 
@@ -59,6 +61,30 @@ namespace Mut.Controllers
 
 				return JsonResponse.Create( new JS.PageSaveResult { Title = p.Title, Html = p.HtmlText } );
 			}, Log );
+		}
+
+		[EditPermission, HttpPost]
+		public IJsonResponse<unit> Reorder( [JsonRequestBody] JS.PageReorderRequest req ) {
+			return (from r in req.MaybeDefined()
+							from parent in Pages.Find( r.ParentId ).MaybeDefined()
+							from children in PageService.GetChildPages( new[] { parent } ).ToList()
+
+							from reordered in
+								from c in children
+								join o in req.Children.Select( ( id, idx ) => new { id, idx } ) on c.Id equals o.id
+								orderby o.idx
+								select c
+
+							from result in reordered.Concat( children.Except( req.Children, p => p.Id ) )
+								 .Select( ( p, idx ) => p.SortOrder = idx )
+								 .LastOrDefault()
+
+							from _ in Maybe.Do( UnitOfWork.Commit )
+
+							select unit.Default
+						 )
+						 .LogErrors( Log.Error )
+						 .AsJsonResponse();
 		}
 
 		[Mixin]
