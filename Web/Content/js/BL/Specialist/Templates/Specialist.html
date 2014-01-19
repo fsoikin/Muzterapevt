@@ -54,7 +54,7 @@
 	<div class="field photo">
 		<label>Фотография:</label>
 		<button data-bind="visible: !Uploader.IsUploading(), click: UploadPhoto">Выбрать фотографию</button>
-		<div class="uploading" data-bind="visible: Uploader.IsUploading">&nbsp;</div>
+		<div class="uploading" data-bind="visible: Uploader.IsUploading">Ваша фотография загружается...</div>
 		<!-- ko if: PhotoVisual --><div class="visual" data-bind="control: PhotoVisual"></div><!-- /ko -->
 	</div>
 
