@@ -111,7 +111,7 @@ namespace Mut.UI
 				return string.Format( @"
 					<div class='autobind trivia' data-controller='Vm, BL/Widgets/trivia' data-args=""{0}"">
 						<div class='question'>{1}</div>
-						<div class='response'>{2}</div>
+						<div class='response' style='display: none'>{2}</div>
 					</div>",
 					HttpUtility.HtmlAttributeEncode( JsonConvert.SerializeObject( new {
 						answers = from s in (attrs.ValueOrDefault( "answers" ) ?? "").Split( ',' )
