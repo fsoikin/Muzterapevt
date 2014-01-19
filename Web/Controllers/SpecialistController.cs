@@ -52,6 +52,12 @@ namespace Mut.Controllers
 									City = req.City,
 									ProfessionDescription = req.ProfessionDescription,
 									SpecializationDescription = req.SpecializationDescription,
+									Resume = req.Resume,
+									Email = req.Email,
+									Phone = req.Phone,
+									Url = req.Url,
+									IsEmailPublic = req.IsEmailPublic,
+									IsPhonePublic = req.IsPhonePublic,
 
 									Countries = req.Countries.EmptyIfNull()
 										.Select( c => Countries.All.FirstOrDefault( x => x.Name == c ) ?? Countries.Add( new Country { Name = c } ) )
