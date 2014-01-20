@@ -15,7 +15,7 @@ using Mut.Data;
 namespace Mut
 {
 	[Export]
-	public class EmailService : IDisposable
+	public sealed class EmailService : IDisposable
 	{
 		public void SendPendingEmailsNow() {
 			_kick.OnNext( Unit.Default );
@@ -42,26 +42,50 @@ namespace Mut
 
 			var checkPeriod = TimeSpan.FromMilliseconds( FetchConfig( config ).CheckPeriodMilliseconds );
 			var onNeedToCheck = _kick.Merge( Observable.Interval( checkPeriod ).Select( _ => Unit.Default ) );
+			var updateDb = new Func<ITransactionScope, Func<bool>, IObservable<bool>>( 
+				( tranScope, update ) =>
+				Observable.Using( 
+					() => tranScope.Transaction.OpenScope(),
+					_ => Observable
+						.Return( Unit.Default )
+						.Select( __ => {
+							var res = update();
+							_unitOfwork().Commit();
+							return res;
+						} ) ) );
 
 			_running = onNeedToCheck.ObserveOn( ThreadPoolScheduler.Instance )
 				.SelectMany( _1 => Observable.Using( () => tran.OpenTransaction(), tranScope =>
 					from _4 in Observable.Return( 0 )
 					let cfg = GetConfig( config() )
-					let batch = _emails().All.Where( e => e.Id > cfg.LastProcessedEmailId ).OrderBy( x => x.Id ).Take( cfg.BatchSize )
+					let batch = _emails().All.Where( e => e.Id > cfg.LastProcessedEmailId && e.Sent == null ).OrderBy( x => x.Id ).Take( cfg.BatchSize ).ToList()
+					where batch.Any()
 
-					from e in batch
-						.ToList()
+					let sending =
+						batch
 						.ToObservable()
 						.Do( e => log.DebugFormat( "Sending e-mail '{0}' to '{1}' (record id={2}).", e.Subject, e.ToEmail, e.Id ) )
+						.SelectMany( e =>
+							Send( e, cfg )
+							.ToObservable()
+							.SelectMany( _ => updateDb( tranScope, () => { e.Sent = DateTime.Now; return true; } ) )
+							.Catch( ( Exception ex ) =>
+								updateDb( tranScope, () => {
+									log.Error( ex );
+									e.ErrorCount++;
+									e.LastError = ex.ToString();
+									if ( e.ErrorCount >= cfg.MaxErrorsPerEmail ) {
+										log.WarnFormat( "Email message '{0}' to '{1}' (record id={2}) has reached the maximum number of errors {3} and will not be reattempted again.", e.Subject, e.ToEmail, e.Id, cfg.MaxErrorsPerEmail );
+										return true;
+									}
+									return false;
+								} ) )
+							)
 
-					from sent in Send( e, cfg )
-						.ToObservable()
-						.Do( _5 => {
-							using ( tranScope.Transaction.OpenScope() ) { // This is needed, because Send may return on a different thread
-								cfg.LastProcessedEmailId = e.Id;
-								_unitOfwork().Commit();
-							}
-						} )
+					from allSucceeded in sending.Aggregate( true, ( previousSucceeded, thisSucceeded ) => previousSucceeded && thisSucceeded )
+
+					where allSucceeded
+					from rememberLastEmailId in updateDb( tranScope, () => { cfg.LastProcessedEmailId = batch.Last().Id; return true; } )
 
 					select Unit.Default ) )
 				.Catch( ( Exception ex ) => {
@@ -110,6 +134,8 @@ namespace Mut
 			var a = _running;
 			_running = null;
 			if ( a != null ) a.Dispose();
+
+			_kick.Dispose();
 		}
 	}
 }

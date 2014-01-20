@@ -15,6 +15,9 @@ namespace Mut.Data
 		public string ToEmail { get; set; }
 		public string FromName { get; set; }
 		public string FromEmail { get; set; }
+		public int ErrorCount { get; set; }
+		public string LastError { get; set; }
+		public DateTime? Sent { get; set; }
 
 		[Export]
 		class Mapping : IModelMapping { public void Map( DbModelBuilder b ) { b.Entity<Email>(); } }

@@ -14,10 +14,12 @@ namespace Mut.Data
 		public int BatchSize { get; set; }
 		public string DefaultFromEmail { get; set; }
 		public string DefaultFromName { get; set; }
+		public int MaxErrorsPerEmail { get; set; }
 
 		public EmailServiceConfig() {
 			this.CheckPeriodMilliseconds = 10000;
 			this.BatchSize = 20;
+			this.MaxErrorsPerEmail = 5;
 		}
 
 		[Export]
