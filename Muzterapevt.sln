@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21126.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{A807019C-46D4-4346-BE3F-43538448C100}"
 EndProject
@@ -36,6 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Data", "Core.Data\Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1EC974FD-C85B-43B2-9B31-3CCE7C07E9BA}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		WE2013-settings.xml = WE2013-settings.xml
 	EndProjectSection
 EndProject
