@@ -29,7 +29,12 @@ namespace Mut.Controllers
 							from _ in Maybe.Do( () => Emails.SendEmail( new Email {
 								FromName = req.Name, FromEmail = req.Email, Subject = req.Subject,
 								ToEmail = "muzterapevt@gmail.com",
-								Body = "<h2>Вопрос с Muzterpevt.RU</h2><hr>" + HttpUtility.HtmlEncode( req.Text )
+								Body = string.Format( @"<h2>Вопрос с Muzterpevt.RU</h2><hr>
+									<br><b>Моё имя</b>: {0}
+									<br><b>Мой e-mail</b>: {1}
+									<br><b>Заголовок</b>: {2}
+									<br><b>Вопрос</b>:<br>{3}",
+									req.Name, req.Email, req.Subject, HttpUtility.HtmlEncode( req.Text ) )
 							} ) )
 							select unit.Default
 						 )
