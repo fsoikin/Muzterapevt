@@ -200,7 +200,7 @@ class EditorVm<T> {
 		this.IsAcceptingAttachments( false );
 
 		var e = <DragEvent>(je.originalEvent || je);
-		e && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length && this.Upload( e.dataTransfer.files );
+		e && e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length && this.Upload( e.dataTransfer.files ).subscribe();
 	}
 
 	DragOverAttachments( _, je: JQueryEventObject ) { this.IsAcceptingAttachments( true ); }
@@ -211,17 +211,15 @@ class EditorVm<T> {
 	}
 
 	Upload( files: FileList ): Rx.IObservable<AttachmentVm<T>> {
-		var result = new rx.Subject<AttachmentVm<T>>();
-		this.Uploader.Upload( this.Parent.Ajax.UploadAttachment( this.Data ), null, files )
+		return this.Uploader
+			.Upload( this.Parent.Ajax.UploadAttachment( this.Data ), null, files )
 			.selectMany( att.fromUploadResult )
 			.select( a => {
 				var res = new AttachmentVm<T>( this, a );
 				this.Attachments.push( res );
 				return res;
 			})
-			.subscribe( result );
-
-		return result;
+			.doAction( () => { }, ( ex: any ) => this.InfoBox.Error( ex ) );
 	}
 
 	UploadAndInsert( files: FileList, field: bbTextField.BBTextFieldVm ) {

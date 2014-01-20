@@ -11,7 +11,7 @@ export class Uploader {
 		var files = this.CurrentFiles();
 		return files.length ? files.reduce( ( sum: number, f ) => ( sum + f.Progress() ), 0 ) / files.length : 0; //https://typescript.codeplex.com/workitem/1989
 	} )
-  private _input: HTMLInputElement;
+    private _input: HTMLInputElement;
 
 	public Upload( url: string, data?: { [key: string]: string; }, files?: FileList ): Rx.IObservable<api.JsonResponse> {
 		this.CleanFinishedFiles();
@@ -19,12 +19,12 @@ export class Uploader {
 		if ( files ) {
 			return this.AddFiles( files, url, data );
 		} else {
-			var result = new rx.Subject<api.JsonResponse>();
-			this.EnsureInput();
-			$( this._input )
-				.one( "change", () => this.AddFiles( this._input.files, url, data ).subscribe( result ) )
-				.click();
-			return result;
+            this.EnsureInput();
+            $( this._input ).click();
+            return rx.DOM
+                .fromEvent( this._input, "change" )
+                .take( 1 )
+                .selectMany( () => this.AddFiles( this._input.files, url, data ) );
 		}
 	}
 
