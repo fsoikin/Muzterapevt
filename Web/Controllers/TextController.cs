@@ -33,7 +33,7 @@ namespace Mut.Controllers
 			}, Log );
 		}
 
-		[HttpPost]
+		[HttpPost, EditPermission]
 		public JsonResponse<JS.TextSaveResult> Update( [JsonRequestBody] JS.TextEditor text ) {
 			return JsonResponse.Catch( () => {
 				var p = Texts.Find( text.Id );
