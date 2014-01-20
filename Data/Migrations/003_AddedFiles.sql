@@ -2,12 +2,12 @@
 	create table dbo.Files (
 		Id int identity primary key,
 		Domain nvarchar(500),
-		FilePath nvarchar(500),
+		FilePath nvarchar(max),
 		CreatedOn datetime2 not null,
-		OriginalFileName nvarchar(500),
+		OriginalFileName nvarchar(max),
 
 		Data varbinary(max),
-		ContentType nvarchar(50)
+		ContentType nvarchar(500)
 	)
 GO
 
@@ -18,6 +18,6 @@ if not exists( select * from sys.tables where object_id = object_id('dbo.FileVer
 		[Key] nvarchar(500),
 		CreatedOn datetime2 not null,
 		Data varbinary(max),
-		ContentType nvarchar(50)
+		ContentType nvarchar(500)
 	)
 GO
