@@ -4,4 +4,9 @@ import c = require( "./common" );
 import $ = require( "jQuery" );
 import ab = require( "./Lib/autobind" );
 
-ab.autobindAll( $( ".autobind" ) );
+bind();
+$( bind );
+
+function bind() {
+	ab.autobindAll( $( ".autobind" ).removeClass( "autobind" ) );
+}
