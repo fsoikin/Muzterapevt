@@ -23,20 +23,25 @@ namespace Mut.Controllers
 		[Import] public PagesService PageService { get; set; }
 		[Import] public MarkdownUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
+		[Import] public ISiteService Sites { get; set; }
 
 		public ActionResult Page( string url )
 		{
 			return PageUI.PageModel( url )
 				.Select( model => View( "~/Views/Page.cshtml", model ) as ActionResult )
-				.Or( () => Redirect( Url.Action( ( PageController c ) => c.Page( "" ) ) ) )
+				.Or( () => url.NullOrEmpty() ? EmptyView() : Redirect( "~/" ) )
 				.LogErrors( Log.Error )
 				.Value;
+		}
+
+		private ActionResult EmptyView() {
+			return View( "~/Views/Page.cshtml", new PageModel { AllowEdit = false, Page = new Page(), TopParent = new Page(), ChildPages = new PageModel[0] } );
 		}
 
 		[EditPermission]
 		public JsonResponse<JS.PageEditor> Load( int id ) {
 			return JsonResponse.Catch( () => {
-				var p = Pages.Find( id );
+				var p = Pages.All.FirstOrDefault( x => x.Id == id && x.SiteId == Sites.CurrentSiteId );
 				if ( p == null ) return JsonResponse<JS.PageEditor>.NotFound;
 
 				return JsonResponse.Create( new JS.PageEditor {
@@ -49,7 +54,7 @@ namespace Mut.Controllers
 		[EditPermission, HttpPost]
 		public JsonResponse<JS.PageSaveResult> Update( [JsonRequestBody] JS.PageEditor page ) {
 			return JsonResponse.Catch( () => {
-				var p = Pages.Find( page.Id );
+				var p = Pages.All.FirstOrDefault( x => x.Id == page.Id && x.SiteId == Sites.CurrentSiteId );
 				if ( p == null ) return JsonResponse<JS.PageSaveResult>.NotFound;
 
 				p.Title = page.Title ?? "";
@@ -66,7 +71,7 @@ namespace Mut.Controllers
 		[EditPermission, HttpPost]
 		public IJsonResponse<unit> Reorder( [JsonRequestBody] JS.PageReorderRequest req ) {
 			return (from r in req.MaybeDefined()
-							from parent in Pages.Find( r.ParentId ).MaybeDefined()
+							from parent in Pages.All.FirstOrDefault( x => x.Id == r.ParentId && x.SiteId == Sites.CurrentSiteId ).MaybeDefined()
 							from children in PageService.GetChildPages( new[] { parent } ).ToList()
 
 							from reordered in

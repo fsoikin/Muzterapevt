@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using erecruit.Composition;
 using erecruit.Utils;
+using Mut;
 using Mut.Data;
 
 namespace Name.Files
@@ -32,15 +33,20 @@ namespace Name.Files
 		[Import] public IRepository<FileData> FilesData { get; set; }
 		[Import] public IRepository<FileVersion> FilesVersions { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public ISiteService SiteService { get; set; }
 
 		public ActionResult ServeFile( string domain, string path, bool forceDownload = false ) {
-			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
+			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => 
+				p.File.SiteId == SiteService.CurrentSiteId &&
+				p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
 			return new FileResult( file.Data, file.ContentType, forceDownload, file.File.OriginalFileName, file.File.CreatedOn );
 		}
 
 		public ActionResult ServeFileVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform, bool forceDownload = false ) {
-			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p => p.File.Domain == domain && p.File.FilePath == path );
+			var file = FilesData.All.Include( f => f.File ).FirstOrDefault( p =>
+				p.File.SiteId == SiteService.CurrentSiteId && 
+				p.File.Domain == domain && p.File.FilePath == path );
 			if ( file == null ) return new HttpNotFoundResult();
 
 			var ver = GetVersion( domain, path, versionKey, transform );
@@ -48,7 +54,7 @@ namespace Name.Files
 		}
 
 		public IQueryable<File> GetAll( string domain ) {
-			return Files.All.Where( f => f.Domain == domain );
+			return Files.All.Where( f => f.SiteId == SiteService.CurrentSiteId && f.Domain == domain );
 		}
 
 		class FileResult : ActionResult
@@ -116,6 +122,7 @@ namespace Name.Files
 								 .Select( n => n.path )
 								 .First()
 						 let fObj = Files.Add( new File {
+							 SiteId = SiteService.CurrentSiteId,
 							 FilePath = filePath,
 							 Domain = domain,
 							 OriginalFileName = f.FileName,
@@ -138,10 +145,14 @@ namespace Name.Files
 		}
 
 		private FileVersion GetVersion( string domain, string path, string versionKey, Func<FileData, FileVersion> transform ) {
-			var existing = this.FilesVersions.All.FirstOrDefault( fv => fv.File.FilePath == path && fv.File.Domain == domain && fv.Key == versionKey );
+			var existing = this.FilesVersions.All.FirstOrDefault( fv => 
+				fv.File.SiteId == SiteService.CurrentSiteId && 
+				fv.File.FilePath == path && fv.File.Domain == domain && fv.Key == versionKey );
 			if ( existing != null ) return existing;
 
-			var fileObj = FilesData.All.Include( fd => fd.File ).FirstOrDefault( fl => fl.File.FilePath == path && fl.File.Domain == domain );
+			var fileObj = FilesData.All.Include( fd => fd.File ).FirstOrDefault( fl =>
+				fl.File.SiteId == SiteService.CurrentSiteId && 
+				fl.File.FilePath == path && fl.File.Domain == domain );
 			if ( fileObj == null ) return null;
 
 			var newVersion = transform( fileObj );

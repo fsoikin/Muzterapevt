@@ -18,6 +18,7 @@ namespace Mut
 	{
 		[Import] public IRepository<NavigationItem> Items { get; set; }
 		[Import] public IAuthService Auth { get; set; }
+		[Import] public ISiteService Sites { get; set; }
 		
 		public TopMenuModel GetTopMenu( string menuId ) {
 			return new TopMenuModel {
@@ -31,6 +32,7 @@ namespace Mut
 			var res = parentId != null 
 				? Items.All.Where( x => x.Parent.Id == parentId )
 				: Items.All.Where( x => x.Parent == null );
+			res = res.Where( x => x.SiteId == Sites.CurrentSiteId );
 			if ( !menuId.NullOrEmpty() ) res = res.Where( i => i.MenuId == menuId );
 			return res;
 		}

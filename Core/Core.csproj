@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISiteService.cs" />
     <Compile Include="EmailService.cs" />
     <Compile Include="MarkupParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

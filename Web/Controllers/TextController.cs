@@ -18,17 +18,18 @@ namespace Mut.Controllers
 		[Import] public IRepository<Text> Texts { get; set; }
 		[Import] public MarkdownUI Markup { get; set; }
 		[Import] public AttachmentUI Attachments { get; set; }
+		[Import] public ISiteService Sites { get; set; }
 
 		public JsonResponse<JS.TextEditor> Load( string id ) {
 			return JsonResponse.Catch( () => {
-				var p = Texts.Find( id );
+				var p = Texts.All.FirstOrDefault( x => x.Id == id && x.SiteId == Sites.CurrentSiteId );
 				return JsonResponse.Create( new JS.TextEditor { Id = id, Text = p == null ? "" : p.BbText } );
 			}, Log );
 		}
 
 		public JsonResponse<JS.TextView> LoadHtml( string id ) {
 			return JsonResponse.Catch( () => {
-				var p = Texts.Find( id );
+				var p = Texts.All.FirstOrDefault( x => x.Id == id && x.SiteId == Sites.CurrentSiteId );
 				return new JS.TextView { Text = p == null ? "" : p.HtmlText, AllowEdit = Auth.CurrentActor.IsAdmin };
 			}, Log );
 		}
@@ -36,8 +37,8 @@ namespace Mut.Controllers
 		[HttpPost, EditPermission]
 		public JsonResponse<JS.TextSaveResult> Update( [JsonRequestBody] JS.TextEditor text ) {
 			return JsonResponse.Catch( () => {
-				var p = Texts.Find( text.Id );
-				if ( p == null ) p = Texts.Add( new Data.Text { Id = text.Id } );
+				var p = Texts.All.FirstOrDefault( x => x.Id == text.Id && x.SiteId == Sites.CurrentSiteId );
+				if ( p == null ) p = Texts.Add( new Data.Text { Id = text.Id, SiteId = Sites.CurrentSiteId } );
 
 				p.BbText = text.Text;
 				p.HtmlText = Markup.ToHtml( p.BbText ?? "", new MarkdownParseArgs { AttachmentMixin = Url.Mixin( ( TextController c ) => c.Attachment( text.Id ) ) } );

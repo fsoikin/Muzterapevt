@@ -99,11 +99,13 @@
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Organization.cs" />
     <Compile Include="Entities\Specialist.cs" />
+    <Compile Include="Entities\Site.cs" />
     <Compile Include="Entities\Text.cs" />
     <Compile Include="Entities\NavigationItem.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\005_Added_Email.sql" />
+    <Content Include="Migrations\010_Added_SiteId.sql" />
     <Content Include="Migrations\009_Added_Email_Error_Handling_Fields.sql" />
     <Content Include="Migrations\008_Added_Page_SortOrder.sql" />
     <Content Include="Migrations\007_Implementing_Fedrated_Login.sql" />

@@ -13,14 +13,15 @@ namespace Mut
 	{
 		[Import] public IRepository<Page> Pages { get; set; }
 		[Import] public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public ISiteService Sites { get; set; }
 
 		public static string AttachmentDomain( int pageId ) { return "PageAttachment." + pageId; }
 
 		public Page GetPage( string url, bool create ) {
 			url = url ?? "";
-			var p = Pages.All.FirstOrDefault( x => x.Url == url );
+			var p = Pages.All.FirstOrDefault( x => x.SiteId == Sites.CurrentSiteId && x.Url == url );
 			if ( p == null && create ) {
-				p = Pages.Add( new Page { Url = url } );
+				p = Pages.Add( new Page { Url = url, SiteId = Sites.CurrentSiteId } );
 				UnitOfWork.Commit();
 			}
 
@@ -29,7 +30,7 @@ namespace Mut
 
 		public IQueryable<Page> GetChildPages( IEnumerable<Page> parents ) {
 			return Pages.All
-				.Where( p => p.Title != null || p.BbText != null || p.HtmlText != null || p.ReferenceName != null )
+				.Where( p => p.SiteId == Sites.CurrentSiteId && p.Title != null || p.BbText != null || p.HtmlText != null || p.ReferenceName != null )
 				.Where( parents
 					.Select( p => p.Url + '/' )
 					.Select( pr => {
@@ -48,7 +49,7 @@ namespace Mut
 
 		public IQueryable<Page> GetParentPages( Page child ) {
 			return from p in Pages.All
-						 where child.Url.StartsWith( p.Url )
+						 where p.SiteId == child.SiteId && child.Url.StartsWith( p.Url )
 						 select p;
 		}
 	}

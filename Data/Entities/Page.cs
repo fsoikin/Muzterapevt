@@ -9,6 +9,7 @@ namespace Mut.Data
 	public class Page
 	{
 		public int Id { get; set; }
+		public Guid SiteId { get; set; }
 		public string Url { get; set; }
 		public string Title { get; set; }
 		public string BbText { get; set; }

@@ -10,6 +10,7 @@ namespace Name.Files
 	public class File
 	{
 		public int Id { get; set; }
+		public Guid SiteId { get; set; }
 
 		public string Domain { get; set; }
 		public string FilePath { get; set; }

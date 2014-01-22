@@ -15,17 +15,21 @@ namespace Mut.Controllers.BackOffice
 	{
 		[Import]
 		public IRepository<Page> Pages { get; set; }
+		[Import]
+		public ISiteService Sites { get; set; }
 
 		public JsonResponse<IEnumerable<JS.Page>> All()
 		{
-			return JsonResponse.Catch( () => Pages.All.AsEnumerable().Select( p => new JS.Page {
-				Id = p.Id, Path = p.Url
-			}), Log );
+			return JsonResponse.Catch( () => 
+				Pages.All.Where( p => p.SiteId == Sites.CurrentSiteId )
+				.AsEnumerable().Select( p => new JS.Page {
+					Id = p.Id, Path = p.Url
+				} ), Log );
 		}
 
 		public JsonResponse<Unit> Update( [JsonRequestBodyAttribute] JS.Page page ) {
 			return JsonResponse.Catch( () => {
-				var p = Pages.Find( page.Id );
+				var p = Pages.All.FirstOrDefault( x => x.Id == page.Id && x.SiteId == Sites.CurrentSiteId );
 				if ( p == null ) return JsonResponse<Unit>.NotFound;
 				p.Url = page.Path;
 				p.Modified = DateTime.Now;
@@ -35,7 +39,7 @@ namespace Mut.Controllers.BackOffice
 		}
 		public JsonResponse<JS.Page> Create( [JsonRequestBodyAttribute] JS.Page page ) {
 			return JsonResponse.Catch( () => {
-				var p = Pages.Add( new Page { Url = page.Path } );
+				var p = Pages.Add( new Page { Url = page.Path, SiteId = Sites.CurrentSiteId } );
 				UnitOfWork.Commit();
 				return new JS.Page { Id = p.Id, Path = p.Url };
 			}, Log );
