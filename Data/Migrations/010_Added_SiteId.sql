@@ -13,15 +13,26 @@ GO
 
 if not exists( select * from sys.tables where object_id = object_id('dbo.Sites') )
 	create table dbo.Sites (
-		Id uniqueidentifier not null,
+		Id uniqueidentifier not null primary key,
 		HostName nvarchar(100),
 		Theme nvarchar(100)
 	)
 GO
 
-	declare @sql nvarchar(max)
-	select @sql = N'alter table dbo.Texts drop constraint [' + name + ']' from sys.key_constraints where parent_object_id = object_id('dbo.Texts') and type = 'PK'
-	exec sp_executesql @sql
+	sp_rename 'dbo.Texts', '_Texts'
+	GO
 
-	alter table dbo.Texts add constraint [PK_dbo.Texts] primary key (Id, SiteId)
+	create table dbo.Texts(
+		[Id] [nvarchar](128) NOT NULL,
+		[BbText] [nvarchar](max) NULL,
+		[HtmlText] [nvarchar](max) NULL,
+		[SiteId] [uniqueidentifier] NOT NULL,
+		primary key( Id, SiteId )
+	)
+	GO
+
+	insert into dbo.Texts(Id, BbText, HtmlText, SiteId) select Id, BbText, HtmlText, '0CF5AEB6-6396-4E8B-888E-D646DE322AEB' from dbo._Texts
+	GO
+
+	drop table dbo._Texts
 GO
