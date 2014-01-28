@@ -23,16 +23,23 @@ body {
 	opacity: 0.7;
 }
 
+.inputborder() {
+		border: 1px solid silver;
+	border-radius: 4px;
+}
+
 input[type=text] {
+	.inputborder();
 	display: block;
 	width: 100%;
-	height: 30px;
-	padding: 5px;
 	font-size: 18pt;
 	margin: 0;
+	padding: 7px 5px;
+	background: #FEFEFA;
 }
 
 textarea {
+	.inputborder();
 	display: block;
 	width: 100%;
 	margin: 0;
@@ -62,8 +69,9 @@ button {
 	text-decoration: none !important;
 	cursor: pointer;
 	text-align: center;
-	zoom: 1;
 	overflow: visible;
+	font-size: 13pt;
+	border-radius: 4px;
 
 	&:hover {
 		background: #A5FFC0 !important;

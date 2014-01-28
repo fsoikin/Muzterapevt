@@ -1,6 +1,6 @@
-@bb-quick-reference-width: 500px;
+@bb-quick-reference-width: 40px;
 @bb-quick-reference-padding: 10px;
-@files-width: 250px;
+@files-width: 125px;
 @buttons-height: 40px;
 @editor-padding: 20px;
 @buttons-padding: 5px;
@@ -19,10 +19,10 @@
 
 .popup-editor {
 	position: fixed;
-	top: 5%;
-	left: 5%;
-	bottom: 5%;
-	right: 5%;
+	top: 20px;
+	left: 20px;
+	bottom: 20px;
+	right: 20px;
 	border: 1px solid black;
 	background: white;
 	padding: @editor-padding;
@@ -190,13 +190,52 @@
 	top: 0;
 	right: 0;
 	bottom: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
 	border-left: 1px solid #F0F0F0;
-	padding: @bb-quick-reference-padding;
 	background: #FAFAFA;
 	width: @bb-quick-reference-width;
+	padding: 0;
+	padding-left: @bb-quick-reference-width;
+	overflow: hidden;
 	font-size: 14px;
+	-moz-transition-duration: 200ms;
+	-o-transition-duration: 200ms;
+	-webkit-transition-duration: 200ms;
+	transition-duration: 200ms;
+	z-index: 100;
+
+	&:before {
+		content: 'Hover for help';
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-o-transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		transform: rotate(90deg);
+		-moz-transform-origin: left 50%;
+		-ms-transform-origin: left 50%;
+		-o-transform-origin: left 50%;
+		-webkit-transform-origin: left 50%;
+		transform-origin: left 50%;
+		position: absolute;
+		left: 50%;
+		white-space: nowrap;
+		font-size: 20px;
+		color: silver;
+	}
+
+	&:hover {
+		overflow-x: hidden;
+		overflow-y: auto;
+		width: 500px;
+		padding: @bb-quick-reference-padding;
+		-moz-transition-duration: 500ms;
+		-o-transition-duration: 500ms;
+		-webkit-transition-duration: 500ms;
+		transition-duration: 500ms;
+
+		&:before {
+			content: '';
+		}
+	}
 
 	> div {
 		white-space: nowrap;
@@ -235,10 +274,12 @@
 				top: 1.5em;
 				font-size: 10px;
 				opacity: 0.5;
+
 				&:before {
 					content: '(';
 					margin: 0;
 				}
+
 				&:after {
 					content: ')';
 				}
