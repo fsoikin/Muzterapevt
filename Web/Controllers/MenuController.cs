@@ -13,6 +13,7 @@ namespace Mut.Controllers
 	public class MenuController : Controller
 	{
 		[Import] public IRepository<NavigationItem> MenuItems { get; set; }
+		[Import] public ISiteService Site { get; set; }
 
 		public JsonResponse<IEnumerable<JS.Menu.Item>> Load( string menuId )
 		{
@@ -45,7 +46,7 @@ namespace Mut.Controllers
 			toRemove.ToList().ForEach( Remove );
 
 			foreach ( var i in toAdd ) {
-				var item = MenuItems.Add( new NavigationItem { Parent = parent, MenuId = menuId } );
+				var item = MenuItems.Add( new NavigationItem { Parent = parent, MenuId = menuId, SiteId = Site.CurrentSiteId } );
 				Copy( item, i );
 				UpdateItems( item, menuId, item.Children, i.SubItems.EmptyIfNull() );
 			}
