@@ -1,0 +1,35 @@
+﻿<!-- ko if: AllowEdit -->
+	<span class="fixed-message-box"><!-- ko control: InfoBox --><!-- /ko --></span>
+<!-- /ko -->
+
+<ul class="menu" data-bind="
+	foreach: Items,
+	assignTo: UIRoot,
+	control: AllowEdit && CtxMenu,
+	jqWidget: AllowEdit && { sortable: { items: 'li', update: OnItemsSorted, placeholder: 'drop-target' } }"
+	><li data-bind="event: { mouseover: Children.OnMustShow, mouseout: Children.OnCanHide }, assignTo: Element">
+		<a data-bind="attr: { href: AbsoluteLink }, text: Text"></a>
+	</li><!-- ko if: $parent.AllowEdit || Children.Items().length --><div class="sub-menu" data-bind="
+		visible: { flag: Children.EffectiveIsVisible, effect: 'fade' },
+		assignTo: ChildrenElement,
+		control: Children,
+		event: { mouseover: Children.OnMustShow, mouseout: Children.OnCanHide }
+	"></div><!-- /ko --></ul>
+
+<!-- ko if: AllowEdit -->
+	<div class="menu-main-ctx-menu context-menu" data-bind="assignTo: CtxMenu.MenuElement">
+		<div class="item" data-bind="click: Add">Add Item to this menu</div>
+		<div class="item" data-bind="click: Edit, visible: CtxMenuItemRowsVisible">Edit this item</div>
+		<div class="item" data-bind="click: Delete, visible: CtxMenuItemRowsVisible">Delete this item</div>
+	</div>
+
+	<div class="menu-item-editor" data-bind="template: { data: EditingItem, if: EditingItem }, visible: { flag: EditingItem, effect: 'fade' }, assignTo: Editor">
+		<!-- ko control: Parent.InfoBox --><!-- /ko -->
+		<label>Name</label>
+		<input type="text" data-bind="value: Text, valueUpdate: 'keyup'" />
+		<label>Link</label>
+		<input type="text" data-bind="value: Link, valueUpdate: 'keyup'" />
+		<button data-bind="click: Cancel">Cancel</button>
+		<button data-bind="click: Save">Save</button>
+	</div>
+<!-- /ko -->

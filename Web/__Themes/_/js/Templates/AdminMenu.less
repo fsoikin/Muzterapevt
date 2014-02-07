@@ -1,0 +1,27 @@
+﻿.admin-menu {
+	position: fixed;
+	top: 0;
+	right: 0;
+	background: white;
+	border: 2px solid black;
+	padding: 5px;
+	cursor: pointer;
+
+	&:hover {
+		background: #F8F8F8;
+	}
+
+	.anchor {
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+
+	> button {
+		display: none;
+		width: 100%;
+	}
+
+	&.expanded > button {
+		display: block;
+	}
+}

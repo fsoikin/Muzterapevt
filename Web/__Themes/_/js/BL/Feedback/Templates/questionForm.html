@@ -1,0 +1,25 @@
+﻿<div class="feedback-question-form-done" data-bind="control: DoneText, visible: Sent">
+</div>
+<div class="feedback-question-form" data-bind="visible: !Sent()">
+	<!-- ko control: InfoBox --><!-- /ko -->
+
+	<div data-bind="control: PromptText"></div>
+
+	<div class="field col3 required">
+		<label>Ваше Имя:</label>
+		<input type="text" data-bind="value: Name" />
+	</div><div class="field col3 required">
+		<label>Ваш e-mail:</label>
+		<input type="text" data-bind="value: Email" />
+	</div><div class="field col3 required">
+		<label>Заголовок:</label>
+		<input type="text" data-bind="value: Subject" />
+	</div>
+	<div class="field">
+		<label>Сообщение:</label>
+		<textarea data-bind="value: Text"></textarea>
+	</div>
+
+	<button data-bind="click: Send, disabled: IsSending">Отправить</button>
+	<!-- ko control: InfoBox --><!-- /ko -->
+</div>

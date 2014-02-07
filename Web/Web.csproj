@@ -201,7 +201,7 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Content Include="Content\css\bl.css">
+    <Content Include="__Themes\_\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
     </Content>
     <Content Include="__Themes\Musicarium\common.css">
@@ -217,102 +217,102 @@
       <DependentUpon>common.less</DependentUpon>
     </Content>
     <Content Include="__Themes\Mut\css\common.less" />
-    <Content Include="Content\css\bl.less" />
-    <Content Include="Content\css\Menu.css">
+    <Content Include="__Themes\_\css\bl.less" />
+    <Content Include="__Themes\_\css\Menu.css">
       <DependentUpon>Menu.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\Menu.less" />
+    <Content Include="__Themes\_\css\Menu.less" />
     <Content Include="__Themes\Mut\css\template-style.css">
       <DependentUpon>template-style.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\Text.css">
+    <Content Include="__Themes\_\css\Text.css">
       <DependentUpon>Text.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\Text.less" />
-    <Content Include="Content\img\login\facebook.jpg" />
-    <Content Include="Content\img\login\google.jpg" />
-    <Content Include="Content\img\login\livejournal.jpg" />
-    <Content Include="Content\img\login\yahoo.jpg" />
-    <Content Include="Content\img\login\yandex.jpg" />
+    <Content Include="__Themes\_\css\Text.less" />
+    <Content Include="__Themes\_\img\login\facebook.jpg" />
+    <Content Include="__Themes\_\img\login\google.jpg" />
+    <Content Include="__Themes\_\img\login\livejournal.jpg" />
+    <Content Include="__Themes\_\img\login\yahoo.jpg" />
+    <Content Include="__Themes\_\img\login\yandex.jpg" />
     <Content Include="__Themes\Mut\img\logo.png" />
-    <Content Include="Content\js\BL\Feedback\Templates\questionForm.css">
+    <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.css">
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Feedback\Templates\questionForm.html" />
-    <None Include="Content\js\Templates\Login.less" />
-    <Content Include="Content\js\External\Rx\rx.binding.js" />
-    <Content Include="Content\js\External\Rx\rx.binding.min.js" />
-    <Content Include="Content\js\External\Rx\rx.dom.js" />
-    <Content Include="Content\js\External\Rx\rx.dom.min.js" />
-    <Content Include="Content\js\Templates\Login.css">
+    <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.html" />
+    <None Include="__Themes\_\js\Templates\Login.less" />
+    <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.dom.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.dom.min.js" />
+    <Content Include="__Themes\_\js\Templates\Login.css">
       <DependentUpon>Login.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\Templates\Login.html" />
-    <Content Include="Content\js\BL\Specialist\Templates\Moderator.css">
+    <Content Include="__Themes\_\js\Templates\Login.html" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Moderator.css">
       <DependentUpon>Moderator.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Specialist\Templates\Moderator.less" />
-    <Content Include="Content\js\BL\Feedback\Templates\questionForm.less" />
-    <None Include="Content\js\BL\Specialist\Templates\Specialist.less" />
-    <Content Include="Content\js\BL\Specialist\Templates\Moderator.html" />
-    <Content Include="Content\js\BL\Specialist\Templates\Specialist.css">
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Moderator.less" />
+    <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.less" />
+    <None Include="__Themes\_\js\BL\Specialist\Templates\Specialist.less" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Moderator.html" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Specialist.css">
       <DependentUpon>Specialist.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Specialist\Templates\Specialist.html" />
-    <Content Include="Content\js\BL\Templates\Attachment.css">
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Specialist.html" />
+    <Content Include="__Themes\_\js\BL\Templates\Attachment.css">
       <DependentUpon>Attachment.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Templates\InPlaceEditor.css">
+    <Content Include="__Themes\_\js\BL\Templates\InPlaceEditor.css">
       <DependentUpon>InPlaceEditor.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Templates\InPlaceEditor.less" />
-    <None Include="Content\css\Page.less" />
-    <Content Include="Content\css\jQuery\images\animated-overlay.gif" />
-    <Content Include="Content\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\css\jQuery\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\css\jQuery\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\css\jQuery\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\css\jQuery\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\css\jQuery\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\css\jQuery\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\css\jQuery\jquery-ui-1.10.3.custom.css" />
-    <Content Include="Content\css\jQuery\jquery-ui-1.10.3.custom.min.css" />
-    <Content Include="Content\css\Page.css">
+    <Content Include="__Themes\_\js\BL\Templates\InPlaceEditor.less" />
+    <None Include="__Themes\_\css\Page.less" />
+    <Content Include="__Themes\_\css\jQuery\images\animated-overlay.gif" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-icons_222222_256x240.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-icons_454545_256x240.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-icons_888888_256x240.png" />
+    <Content Include="__Themes\_\css\jQuery\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="__Themes\_\css\jQuery\jquery-ui-1.10.3.custom.css" />
+    <Content Include="__Themes\_\css\jQuery\jquery-ui-1.10.3.custom.min.css" />
+    <Content Include="__Themes\_\css\Page.css">
       <DependentUpon>Page.less</DependentUpon>
     </Content>
     <Content Include="__Themes\Musicarium\common.less" />
     <Content Include="__Themes\Musicarium\template-style.less" />
     <None Include="__Themes\Mut\css\template-style.less" />
-    <Content Include="Content\img\spinner.gif" />
+    <Content Include="__Themes\_\img\spinner.gif" />
     <Content Include="__Themes\Mut\img\template\banner.jpg" />
     <Content Include="__Themes\Mut\img\template\bgd.png" />
-    <Content Include="Content\js\amd-base-url-marker.js" />
-    <Content Include="Content\js\amd-config.js" />
-    <Content Include="Content\js\BL\Templates\Attachment.less" />
-    <None Include="Content\js\BL\Widgets\Templates\trivia.less" />
-    <Content Include="Content\js\BL\Widgets\Templates\trivia.css">
+    <Content Include="__Themes\_\js\amd-base-url-marker.js" />
+    <Content Include="__Themes\_\js\amd-config.js" />
+    <Content Include="__Themes\_\js\BL\Templates\Attachment.less" />
+    <None Include="__Themes\_\js\BL\Widgets\Templates\trivia.less" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\trivia.css">
       <DependentUpon>trivia.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Widgets\Templates\trivia.html" />
-    <Content Include="Content\js\External\Select2\select2-bootstrap.css" />
-    <Content Include="Content\js\External\Select2\select2-spinner.gif" />
-    <Content Include="Content\js\External\Select2\select2.css" />
-    <Content Include="Content\js\External\Select2\select2.js" />
-    <Content Include="Content\js\External\Select2\select2.min.js" />
-    <Content Include="Content\js\External\Select2\select2.png" />
-    <Content Include="Content\js\External\Select2\select2x2.png" />
-    <Content Include="Content\js\External\Select2\select2_locale_ru.js" />
-    <None Include="Content\js\Templates\AdminMenu.less" />
-    <Content Include="Content\js\Templates\AdminMenu.css">
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\trivia.html" />
+    <Content Include="__Themes\_\js\External\Select2\select2-bootstrap.css" />
+    <Content Include="__Themes\_\js\External\Select2\select2-spinner.gif" />
+    <Content Include="__Themes\_\js\External\Select2\select2.css" />
+    <Content Include="__Themes\_\js\External\Select2\select2.js" />
+    <Content Include="__Themes\_\js\External\Select2\select2.min.js" />
+    <Content Include="__Themes\_\js\External\Select2\select2.png" />
+    <Content Include="__Themes\_\js\External\Select2\select2x2.png" />
+    <Content Include="__Themes\_\js\External\Select2\select2_locale_ru.js" />
+    <None Include="__Themes\_\js\Templates\AdminMenu.less" />
+    <Content Include="__Themes\_\js\Templates\AdminMenu.css">
       <DependentUpon>AdminMenu.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\Templates\AdminMenu.html" />
+    <Content Include="__Themes\_\js\Templates\AdminMenu.html" />
     <Content Include="Views\Specialist\Moderator.cshtml" />
     <Content Include="Views\ChildPagesTree.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
@@ -321,75 +321,75 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="web_settings.config" />
-    <TypeScriptCompile Include="Content\js\Base\api.ts" />
-    <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
-    <TypeScriptCompile Include="Content\js\Base\seq.ts" />
-    <TypeScriptCompile Include="Content\js\BL\Feedback\questionForm.ts" />
-    <TypeScriptCompile Include="Content\js\Login.ts" />
-    <TypeScriptCompile Include="Content\js\BL\Widgets\trivia.ts" />
-    <TypeScriptCompile Include="Content\js\BL\bbCode.ts" />
-    <TypeScriptCompile Include="Content\js\BL\base.ts" />
-    <Content Include="Content\js\BL\Templates\InPlaceEditor.html" />
-    <Content Include="Content\js\BL\Templates\Attachment.html" />
-    <Content Include="Content\js\BL\Templates\text-editor.html" />
-    <TypeScriptCompile Include="Content\js\BL\BBTextField.ts" />
-    <None Include="Content\js\BL\Widgets\Templates\youtubePlaylist.less" />
-    <Content Include="Content\js\BL\Widgets\Templates\youtubePlaylist.css">
+    <TypeScriptCompile Include="__Themes\_\js\Base\api.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Base\koBindings.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Base\seq.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Feedback\questionForm.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Login.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\trivia.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\bbCode.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\base.ts" />
+    <Content Include="__Themes\_\js\BL\Templates\InPlaceEditor.html" />
+    <Content Include="__Themes\_\js\BL\Templates\Attachment.html" />
+    <Content Include="__Themes\_\js\BL\Templates\text-editor.html" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\BBTextField.ts" />
+    <None Include="__Themes\_\js\BL\Widgets\Templates\youtubePlaylist.less" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\youtubePlaylist.css">
       <DependentUpon>youtubePlaylist.less</DependentUpon>
     </Content>
-    <Content Include="Content\js\BL\Widgets\Templates\youtubePlaylist.html" />
-    <TypeScriptCompile Include="Content\js\BL\Specialist\moderator.ts" />
-    <TypeScriptCompile Include="Content\js\BL\Specialist\application.ts" />
-    <TypeScriptCompile Include="Content\js\BL\Widgets\youtubePlaylist.ts" />
-    <TypeScriptCompile Include="Content\js\BL\text.ts" />
-    <TypeScriptCompile Include="Content\js\BL\InPlaceEditor.ts" />
-    <TypeScriptCompile Include="Content\js\BL\menu.ts" />
-    <TypeScriptCompile Include="Content\js\BL\page.ts" />
-    <Content Include="Content\js\BL\Templates\InPlaceEditor-DefaultMenu.html" />
-    <Content Include="Content\js\BL\Templates\menu.html" />
-    <Content Include="Content\js\BL\Templates\page-editor.html" />
-    <TypeScriptCompile Include="Content\js\AdminMenu.ts" />
-    <TypeScriptCompile Include="Content\js\common.ts" />
-    <TypeScriptCompile Include="Content\js\bootstrap.ts" />
-    <TypeScriptCompile Include="Content\js\Controls\ContextMenu.ts" />
-    <TypeScriptCompile Include="Content\js\Controls\InfoBox.ts" />
-    <Content Include="Content\js\BL\Templates\InPlaceEditor-BBQuickReference.html" />
-    <Content Include="Content\js\Controls\Templates\InfoBox.html" />
-    <Content Include="Content\js\External\jQuery\jquery-1.9.1.js" />
-    <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
-    <Content Include="Content\js\External\jQuery\jquery-ui-1.10.3.custom.min.js" />
-    <TypeScriptCompile Include="Content\js\Controls\Select.ts" />
-    <TypeScriptCompile Include="Content\js\External\jQuery\main.ts" />
-    <Content Include="Content\js\External\Knockout\knockout-2.2.1.debug.js" />
-    <Content Include="Content\js\External\Knockout\knockout-2.2.1.js" />
-    <Content Include="Content\js\External\Knockout\knockout.mapping-latest.debug.js" />
-    <Content Include="Content\js\External\Knockout\knockout.mapping-latest.js" />
-    <Content Include="Content\js\External\LinqJS\linq.js" />
-    <Content Include="Content\js\External\LinqJS\linq.min.js" />
-    <Content Include="Content\js\External\polyfill\polyfill.js" />
-    <TypeScriptCompile Include="Content\js\Lib\autobind.ts" />
-    <TypeScriptCompile Include="Content\js\Lib\DataSourceApi.ts" />
-    <TypeScriptCompile Include="Content\js\Lib\template.ts" />
-    <TypeScriptCompile Include="Content\js\Lib\dynamic.ts" />
-    <Content Include="Content\require\css.js" />
-    <Content Include="Content\require\normalize.js" />
-    <Content Include="Content\require\require.js" />
-    <Content Include="Content\require\text.js" />
-    <TypeScriptCompile Include="Content\js\External\Rx\main.ts" />
-    <Content Include="Content\js\External\Rx\rx.js" />
-    <Content Include="Content\js\External\Rx\rx.min.js" />
-    <Content Include="Content\js\External\Rx\rx.time.js" />
-    <Content Include="Content\js\External\Rx\rx.time.min.js" />
-    <Content Include="Content\tsd\jquery.d.ts" />
-    <Content Include="Content\tsd\jqueryui.d.ts" />
-    <Content Include="Content\tsd\knockout-2.2.d.ts" />
-    <Content Include="Content\tsd\knockout.mapping-2.0.d.ts" />
-    <Content Include="Content\tsd\linq.amd.d.ts" />
-    <Content Include="Content\tsd\linq.d.ts" />
-    <Content Include="Content\tsd\polyfill.d.ts" />
-    <Content Include="Content\tsd\require.d.ts" />
-    <Content Include="Content\tsd\rx-ko.d.ts" />
-    <Content Include="Content\tsd\rx.d.ts" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\youtubePlaylist.html" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Specialist\moderator.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Specialist\application.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\youtubePlaylist.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\text.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\InPlaceEditor.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\menu.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\page.ts" />
+    <Content Include="__Themes\_\js\BL\Templates\InPlaceEditor-DefaultMenu.html" />
+    <Content Include="__Themes\_\js\BL\Templates\menu.html" />
+    <Content Include="__Themes\_\js\BL\Templates\page-editor.html" />
+    <TypeScriptCompile Include="__Themes\_\js\AdminMenu.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\common.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\bootstrap.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Controls\ContextMenu.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Controls\InfoBox.ts" />
+    <Content Include="__Themes\_\js\BL\Templates\InPlaceEditor-BBQuickReference.html" />
+    <Content Include="__Themes\_\js\Controls\Templates\InfoBox.html" />
+    <Content Include="__Themes\_\js\External\jQuery\jquery-1.9.1.js" />
+    <Content Include="__Themes\_\js\External\jQuery\jquery-ui-1.10.3.custom.js" />
+    <Content Include="__Themes\_\js\External\jQuery\jquery-ui-1.10.3.custom.min.js" />
+    <TypeScriptCompile Include="__Themes\_\js\Controls\Select.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\External\jQuery\main.ts" />
+    <Content Include="__Themes\_\js\External\Knockout\knockout-2.2.1.debug.js" />
+    <Content Include="__Themes\_\js\External\Knockout\knockout-2.2.1.js" />
+    <Content Include="__Themes\_\js\External\Knockout\knockout.mapping-latest.debug.js" />
+    <Content Include="__Themes\_\js\External\Knockout\knockout.mapping-latest.js" />
+    <Content Include="__Themes\_\js\External\LinqJS\linq.js" />
+    <Content Include="__Themes\_\js\External\LinqJS\linq.min.js" />
+    <Content Include="__Themes\_\js\External\polyfill\polyfill.js" />
+    <TypeScriptCompile Include="__Themes\_\js\Lib\autobind.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Lib\DataSourceApi.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Lib\template.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Lib\dynamic.ts" />
+    <Content Include="__Themes\_\require\css.js" />
+    <Content Include="__Themes\_\require\normalize.js" />
+    <Content Include="__Themes\_\require\require.js" />
+    <Content Include="__Themes\_\require\text.js" />
+    <TypeScriptCompile Include="__Themes\_\js\External\Rx\main.ts" />
+    <Content Include="__Themes\_\js\External\Rx\rx.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.min.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.time.js" />
+    <Content Include="__Themes\_\js\External\Rx\rx.time.min.js" />
+    <Content Include="__Themes\_\tsd\jquery.d.ts" />
+    <Content Include="__Themes\_\tsd\jqueryui.d.ts" />
+    <Content Include="__Themes\_\tsd\knockout-2.2.d.ts" />
+    <Content Include="__Themes\_\tsd\knockout.mapping-2.0.d.ts" />
+    <Content Include="__Themes\_\tsd\linq.amd.d.ts" />
+    <Content Include="__Themes\_\tsd\linq.d.ts" />
+    <Content Include="__Themes\_\tsd\polyfill.d.ts" />
+    <Content Include="__Themes\_\tsd\require.d.ts" />
+    <Content Include="__Themes\_\tsd\rx-ko.d.ts" />
+    <Content Include="__Themes\_\tsd\rx.d.ts" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -406,8 +406,8 @@
     <Content Include="web_smtp.config" />
     <Content Include="Views\TopMenu.cshtml" />
     <Content Include="Views\Text.cshtml" />
-    <Content Include="Content\tsd\rx.dom.d.ts" />
-    <TypeScriptCompile Include="Content\tsd\serverTypes.d.ts" />
+    <Content Include="__Themes\_\tsd\rx.dom.d.ts" />
+    <TypeScriptCompile Include="__Themes\_\tsd\serverTypes.d.ts" />
     <TypeScriptCompile Include="Models\Login\LoginMethodModel.cs.d.ts">
       <DependentUpon>LoginMethodModel.cs</DependentUpon>
     </TypeScriptCompile>
@@ -417,7 +417,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="__Themes\_\" />
+    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -459,20 +459,20 @@
     <Content Include="Views\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Content\js\BackOffice\main.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BackOffice\main.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\tsd\jquery.amd.d.ts" />
+    <Content Include="__Themes\_\tsd\jquery.amd.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Content\js\BackOffice\pages.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BackOffice\pages.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\js\BackOffice\Templates\pages.html" />
+    <Content Include="__Themes\_\js\BackOffice\Templates\pages.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Content\js\BL\attachment.ts" />
-    <TypeScriptCompile Include="Content\js\Lib\Uploader.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\attachment.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\Lib\Uploader.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
