@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="MarkupDefinitions.cs" />
     <Compile Include="MarkupParser.cs" />
+    <Compile Include="Routes.cs" />
     <Compile Include="VideoEmbedUI.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -172,6 +172,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Controllers\SiteService.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\Controller.cs" />
@@ -191,6 +192,11 @@
     <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\PageListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -198,36 +204,41 @@
     <Content Include="Content\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\common.css">
+    <Content Include="__Themes\Musicarium\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
-    <Content Include="Content\css\common.less" />
+    <Content Include="__Themes\Musicarium\img\logo.png" />
+    <Content Include="__Themes\Musicarium\img\template\banner.jpg" />
+    <Content Include="__Themes\Musicarium\img\template\bgd.png" />
+    <Content Include="__Themes\Musicarium\template-style.css">
+      <DependentUpon>template-style.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\Mut\css\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\Mut\css\common.less" />
     <Content Include="Content\css\bl.less" />
     <Content Include="Content\css\Menu.css">
       <DependentUpon>Menu.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Menu.less" />
-    <Content Include="Content\css\template-style.css">
+    <Content Include="__Themes\Mut\css\template-style.css">
       <DependentUpon>template-style.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.css">
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="Content\css\Text.less" />
-    <Content Include="Content\css\theme.css">
-      <DependentUpon>theme.less</DependentUpon>
-    </Content>
     <Content Include="Content\img\login\facebook.jpg" />
     <Content Include="Content\img\login\google.jpg" />
     <Content Include="Content\img\login\livejournal.jpg" />
     <Content Include="Content\img\login\yahoo.jpg" />
     <Content Include="Content\img\login\yandex.jpg" />
-    <Content Include="Content\img\logo.png" />
+    <Content Include="__Themes\Mut\img\logo.png" />
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.css">
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
     <Content Include="Content\js\BL\Feedback\Templates\questionForm.html" />
-    <Content Include="Content\css\theme.less" />
     <None Include="Content\js\Templates\Login.less" />
     <Content Include="Content\js\External\Rx\rx.binding.js" />
     <Content Include="Content\js\External\Rx\rx.binding.min.js" />
@@ -275,10 +286,12 @@
     <Content Include="Content\css\Page.css">
       <DependentUpon>Page.less</DependentUpon>
     </Content>
-    <None Include="Content\css\template-style.less" />
+    <Content Include="__Themes\Musicarium\common.less" />
+    <Content Include="__Themes\Musicarium\template-style.less" />
+    <None Include="__Themes\Mut\css\template-style.less" />
     <Content Include="Content\img\spinner.gif" />
-    <Content Include="Content\img\template\banner.jpg" />
-    <Content Include="Content\img\template\bgd.png" />
+    <Content Include="__Themes\Mut\img\template\banner.jpg" />
+    <Content Include="__Themes\Mut\img\template\bgd.png" />
     <Content Include="Content\js\amd-base-url-marker.js" />
     <Content Include="Content\js\amd-config.js" />
     <Content Include="Content\js\BL\Templates\Attachment.less" />
@@ -303,10 +316,11 @@
     <Content Include="Views\Specialist\Moderator.cshtml" />
     <Content Include="Views\ChildPagesTree.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="__Themes\theme.css">
-      <DependentUpon>theme.less</DependentUpon>
-    </Content>
-    <Content Include="__Themes\theme.less" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="web_settings.config" />
     <TypeScriptCompile Include="Content\js\Base\api.ts" />
     <TypeScriptCompile Include="Content\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="Content\js\Base\seq.ts" />
@@ -403,6 +417,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="__Themes\_\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
