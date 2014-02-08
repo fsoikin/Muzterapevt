@@ -16,7 +16,7 @@ namespace Mut.Controllers
 		public ActionResult File( string url )
 		{
 			return
-				new[] { "~/__Themes/" + (Sites.CurrentSiteTheme.NullOrEmpty() ? "_" : Sites.CurrentSiteTheme), "~/Content" }
+				new[] { "~/__Themes/" + Sites.CurrentSiteTheme, "~/__Themes/_", "~/Content" }
 				.Select( Server.MapPath )
 				.Select( p => Path.Combine( p, url ) )
 				.Where( System.IO.File.Exists )
