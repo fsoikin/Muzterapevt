@@ -30,7 +30,7 @@ namespace Mut
 
 		public IQueryable<Page> GetChildPages( IEnumerable<Page> parents ) {
 			return Pages.All
-				.Where( p => p.SiteId == Sites.CurrentSiteId && p.Title != null || p.BbText != null || p.HtmlText != null || p.ReferenceName != null )
+				.Where( p => p.SiteId == Sites.CurrentSiteId && (p.Title != null || p.BbText != null || p.HtmlText != null || p.ReferenceName != null) )
 				.Where( parents
 					.Select( p => p.Url + '/' )
 					.Select( pr => {
