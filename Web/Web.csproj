@@ -201,18 +201,18 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="__Themes\Musicarium\css\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\Musicarium\css\template-style.css">
+      <DependentUpon>template-style.less</DependentUpon>
+    </Content>
     <Content Include="__Themes\_\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
-    </Content>
-    <Content Include="__Themes\Musicarium\common.css">
-      <DependentUpon>common.less</DependentUpon>
     </Content>
     <Content Include="__Themes\Musicarium\img\logo.png" />
     <Content Include="__Themes\Musicarium\img\template\banner.jpg" />
     <Content Include="__Themes\Musicarium\img\template\bgd.png" />
-    <Content Include="__Themes\Musicarium\template-style.css">
-      <DependentUpon>template-style.less</DependentUpon>
-    </Content>
     <Content Include="__Themes\Mut\css\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
@@ -239,6 +239,8 @@
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
     <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.html" />
+    <Content Include="__Themes\Musicarium\css\common.less" />
+    <Content Include="__Themes\Musicarium\css\template-style.less" />
     <None Include="__Themes\_\js\Templates\Login.less" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />
@@ -286,8 +288,6 @@
     <Content Include="__Themes\_\css\Page.css">
       <DependentUpon>Page.less</DependentUpon>
     </Content>
-    <Content Include="__Themes\Musicarium\common.less" />
-    <Content Include="__Themes\Musicarium\template-style.less" />
     <None Include="__Themes\Mut\css\template-style.less" />
     <Content Include="__Themes\_\img\spinner.gif" />
     <Content Include="__Themes\Mut\img\template\banner.jpg" />
@@ -417,7 +417,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
