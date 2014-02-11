@@ -13,12 +13,7 @@
 	</head>
 <body>
 	<div class="container">
-		@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
-		<div class="banner"><img src="@Url.Content( "~/Content/img/template/banner.jpg" )" alt="Muzterapevt.RU" title="Muzterapevt.RU" /> </div>
-		<div class="bannerb">
-			<a class="logo" href="@Url.Content("~/")"><img src="@Url.Content( "~/Content/img/logo.png" )" /></a>
-			@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
-		</div>
+		@RenderSection( "Top" )
 		<div class="clear">&nbsp;</div>
 		@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
 		<div class="sidebar">
@@ -32,15 +27,7 @@
 			@RenderBody()
 		</div>
 		<div class="footer">
-			@if ( model.CurrentUser.IsAuthenticated ) {
-				<div class="current-user">Logged in as: <span>@(model.CurrentUser.Name)</span></div>
-			}
-			<a href="@Url.Content("~/")">Музтерапевт.Ру</a> |
-			<a href="mailto:muzterapevt@gmail.com">contact</a> |
-			@if ( !model.CurrentUser.IsAuthenticated ) { <a href="#" class="autobind" data-controller="LoginButton, Login">login</a> }
-			else { <a href="@Url.Action( (Mut.Controllers.LoginController c) => c.Logout( Request.Url.ToString() ) )">logout</a> }
-			|
-			&copy; 2013-2014 Alisa Apreleva<br />
+			@RenderSection( "Footer" )
 		</div>
 	</div>
 	@if ( model.ShowAdminMenu ) {

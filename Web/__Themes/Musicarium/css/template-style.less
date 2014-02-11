@@ -1,6 +1,7 @@
 @content-font-size: 16px;
-@ribbon-color: #E8FFE8;
-@emphasis-color: #80AA80;
+@ribbon-color: lighten(#0787C9, 5%);
+@emphasis-color: #D97C29;
+@ribbon-height: 60px;
 
 * {
 	-moz-box-sizing: border-box;
@@ -17,11 +18,10 @@ body {
 }
 
 .container {
-	width: 1040px;
+	width: 1240px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
-	padding: 20px;
 	line-height: 1.2em;
 	color: #666;
 	background: #f2f2f5;
@@ -32,7 +32,7 @@ body {
 	width: 710px;
 	height: 298px;
 	padding: 0;
-	margin: 0 0 10px 0;
+	margin: 0 20px 10px 20px;
 	border: 20px solid white;
 
 	> img {
@@ -54,24 +54,26 @@ div.scroll {
 }
 
 .bannerb {
-	float: right;
-	width: 250px;
-	margin: 0 0 10px 0;
 	padding: 20px;
+	background: url("../img/template/banner.jpg") no-repeat right top;
+	height: 350px;
 
-	> a > img {display: block;}
+	> a > img { display: block; }
+	> div {
+		font-family: cursive;
+		color: @ribbon-color;
+		font-size: 22px;
+		margin-top: 10px;
+	}
 }
 
 /*TOP NAVIGATION*/
 .navcontainer {
-	@height: 36px;
-
-	width: 100%;
-	min-height: @height;
+	min-height: @ribbon-height;
 	background: @ribbon-color;
 
 	> ul.menu {
-		height: @height;
+		height: @ribbon-height;
 	}
 
 	ul {
@@ -80,7 +82,7 @@ div.scroll {
 		color: #fff;
 		float: left;
 		width: 100%;
-		line-height: 1.7em;
+		line-height: @ribbon-height*0.8;
 		-webkit-margin-before: 0;
 		-webkit-margin-after: 0;
 
@@ -95,14 +97,14 @@ div.scroll {
 				text-overflow: ellipsis;
 				padding: 0.2em 1em;
 				background: @ribbon-color;
-				color: black;
+				color: white;
 				text-decoration: none;
 				border-left: 1px solid #fff;
 				width: 100%;
-				height: @height;
+				height: @ribbon-height;
 
 				&:hover {
-					background: #80DD80;
+					background: lighten(@ribbon-color, 10%);
 				}
 			}
 
@@ -122,8 +124,8 @@ div.scroll {
 	font-size: @content-font-size;
 	color: black;
 	padding: 5px;
-	margin-left: 205px;
-	margin-right: 205px;
+	margin-left: 225px;
+	margin-right: 225px;
 	background: #f7f7f7;
 	text-align: justify;
 }
@@ -132,7 +134,7 @@ div.scroll {
 	font-size: @content-font-size;
 	float: left;
 	width: 180px;
-	margin: 0 5px 0 0;
+	margin: 0 25px 0 20px;
 	padding: 5px;
 	color: #666;
 	background: #f2f2f5;
@@ -174,20 +176,20 @@ div.scroll {
 	clear: both;
 	padding: 5px;
 	margin-top: 15px;
-	color: gray;
+	color: white;
 	background: @ribbon-color;
 }
 
 	.footer a:link, .footer a:visited {
 		background: inherit;
-		color: #505050;
+		color: white;
 		text-decoration: none;
 	}
 
 	.footer a:hover {
 		border-bottom: 1px dashed #f2f2f5;
 		background: inherit;
-		color: black;
+		color: #EEE;
 	}
 /*TYPOGRAPHY*/
 p {
@@ -245,7 +247,7 @@ a {
 
 .clear {
 	clear: both;
-	height: 1px;
+	height: 0px;
 }
 
 .current-user {

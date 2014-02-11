@@ -1,0 +1,11 @@
+﻿@model FooterModel
+
+@if ( Model.Layout.CurrentUser.IsAuthenticated ) {
+	<div class="current-user">Logged in as: <span>@(Model.Layout.CurrentUser.Name)</span></div>
+}
+<a href="@Url.Content("~/")">@Model.SiteName</a> |
+<a href="mailto:muzterapevt@gmail.com">contact</a> |
+@if ( !Model.Layout.CurrentUser.IsAuthenticated ) { <a href="#" class="autobind" data-controller="LoginButton, Login">login</a> }
+else { <a href="@Url.Action( (Mut.Controllers.LoginController c) => c.Logout( Request.Url.ToString() ) )">logout</a> }
+|
+&copy; 2013-2014 Alisa Apreleva<br />

@@ -187,6 +187,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FooterModel.cs" />
     <Compile Include="Models\Login\LoginResultModel.cs" />
     <Compile Include="Models\Login\LoginMethodModel.cs" />
     <Compile Include="Models\LayoutModel.cs" />
@@ -206,6 +207,9 @@
     </Content>
     <Content Include="__Themes\Musicarium\css\template-style.css">
       <DependentUpon>template-style.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\Musicarium\css\template-style.min.css">
+      <DependentUpon>template-style.css</DependentUpon>
     </Content>
     <Content Include="__Themes\_\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
@@ -241,6 +245,9 @@
     <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.html" />
     <Content Include="__Themes\Musicarium\css\common.less" />
     <Content Include="__Themes\Musicarium\css\template-style.less" />
+    <Content Include="Views\_Layout_Mut.cshtml" />
+    <Content Include="Views\_Layout_Musicarium.cshtml" />
+    <Content Include="Views\_Footer.cshtml" />
     <None Include="__Themes\_\js\Templates\Login.less" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />

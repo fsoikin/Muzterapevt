@@ -1,4 +1,5 @@
 ﻿@{
-	Layout = "~/Views/_Layout.cshtml";
+	var theme = erecruit.Composition.Composition.BackCompatGetService<ISiteService>().CurrentSiteTheme;
+	Layout = "~/Views/_Layout_" + theme + ".cshtml";
 	ViewContext.ViewBag.AmdStart = null;
 }
