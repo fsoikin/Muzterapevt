@@ -205,6 +205,9 @@
     <Content Include="__Themes\Musicarium\css\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
+    <Content Include="__Themes\Musicarium\css\common.min.css">
+      <DependentUpon>common.css</DependentUpon>
+    </Content>
     <Content Include="__Themes\Musicarium\css\template-style.css">
       <DependentUpon>template-style.less</DependentUpon>
     </Content>
