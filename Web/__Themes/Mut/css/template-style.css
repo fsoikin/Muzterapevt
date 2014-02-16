@@ -1,4 +1,4 @@
-﻿* {
+* {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -23,11 +23,12 @@ body {
 /*TOP BANNER*/
 .banner {
   float: left;
-  width: 710px;
-  height: 298px;
+  width: 730px;
+  height: 338px;
   padding: 0;
   margin: 0 0 10px 0;
   border: 20px solid white;
+  background: url(../img/template/banner.jpg);
 }
 .banner > img {
   width: 100%;

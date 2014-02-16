@@ -20,7 +20,7 @@
   },
   "Css": {
     "AdjustRelativePaths": true,
-    "AutoMinify": true,
+    "AutoMinify": false,
     "GzipMinifiedFiles": false,
     "ShowBrowserTooltip": true,
     "ShowInitialInherit": false,
