@@ -9,7 +9,6 @@
 		<script type="text/javascript" src="@Url.Content("~/Content/js/amd-config.js")"></script>
 		<script type="text/javascript">define('RootUrl', [], function () { return '@Url.Content("~/")'; });</script>
 		<link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/css/template-style.css")" />
-		<link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/theme.css")" />
 	</head>
 <body>
 	<div class="container">
@@ -31,7 +30,7 @@
 		</div>
 	</div>
 	@if ( model.ShowAdminMenu ) {
-		<div class="autobind" data-controller="AdminMenu" />
+		<div class="autobind" data-controller="AdminMenu"></div>
 	}
 </body>
 <script type="text/javascript">
