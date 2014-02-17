@@ -105,11 +105,18 @@ namespace Mut
 					To = { new MailAddress( e.ToEmail, e.ToName ) }
 				};
 
-				var from =
-					 !e.FromEmail.NullOrEmpty() ? new MailAddress( e.FromEmail, e.FromName ) :
-					 !config.DefaultFromEmail.NullOrEmpty() ? new MailAddress( config.DefaultFromEmail, config.DefaultFromName )
-					 : null;
-				if ( from != null ) msg.From = from;
+				var from = (
+					from fromEmail in e.FromEmail.MaybeDefined()
+					where !fromEmail.NullOrEmpty()
+					from a in new MailAddress( fromEmail, e.FromName )
+					select a
+					).Or( () =>
+					from fromEmail in config.DefaultFromEmail.MaybeDefined()
+					where !fromEmail.NullOrEmpty()
+					from a in new MailAddress( fromEmail, config.DefaultFromName )
+					select a
+					);
+				if ( from.Kind == Maybe.Kind.Value ) msg.From = from.Value;
 
 				await smtp.SendMailAsync( msg );
 			}
