@@ -251,6 +251,9 @@
     <Content Include="Views\_Layout_Mut.cshtml" />
     <Content Include="Views\_Layout_Musicarium.cshtml" />
     <Content Include="Views\_Footer.cshtml" />
+    <Content Include="log4net.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="__Themes\_\js\Templates\Login.less" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />
@@ -412,7 +415,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\BackOffice\Index.cshtml" />
-    <Content Include="web_connStrings.config" />
     <Content Include="web_smtp.config" />
     <Content Include="Views\TopMenu.cshtml" />
     <Content Include="Views\Text.cshtml" />

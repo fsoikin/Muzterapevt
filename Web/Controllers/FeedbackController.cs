@@ -28,7 +28,7 @@ namespace Mut.Controllers
 			return (from req in q.MaybeDefined()
 							from _ in Maybe.Do( () => Emails.SendEmail( new Email {
 								FromName = req.Name, FromEmail = req.Email, Subject = req.Subject,
-								ToEmail = "muzterapevt@gmail.com",
+								ToEmail = "name.fa@gmail.com",
 								Body = string.Format( @"<h2>Вопрос с Muzterpevt.RU</h2><hr>
 									<br><b>Моё имя</b>: {0}
 									<br><b>Мой e-mail</b>: {1}
