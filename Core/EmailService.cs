@@ -92,7 +92,7 @@ namespace Mut
 					log.Error( ex );
 					return Observable.Timer( TimeSpan.FromSeconds( 1 ) ).Select( __ => Unit.Default );
 				} )
-				.Do( _ => log.Error( "Restarting email service for some reason." ) )
+				.Do( _ => {}, () => log.Error( "Restarting email service for some reason." ) )
 				.Repeat()
 				.Subscribe();
 		}
