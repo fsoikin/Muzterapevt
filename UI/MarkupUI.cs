@@ -136,7 +136,7 @@ namespace Mut.UI
 
 		IEnumerable<MarkdownNodeDefinition<MarkdownParseArgs>> HtmlTableTags() {
 			var attrs = new[] { "style", "class", "id" };
-			var td = _parser.HtmlTag( "td", attrs );
+			var td = _parser.HtmlTag( "td", attrs.Concat( new[] { "rowspan", "colspan" } ) );
 			var tr = _parser.HtmlTag( "tr", ii => ii.Where( i => i.Def == td ), attrs );
 			var table = _parser.HtmlTag( "table", ii => ii.Where( i => i.Def == tr ), attrs );
 			return new[] { td, tr, table };
