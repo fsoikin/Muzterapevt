@@ -89,15 +89,23 @@ namespace Mut.UI
 
 					// Legacy:
 					_parser.SimpleTag("b"), _parser.SimpleTag("i"), _parser.SimpleTag("u"),
-					_parser.SimpleTag("h", "h2"), _parser.SimpleTag("h1")
+					_parser.SimpleTag("h", "h2"), _parser.SimpleTag("h1"),
+
 				}
 				.Concat( GetTriviaTags() )
+				
+				// Allowed HTML:
+				.Concat( new[] { "div", "span", "img" }.Select( t => _parser.HtmlTag( t, "style", "id", "class" ) ) )
+				.Concat( HtmlTableTags() )
+
 				.Concat( from m in CustomModules
 								 select _parser.ComplexTag( m.Name, false, m.Parameters.ToArray(), ( _, args, inners ) => {
 									 var classRef = m.GetClassRef( args );
 									 return string.Format( "<div class='autobind' data-controller='{0}, {1}' data-args='{2}'></div>", classRef.Class, classRef.Module,
 											HttpUtility.HtmlAttributeEncode( JsonConvert.SerializeObject( classRef.Arguments ) ) );
-								 } ) );
+								 } ) )
+				
+				.ToList();
 
 			}
 		}
@@ -124,6 +132,14 @@ namespace Mut.UI
 			} );
 
 			return new[] { responseMarker, triviaTag };
+		}
+
+		IEnumerable<MarkdownNodeDefinition<MarkdownParseArgs>> HtmlTableTags() {
+			var attrs = new[] { "style", "class", "id" };
+			var td = _parser.HtmlTag( "td", attrs );
+			var tr = _parser.HtmlTag( "tr", ii => ii.Where( i => i.Def == td ), attrs );
+			var table = _parser.HtmlTag( "table", ii => ii.Where( i => i.Def == tr ), attrs );
+			return new[] { td, tr, table };
 		}
 
 		MarkdownNodeDefinition<MarkdownParseArgs> heading( string markup, string htmlTag ) {

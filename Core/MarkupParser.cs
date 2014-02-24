@@ -114,8 +114,8 @@ namespace Mut
 			};
 		}
 
-		static string attributeRegex( string attName ) {
-			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s\\]]+)|(\\\"[^\\\"\\]]+\\\"))";
+		static string attributeRegex( string attName, string closing = "\\]" ) {
+			return Regex.Escape( attName ) + "\\=(?'att_" + attName + "'([^\\s" + closing + "]+)|(\\\"[^\\\"" + closing + "]+\\\"))";
 		}
 
 		public MarkdownNodeDefinition<TContext> ComplexTag( 
@@ -139,7 +139,7 @@ namespace Mut
 				Start = new Regex(
 					"\\[" + tagName +
 					(defaultAttribute ? "(" + attributeRegex( "" ) + "){0,1}" : "") +
-					"(\\s+(" + string.Join( "|", attributes.Select( attributeRegex ) ) + "))*" +
+					"(\\s+(" + string.Join( "|", attributes.Select( a => attributeRegex( a ) ) ) + "))*" +
 					"\\s*\\]" ),
 
 				End = hasClosing ? new Regex( "\\[\\/" + tagName + "\\]" ) : null,
@@ -153,6 +153,32 @@ namespace Mut
 					return new TextNode( generateHtml( ctx, attrs, inners ), false );
 				}
 			};
+		}
+
+		public MarkdownNodeDefinition<TContext> HtmlTag( string tag, params string[] allowedAttributes ) {
+			return HtmlTag( tag, ii => ii, allowedAttributes );
+		}
+
+		public MarkdownNodeDefinition<TContext> HtmlTag( string tag, 
+			Func<IEnumerable<MarkupNode<TContext>>, IEnumerable<MarkupNode<TContext>>> transformInners,
+			params string[] allowedAttributes ) {
+			return new MarkdownNodeDefinition<TContext>( 
+				@"\<" + tag + 
+				@"(\s+(" + string.Join( "|", allowedAttributes.Select( a => attributeRegex( a, ">" ) ) ) + "))*" +
+				@"\s*\>",
+				@"\<\/" + tag + @"\>",
+				(ctx,start,end,inners) => new TextNode( 
+					"<" + tag + " " + string.Join( " ",
+					from a in allowedAttributes
+					let g = start.Groups["att_" + a]
+					where g != null && g.Success
+					select a + "=" + g.Value ) +
+					">" + string.Join( "", transformInners(inners).Select( i => i.Instance.ToHtml() ) ) +
+					"</" + tag + ">",
+
+					encode: false
+				)
+			);
 		}
 
 		class ParsingNode
@@ -171,6 +197,8 @@ namespace Mut
 
 		public IEnumerable<MarkupNode<TContext>> Parse( 
 			string input, TContext context, IEnumerable<MarkdownNodeDefinition<TContext>> defs ) {
+
+			if ( !(defs is IList<MarkdownNodeDefinition<TContext>>) ) defs = defs.ToList();
 
 			var matches = 
 				defs.SelectMany( d => 
