@@ -3,7 +3,7 @@
 
 	<!-- ko foreach: Specialists -->
 	<div class="specialist">
-		<img src="photo" data-bind="attr: { src: PhotoUrl }, visible: PhotoUrl" />
+		<img class="photo" data-bind="attr: { src: PhotoUrl }, visible: PhotoUrl" />
 		<div class="buttons">
 			<button class="icon-ok" data-bind="click: $parent.Approve">Approve</button>
 			<button class="icon-no" data-bind="click: $parent.Archive">Hide</button>
