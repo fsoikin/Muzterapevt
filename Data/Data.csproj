@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Subscription.cs" />
     <Compile Include="Entities\EmailServiceConfig.cs" />
     <Compile Include="Entities\Email.cs" />
     <Compile Include="Entities\Country.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\005_Added_Email.sql" />
+    <Content Include="Migrations\012_Added_Subscriptions.sql" />
+    <Content Include="Migrations\011_Added_Site_FriendlyName.sql" />
     <Content Include="Migrations\010_Added_SiteId.sql" />
     <Content Include="Migrations\009_Added_Email_Error_Handling_Fields.sql" />
     <Content Include="Migrations\008_Added_Page_SortOrder.sql" />

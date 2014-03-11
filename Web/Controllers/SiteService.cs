@@ -19,6 +19,7 @@ namespace Mut.Controllers
 		readonly Lazy<Site> _site;
 
 		public Guid CurrentSiteId { get { return _site.Value.Id; } }
+		public string CurrentSiteFriendlyName { get { return _site.Value.FriendlyName ?? _site.Value.HostName; } }
 		public string CurrentSiteTheme { get { return _site.Value.Theme; } }
 
 		public SiteService() {

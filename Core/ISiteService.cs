@@ -17,6 +17,7 @@ namespace Mut
 	public interface ISiteService
 	{
 		Guid CurrentSiteId { get; }
+		string CurrentSiteFriendlyName { get; }
 		string CurrentSiteTheme { get; }
 	}
 }

@@ -8,7 +8,7 @@ export var IAm = "{EBA9F6C3-0A31-46AA-BB1C-6B7A183CE37F}";
 export class BBTextFieldVm implements c.IControl {
 	Element: Element;
 	_value = ko.observable( "" );
-	Value = ko.computed( {
+	Value = ko.computed<string>( {
 		read: () => this._value(), //https://typescript.codeplex.com/workitem/1988
 		write: v => {
 			var txtarea = <HTMLTextAreaElement>this.Element;

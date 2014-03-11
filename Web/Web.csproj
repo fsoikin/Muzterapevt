@@ -207,6 +207,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Controllers\SiteService.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SubscriptionSubmitModel.cs" />
     <Compile Include="Models\FooterModel.cs" />
     <Compile Include="Models\Login\LoginResultModel.cs" />
     <Compile Include="Models\Login\LoginMethodModel.cs" />
@@ -289,7 +291,13 @@
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Subscription\Verify.cshtml" />
     <None Include="__Themes\_\js\Templates\Login.less" />
+    <None Include="__Themes\_\js\BL\Widgets\Templates\subscription.less" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.css">
+      <DependentUpon>subscription.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.html" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.dom.js" />
@@ -373,6 +381,7 @@
     <TypeScriptCompile Include="__Themes\_\js\Base\koBindings.ts" />
     <TypeScriptCompile Include="__Themes\_\js\Base\seq.ts" />
     <TypeScriptCompile Include="__Themes\_\js\BL\Feedback\questionForm.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\subscription.ts" />
     <TypeScriptCompile Include="__Themes\_\js\Login.ts" />
     <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\trivia.ts" />
     <TypeScriptCompile Include="__Themes\_\js\BL\bbCode.ts" />

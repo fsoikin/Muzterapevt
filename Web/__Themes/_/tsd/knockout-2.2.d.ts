@@ -121,17 +121,10 @@ declare module Ko {
 		controlsDescendantBindings?: boolean;
 	}
 
-	export interface BindingHandlerBase {
+	export interface BindingHandler {
+		init? ( element: any, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: BindingContext ): BindingHandlerResult;
 		update? ( element: any, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: BindingContext ): void;
 		options?: any;
-	}
-
-	export interface BindingHandler extends BindingHandlerBase {
-		init? ( element: any, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: BindingContext ): BindingHandlerResult;
-	}
-
-	export interface BindingHandlerWithNoResult extends BindingHandlerBase {
-		init? ( element: any, valueAccessor: () => any, allBindingsAccessor: () => any, viewModel: any, bindingContext: BindingContext ): void;
 	}
 
 	export interface BindingHandlers {
@@ -166,7 +159,6 @@ declare module Ko {
 		template: BindingHandler;
 
 		[key: string]: BindingHandler;
-		[key: string]: BindingHandlerWithNoResult;
 	}
 
 	export interface Memoization {

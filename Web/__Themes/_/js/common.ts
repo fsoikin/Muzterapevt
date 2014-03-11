@@ -14,10 +14,8 @@
 import rx = require( "rx" );
 import ko = require( "ko" );
 import $ = require( "jQuery" );
-export import _api = require( "./Base/api" );
-export import _seq = require( "./Base/seq" );
-export var Seq = _seq;
-export var Api = _api;
+export import Api = require( "./Base/api" );
+export import Seq = require( "./Base/seq" );
 
 export interface NameValuePair<T> {
 	Name: string;
@@ -308,7 +306,7 @@ export function switchObservable<T>( triggers: any,
 			}) )
 			.concat( koToRx( nextObservable ).skip( 1 ) ) );
 
-	return ko.computed( { read: read, write: ( v: T ) => write( v ) });
+	return ko.computed<T>( { read: read, write: v => write( v ) });
 }
 
 /**

@@ -326,13 +326,13 @@ declare module Rx {
 		zip( ...soucesAndResultSelector: any[] ): IObservable<any>;
 		zip<T1, R>( second: T1[], resultSelector: ( left: T, right: T1 ) => R ): IObservable<R>;
 
-		concat<T, U extends T>( ...sources: IObservable<U>[] ): IObservable<T>;
-		concat<T, U extends T>( sources: IObservable<U>[] ): IObservable<T>;
+		concat<U extends T>( ...sources: IObservable<U>[] ): IObservable<T>;
+		concat<U extends T>( sources: IObservable<U>[] ): IObservable<T>;
 
 		merge( maxConcurrent: number ): IObservable<T>;
-		merge<T, U extends T>( other: IObservable<U> ): IObservable<T>;
+		merge<U extends T>( other: IObservable<U> ): IObservable<T>;
 
-		onErrorResumeNext<T, U extends T>( second: IObservable<U> ): IObservable<T>;
+		onErrorResumeNext<U extends T>( second: IObservable<U> ): IObservable<T>;
 		skipUntil<U>( other: IObservable<U> ): IObservable<T>;
 		switchLatest(): IObservable<T>;
 		takeUntil<U>( other: IObservable<U> ): IObservable<T>;

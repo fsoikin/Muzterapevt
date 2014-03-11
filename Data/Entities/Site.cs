@@ -11,6 +11,7 @@ namespace Mut.Data
 		public Guid Id { get; set; }
 		public string HostName { get; set; }
 		public string Theme { get; set; }
+		public string FriendlyName { get; set; }
 
 		[Export] class Mapping : IModelMapping { public void Map( DbModelBuilder b ) { b.Entity<Site>(); } }
 	}

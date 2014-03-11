@@ -1,0 +1,33 @@
+﻿<div class="subscription">
+	<a href="#" data-bind="click: Show">Подпишитесь на нашу рассылку</a>
+
+	<form class="dialog" data-bind="visible: IsVisible">
+		<div class="overlay">&nbsp;</div>
+		<div class="content">
+			<!-- ko if: !IsSubmitted() && !IsSubmitting() -->
+			<label>
+				Ваш адрес электронной почты:
+				<input type="text" data-bind="value: Email, valueUpdate: 'keyup', hasFocus: EmailFocused" />
+			</label>
+
+			<input type="submit" value="Подписаться" data-bind="click: Submit, enabled: Email" />
+			<button data-bind="click: Hide">Назад</button>
+
+			<!-- /ko -->
+			<!-- ko if: IsSubmitting -->
+			<div class="prompt Loading">
+				Ваша заявка отправляется, пожалуйста подождите...
+			</div>
+			<!-- /ko -->
+			<!-- ko if: IsSubmitted -->
+			<div class="title">Это ещё не всё</div>
+			<div class="prompt">
+				Теперь мы должны проверить, что этот адрес действительно принадлежит вам.<br />
+				Для этого мы только что отправили письмо на <span class="email" data-bind="text: Email"></span>.
+				Получив это письмо, нажмите на содержащуюся в нём ссылку, и ваша подписка будет подтверждена.
+			</div>
+			<button data-bind="click: Hide">Закрыть</button>
+			<!-- /ko -->
+		</div>
+	</form>
+</div>

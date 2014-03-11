@@ -1,4 +1,4 @@
-﻿.container {
+.container {
   border: 2px solid black;
 }
 body {
@@ -45,7 +45,8 @@ label {
 label:first-child {
   margin-top: 0;
 }
-button {
+button,
+input[type=submit] {
   padding: .4em 1em;
   vertical-align: middle;
   background: #C1FFC5 !important;
@@ -62,18 +63,22 @@ button {
   font-size: 13pt;
   border-radius: 4px;
 }
-button:hover {
+button:hover,
+input[type=submit]:hover {
   background: #A5FFC0 !important;
   border: 1px solid #999999;
   color: #212121;
 }
-button.warning {
+button.warning,
+input[type=submit].warning {
   background: #FFC3BC !important;
 }
-button.warning:hover {
+button.warning:hover,
+input[type=submit].warning:hover {
   background: #FF9399 !important;
 }
-button.icon-ok:before {
+button.icon-ok:before,
+input[type=submit].icon-ok:before {
   position: relative;
   display: inline-block;
   left: -6px;
@@ -86,7 +91,8 @@ button.icon-ok:before {
   content: 'x';
   color: transparent;
 }
-button.icon-no:before {
+button.icon-no:before,
+input[type=submit].icon-no:before {
   position: relative;
   display: inline-block;
   left: -6px;

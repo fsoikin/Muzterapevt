@@ -151,7 +151,7 @@ export module create {
 			ToString: ( i: er.NameValuePair<T> ) => i.Name,
 			CanLookup: false,
 			HasPartialItems: false,
-			Lookup: () => rx.Observable.empty<T[]>()
+			Lookup: () => rx.Observable.empty<er.NameValuePair<T>[]>()
 		};
 	}
 
