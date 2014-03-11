@@ -1,14 +1,14 @@
 ﻿<div class="subscription">
-	<a href="#" data-bind="click: Show">Подпишитесь на нашу рассылку</a>
+	<a href="#" data-bind="click: Show">Почтовая рассылка</a>
 
 	<form class="dialog" data-bind="visible: IsVisible">
 		<div class="overlay">&nbsp;</div>
 		<div class="content">
 			<!-- ko if: !IsSubmitted() && !IsSubmitting() -->
-			<label>
-				Ваш адрес электронной почты:
-				<input type="text" data-bind="value: Email, valueUpdate: 'keyup', hasFocus: EmailFocused" />
-			</label>
+			<div class="prompt">
+				Чтобы подписаться на нашу почтовую рассылку, введите пожалуйста ваш адрес электронной почты:
+			</div>
+			<input type="text" data-bind="value: Email, valueUpdate: 'keyup', hasFocus: EmailFocused" />
 
 			<input type="submit" value="Подписаться" data-bind="click: Submit, enabled: Email" />
 			<button data-bind="click: Hide">Назад</button>

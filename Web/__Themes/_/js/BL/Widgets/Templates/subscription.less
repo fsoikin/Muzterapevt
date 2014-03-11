@@ -8,6 +8,7 @@
 			bottom: 0;
 			background: black;
 			opacity: 0.5;
+			z-index: 100;
 		}
 
 		.content {
@@ -19,8 +20,7 @@
 			right: 30%;
 			top: 30%;
 			padding: 30px;
-
-			label { font-size: 160%; }
+			z-index: 101;
 
 			button, input[type=submit] {
 				margin-top: 20px;
@@ -29,11 +29,17 @@
 			.title {
 				display: block;
 				font-weight: bold;
-				font-size: 160%;
+				font-size: 200%;
 				margin-bottom: 10px;
 			}
 
+			input[type=text] {
+				margin-top: 10px;
+			}
+
 			.prompt {
+				font-size: 150%;
+
 				span.email {
 					font-weight: bold;
 				}

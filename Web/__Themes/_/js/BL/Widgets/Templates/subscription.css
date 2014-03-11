@@ -6,6 +6,7 @@
   bottom: 0;
   background: black;
   opacity: 0.5;
+  z-index: 100;
 }
 .subscription .dialog .content {
   background: white;
@@ -16,9 +17,7 @@
   right: 30%;
   top: 30%;
   padding: 30px;
-}
-.subscription .dialog .content label {
-  font-size: 160%;
+  z-index: 101;
 }
 .subscription .dialog .content button,
 .subscription .dialog .content input[type=submit] {
@@ -27,8 +26,14 @@
 .subscription .dialog .content .title {
   display: block;
   font-weight: bold;
-  font-size: 160%;
+  font-size: 200%;
   margin-bottom: 10px;
+}
+.subscription .dialog .content input[type=text] {
+  margin-top: 10px;
+}
+.subscription .dialog .content .prompt {
+  font-size: 150%;
 }
 .subscription .dialog .content .prompt span.email {
   font-weight: bold;
