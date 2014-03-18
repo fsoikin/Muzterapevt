@@ -19,8 +19,11 @@ namespace Mut.Controllers
 		[Import] public ISiteService Sites { get; set; }
 
 		[Export]
-		private static readonly IMarkdownCustomModule MarkdownTag = MarkdownCustomModule.Create(
-			"subscribe-form", new ClassRef { Class = "Vm", Module = "BL/widgets/subscription" } );
+		private static readonly IMarkdownCustomModule MarkdownTag_Link = MarkdownCustomModule.Create(
+			"subscribe-link", new[] { "text" }, args => new ClassRef { Class = "Link", Module = "BL/widgets/subscription", Arguments = args.ValueOrDefault( "text" ) } );
+		[Export]
+		private static readonly IMarkdownCustomModule MarkdownTag_Page = MarkdownCustomModule.Create(
+			"subscribe-form", new ClassRef { Class = "Page", Module = "BL/widgets/subscription" } );
 
 		public IJsonResponse<Unit> Submit( [JsonRequestBody] SubscriptionSubmitModel model )
 		{

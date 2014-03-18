@@ -4,20 +4,28 @@ import c = require( "../../common" );
 import $ = require( "jQuery" );
 import ko = require( "ko" );
 
-export class Vm extends c.TemplatedControl {
-	IsVisible = ko.observable( false );
+export class Link extends c.TemplatedControl {
+	Page = new Page( () => this.Hide() );
+	PageVisible = ko.observable( false );
+
+	constructor( private Text: string ) {
+		super( Template.Link );
+	}
+
+	Show() { this.PageVisible( true ); setTimeout( () => this.Page.EmailFocused( true ) ); }
+	Hide() { this.PageVisible( false ); this.Page.IsSubmitted( false ); this.Page.Email( "" ); }
+}
+
+export class Page extends c.TemplatedControl {
 	IsSubmitting = ko.observable( false );
 	IsSubmitted = ko.observable( false );
 	Email = ko.observable( "" );
 	EmailFocused = ko.observable( false );
 	Error = ko.observable( "" );
 
-	constructor() {
-		super( Template );
+	constructor( private Hide?: () => void ) {
+		super( Template.Page );
 	}
-
-	Show() { this.IsVisible( true ); setTimeout( () => this.EmailFocused( true ) ); }
-	Hide() { this.IsVisible( false ); this.IsSubmitted( false ); this.Email( "" ); }
 
 	Submit() {
 		if ( !this.Email() ) return;
@@ -25,4 +33,8 @@ export class Vm extends c.TemplatedControl {
 	}
 }
 
-var Template = $( require( "text!./Templates/Subscription.html" ) );
+module Template {
+	var t = $( require( "text!./Templates/Subscription.html" ) );
+	export var Link = t.filter( ".part_Link" );
+	export var Page = t.filter( ".part_Page" );
+}

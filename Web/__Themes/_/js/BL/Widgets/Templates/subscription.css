@@ -1,4 +1,4 @@
-.subscription .dialog .overlay {
+.subscription-link .dialog .overlay {
   position: fixed;
   left: 0;
   right: 0;
@@ -8,7 +8,7 @@
   opacity: 0.5;
   z-index: 100;
 }
-.subscription .dialog .content {
+.subscription-link .dialog .subscription-dialog {
   background: white;
   opacity: 1;
   border: 2px solid black;
@@ -19,22 +19,22 @@
   padding: 30px;
   z-index: 101;
 }
-.subscription .dialog .content button,
-.subscription .dialog .content input[type=submit] {
+.subscription-dialog button,
+.subscription-dialog input[type=submit] {
   margin-top: 20px;
 }
-.subscription .dialog .content .title {
+.subscription-dialog .title {
   display: block;
   font-weight: bold;
   font-size: 200%;
   margin-bottom: 10px;
 }
-.subscription .dialog .content input[type=text] {
+.subscription-dialog input[type=text] {
   margin-top: 10px;
 }
-.subscription .dialog .content .prompt {
+.subscription-dialog .prompt {
   font-size: 150%;
 }
-.subscription .dialog .content .prompt span.email {
+.subscription-dialog .prompt span.email {
   font-weight: bold;
 }

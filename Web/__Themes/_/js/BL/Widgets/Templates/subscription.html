@@ -1,33 +1,34 @@
-﻿<div class="subscription">
-	<a href="#" data-bind="click: Show">Почтовая рассылка</a>
-
-	<form class="dialog" data-bind="visible: IsVisible">
+﻿<div class="subscription-link part_Link">
+	<a href="#" data-bind="click: Show, text: Text || 'Почтовая рассылка'"></a>
+	<div class="dialog" data-bind="visible: PageVisible">
 		<div class="overlay">&nbsp;</div>
-		<div class="content">
-			<!-- ko if: !IsSubmitted() && !IsSubmitting() -->
-			<div class="prompt">
-				Чтобы подписаться на нашу почтовую рассылку, введите пожалуйста ваш адрес электронной почты:
-			</div>
-			<input type="text" data-bind="value: Email, valueUpdate: 'keyup', hasFocus: EmailFocused" />
-
-			<input type="submit" value="Подписаться" data-bind="click: Submit, enabled: Email" />
-			<button data-bind="click: Hide">Назад</button>
-
-			<!-- /ko -->
-			<!-- ko if: IsSubmitting -->
-			<div class="prompt Loading">
-				Ваша заявка отправляется, пожалуйста подождите...
-			</div>
-			<!-- /ko -->
-			<!-- ko if: IsSubmitted -->
-			<div class="title">Это ещё не всё</div>
-			<div class="prompt">
-				Теперь мы должны проверить, что этот адрес действительно принадлежит вам.<br />
-				Для этого мы только что отправили письмо на <span class="email" data-bind="text: Email"></span>.
-				Получив это письмо, нажмите на содержащуюся в нём ссылку, и ваша подписка будет подтверждена.
-			</div>
-			<button data-bind="click: Hide">Закрыть</button>
-			<!-- /ko -->
-		</div>
-	</form>
+		<div data-bind="control: Page"></div>
+	</div>
 </div>
+
+<form class="subscription-dialog part_Page">
+	<!-- ko if: !IsSubmitted() && !IsSubmitting() -->
+	<div class="prompt">
+		Чтобы подписаться на нашу почтовую рассылку, введите пожалуйста ваш адрес электронной почты:
+	</div>
+	<input type="text" data-bind="value: Email, valueUpdate: 'keyup', hasFocus: EmailFocused" placeholder="e-mail" />
+
+	<input type="submit" value="Подписаться" data-bind="click: Submit, enabled: Email" />
+	<button data-bind="click: Hide, visible: Hide">Назад</button>
+
+	<!-- /ko -->
+	<!-- ko if: IsSubmitting -->
+	<div class="prompt Loading">
+		Ваша заявка отправляется, пожалуйста подождите...
+	</div>
+	<!-- /ko -->
+	<!-- ko if: IsSubmitted -->
+	<div class="title">Это ещё не всё</div>
+	<div class="prompt">
+		Теперь мы должны проверить, что этот адрес действительно принадлежит вам.<br />
+		Для этого мы только что отправили письмо на <span class="email" data-bind="text: Email"></span>.
+		Получив это письмо, нажмите на содержащуюся в нём ссылку, и ваша подписка будет подтверждена.
+	</div>
+	<button data-bind="click: Hide, visible: Hide">Закрыть</button>
+	<!-- /ko -->
+</form>

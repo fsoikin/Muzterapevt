@@ -1,4 +1,4 @@
-﻿.subscription {
+﻿.subscription-link {
 	.dialog {
 		.overlay {
 			position: fixed;
@@ -11,7 +11,7 @@
 			z-index: 100;
 		}
 
-		.content {
+		.subscription-dialog {
 			background: white;
 			opacity: 1;
 			border: 2px solid black;
@@ -21,29 +21,32 @@
 			top: 30%;
 			padding: 30px;
 			z-index: 101;
+		}
+	}
+}
 
-			button, input[type=submit] {
-				margin-top: 20px;
-			}
+.subscription-dialog {
 
-			.title {
-				display: block;
-				font-weight: bold;
-				font-size: 200%;
-				margin-bottom: 10px;
-			}
+	button, input[type=submit] {
+		margin-top: 20px;
+	}
 
-			input[type=text] {
-				margin-top: 10px;
-			}
+	.title {
+		display: block;
+		font-weight: bold;
+		font-size: 200%;
+		margin-bottom: 10px;
+	}
 
-			.prompt {
-				font-size: 150%;
+	input[type=text] {
+		margin-top: 10px;
+	}
 
-				span.email {
-					font-weight: bold;
-				}
-			}
+	.prompt {
+		font-size: 150%;
+
+		span.email {
+			font-weight: bold;
 		}
 	}
 }
