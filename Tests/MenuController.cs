@@ -182,7 +182,8 @@ namespace Mut.Tests
 			var mc = new Mut.Controllers.MenuController {
 				MenuItems = repo,
 				UnitOfWork = Moq.Mock.Of<IUnitOfWork>(),
-				TopMenu = tm.Object
+				TopMenu = tm.Object,
+				Site = Mock.Of<ISiteService>()
 			};
 
 			f( repo, mc );

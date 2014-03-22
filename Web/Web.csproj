@@ -499,6 +499,10 @@
       <Project>{6cb0fe7e-d6ed-4a8c-8d55-c2e278880a32}</Project>
       <Name>Files</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Musicarium\Musicarium.csproj">
+      <Project>{6361f106-8fda-4ef2-8ef5-0f441ad0ac57}</Project>
+      <Name>Musicarium</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UI\UI.csproj">
       <Project>{2bc0fd5a-7e20-4f07-b604-bab5e908a45a}</Project>
       <Name>UI</Name>

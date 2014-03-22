@@ -138,11 +138,10 @@ namespace Mut.Tests
 		}
 
 		void t( string source, string result = null ) {
+			var ui = new Mut.UI.MarkdownUI { Video = new UI.VideoEmbedUI(), Attachments = new AttachmentUI() };
 			var res = new Mut.MarkdownParser<Mut.UI.MarkdownParseArgs>().Parse( source, null,
-				new Mut.UI.MarkdownUI {
-					Video = new UI.VideoEmbedUI(),
-					Attachments = new AttachmentUI()
-				}.Defs );
+				new[] { ui.StdDefinitions(), ui.AllowedHtml(), ui.GetTriviaTags(), ui.HtmlTableTags() }
+				.SelectMany( x => x.Definitions ) );
 			var actual = string.Join( "", res.Select( r => r.Instance.ToHtml() ) );
 			Assert.Equal( result, actual );
 		}

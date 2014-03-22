@@ -117,7 +117,10 @@
     <Compile Include="JS\Specialists\Organization.cs" />
     <Compile Include="JS\Specialists\SpecialistRegistrationRequest.cs" />
     <Compile Include="JS\Text\TextView.cs" />
-    <Compile Include="MarkupUI.cs" />
+    <Compile Include="Markdown\IMarkdownCustomModule.cs" />
+    <Compile Include="Markdown\MarkdownParseArgs.cs" />
+    <Compile Include="Markdown\IMarkdownProvider.cs" />
+    <Compile Include="Markdown\MarkdownUI.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="AttachmentUI.cs" />
     <Compile Include="Infrastructure\EditPermissionAttribute.cs" />
