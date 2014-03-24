@@ -15,10 +15,12 @@
 		@RenderSection( "Top" )
 		<div class="clear">&nbsp;</div>
 		@Html.Partial( "~/Views/TopMenu.cshtml", model.TopMenu )
-		<div class="sidebar">
-			@RenderSection( "LeftSidebar", false )
-			@Html.Partial( "~/Views/Text.cshtml", model.Left )
-		</div>
+		@if ( IsSectionDefined( "LeftSidebar" ) ) {
+			<div class="sidebar">
+				@RenderSection( "LeftSidebar", false )
+				@Html.Partial( "~/Views/Text.cshtml", model.Left )
+			</div>
+		}
 		<div class="sidebar-b">
 			@Html.Partial( "~/Views/Text.cshtml", model.Right )
 		</div>
@@ -32,15 +34,21 @@
 	@if ( model.ShowAdminMenu ) {
 		<div class="autobind" data-controller="AdminMenu"></div>
 	}
+
+	@{
+		var r = RenderSection( "Trash", false );
+		if ( r != null ) { r.ToHtmlString(); }
+	}
+
+	<script type="text/javascript">
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-47230517-1', 'muzterapevt.ru');
+		ga('send', 'pageview');
+	</script>
 </body>
-<script type="text/javascript">
-	(function (i, s, o, g, r, a, m) {
-		i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-			(i[r].q = i[r].q || []).push(arguments)
-		}, i[r].l = 1 * new Date(); a = s.createElement(o),
-		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-47230517-1', 'muzterapevt.ru');
-	ga('send', 'pageview');
-</script>
 </html>

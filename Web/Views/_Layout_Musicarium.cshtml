@@ -9,8 +9,8 @@
 		@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
 	</div>
 }
-@section LeftSidebar {
-	@RenderSection( "LeftSidebar", false )
+@section Trash {
+	@{ RenderSection( "LeftSidebar", false ).ToHtmlString(); }
 }
 @section Footer {
 	@Html.Partial( "~/Views/_Footer.cshtml", new FooterModel { Layout = ViewBag.LayoutModel, SiteName = "Musicarium" } )
