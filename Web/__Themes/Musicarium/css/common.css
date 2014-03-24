@@ -135,3 +135,26 @@ input[type=submit].icon-no:before {
   background-position: -32px -192px;
   cursor: pointer;
 }
+.musicarium-text-logo {
+  font-weight: bold;
+  font-size: 120%;
+  font-family: cursive;
+}
+.musicarium-text-logo > .l0,
+.musicarium-text-logo > .l6 {
+  color: #0787C9;
+}
+.musicarium-text-logo > .l1,
+.musicarium-text-logo > .l4,
+.musicarium-text-logo > .l7 {
+  color: #8E3092;
+}
+.musicarium-text-logo > .l2,
+.musicarium-text-logo > .l5,
+.musicarium-text-logo > .l9 {
+  color: #D97C29;
+}
+.musicarium-text-logo > .l3,
+.musicarium-text-logo > .l8 {
+  color: #EC2026;
+}
