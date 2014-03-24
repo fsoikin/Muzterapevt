@@ -3,6 +3,7 @@
 import c = require( "../common" );
 import $ = require( "jQuery" );
 import ko = require( "ko" );
+import ab = require( "../Lib/autobind" );
 import rx = require( "rx" );
 import ed = require( "./InPlaceEditor" );
 import bbTextField = require( "./BBTextField" );
@@ -34,6 +35,7 @@ export class TextVm extends ed.InPlaceEditorVm<TextEditor> {
 			emptyData: <any>new TextEditor(),
 			onSaved: ( e: JQuery, data: TextSaveResult ) => {
 				e.html( data.Html );
+				ab.autobindAll( e.find( ".autobind" ) );
 				args.onSaved && args.onSaved( data.Html );
 			},
 			editorTemplate: EditorTemplate

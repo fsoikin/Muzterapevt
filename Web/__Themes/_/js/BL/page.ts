@@ -2,6 +2,7 @@
 /// <amd-dependency path="text!./Templates/page-editor.html" />
 import c = require( "../common" );
 import $ = require( "jQuery" );
+import ab = require( "../Lib/autobind" );
 import ed = require( "./InPlaceEditor" );
 import bbTextField = require( "./BBTextField" );
 
@@ -35,7 +36,10 @@ export class PageVm extends ed.InPlaceEditorVm<PageEditor> {
 			ajax: <ed.IInPlaceEditorAjax<PageEditor>>Ajax,
 			id: args.id,
 			emptyData: <any>new PageEditor(),
-			onSaved: ( e: JQuery, data: PageSaveResult ) => e.html( data.Html ).prepend( $( "<h2>" ).text( data.Title ) ),
+			onSaved: ( e: JQuery, data: PageSaveResult ) => {
+				e.html( data.Html ).prepend( $( "<h2>" ).text( data.Title ) );
+				ab.autobindAll( e.find( ".autobind" ) );
+			},
 			editorTemplate: EditorTemplate
 		});
 	}
