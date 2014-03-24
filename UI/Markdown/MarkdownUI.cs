@@ -45,6 +45,11 @@ namespace Mut.UI
 					End = "</span>"
 				} ),
 
+				_parser.ComplexTag( "s", true, new[] { "" }, ( ctx, atrs ) => new Range<string> {
+					Start = "<span style=\"" + atrs.ValueOrDefault( "" ) + "\">",
+					End = "</span>"
+				} ),
+
 				_parser.ComplexTag( "url", true, new[] { "" }, ( ctx, atrs ) => new Range<string> {
 					Start = "<a href=\"" + atrs.ValueOrDefault( "" ) + "\">",
 					End = "</a>"
