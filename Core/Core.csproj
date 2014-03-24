@@ -112,7 +112,7 @@
   <ItemGroup>
     <Compile Include="ISiteService.cs" />
     <Compile Include="EmailService.cs" />
-    <Compile Include="MarkupParser.cs" />
+    <Compile Include="MarkdownParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
