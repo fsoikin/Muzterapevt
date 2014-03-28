@@ -158,3 +158,18 @@ input[type=submit].icon-no:before {
 .musicarium-text-logo > .l8 {
   color: #EC2026;
 }
+.blue {
+  color: #0787C9;
+}
+.purple {
+  color: #8E3092;
+}
+.red {
+  color: #EC2026;
+}
+.orange {
+  color: #D97C29;
+}
+.cursive {
+  font-family: cursive;
+}
