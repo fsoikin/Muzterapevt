@@ -53,9 +53,11 @@ label {
 }
 
 button, input[type=submit] {
+	@color: #D97C29;
 	padding: .4em 1em;
 	vertical-align: middle;
-	background: #C1FFC5 !important;
+	background: @color !important;
+	color: white !important;
 	border: 1px solid #d3d3d3;
 	font-weight: normal;
 	color: #555555;
@@ -70,7 +72,7 @@ button, input[type=submit] {
 	border-radius: 4px;
 
 	&:hover {
-		background: #A5FFC0 !important;
+		background: lighten(@color, 10%) !important;
 		border: 1px solid #999999;
 		color: #212121;
 	}

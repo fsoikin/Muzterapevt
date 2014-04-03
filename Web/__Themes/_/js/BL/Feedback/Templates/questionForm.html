@@ -5,13 +5,13 @@
 
 	<div data-bind="control: PromptText"></div>
 
-	<div class="field col3 required">
+	<div class="field col3 required" data-bind="visible: !Simplified">
 		<label>Ваше Имя:</label>
 		<input type="text" data-bind="value: Name" />
 	</div><div class="field col3 required">
 		<label>Ваш e-mail:</label>
 		<input type="text" data-bind="value: Email" />
-	</div><div class="field col3 required">
+	</div><div class="field col3 required" data-bind="visible: !Simplified">
 		<label>Заголовок:</label>
 		<input type="text" data-bind="value: Subject" />
 	</div>

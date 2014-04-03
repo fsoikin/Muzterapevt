@@ -46,7 +46,8 @@ button,
 input[type=submit] {
   padding: .4em 1em;
   vertical-align: middle;
-  background: #C1FFC5 !important;
+  background: #d97c29 !important;
+  color: white !important;
   border: 1px solid #d3d3d3;
   font-weight: normal;
   color: #555555;
@@ -62,7 +63,7 @@ input[type=submit] {
 }
 button:hover,
 input[type=submit]:hover {
-  background: #A5FFC0 !important;
+  background: #e19754 !important;
   border: 1px solid #999999;
   color: #212121;
 }
@@ -173,3 +174,4 @@ input[type=submit].icon-no:before {
 .cursive {
   font-family: cursive;
 }
+/*# sourceMappingURL=common.css.map */

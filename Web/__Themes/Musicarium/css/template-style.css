@@ -160,6 +160,8 @@ h2 {
   font: bold 1em verdana, arial, tahoma, sans-serif;
   color: #d97c29;
   background: inherit;
+  margin-top: 0;
+  padding-top: 3em;
 }
 blockquote {
   font-weight: bold;
@@ -189,3 +191,4 @@ a:hover {
 .current-user {
   float: right;
 }
+/*# sourceMappingURL=template-style.css.map */

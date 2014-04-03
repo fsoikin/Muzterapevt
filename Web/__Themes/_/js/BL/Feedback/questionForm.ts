@@ -15,6 +15,7 @@ export class FormVm extends c.TemplatedControl {
 	Email = ko.observable( "" );
 	Subject = ko.observable( "" );
 	Text = ko.observable( "" );
+	Simplified = this._args && this._args.simplified;
 
 	InfoBox = new infoBox();
 	IsSending = ko.observable( false );
@@ -22,7 +23,7 @@ export class FormVm extends c.TemplatedControl {
 	DoneText = new text.TextView( { id: 'Feedback.QuestionSent' } );
 	PromptText = new text.TextView( { id: 'Feedback.QuestionPrompt' });
 
-	constructor() {
+	constructor( private _args?: { simplified?: boolean } ) {
 		super( Template );
 	}
 
