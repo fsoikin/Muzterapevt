@@ -10,6 +10,31 @@ var Ajax = {
 	Send: "feedback/question"
 };
 
+var Strings = {
+	ru: {
+		Error_EmptyFields: "Пожалуйста заполните все обязательные поля.",
+		SendingRequest: "Вопрос отправляется...",
+		Send: "Отправить",
+		Prompt: {
+			Name: "Ваше имя:",
+			Email: "Ваш e-mail:",
+			Subject: "Заголовок:",
+			Text: "Сообщение:"
+		}
+	},
+	en: {
+		Error_EmptyFields: "Please fill in all fields.",
+		SendingRequest: "Sending your request...",
+		Send: "Send",
+		Prompt: {
+			Name: "Your name:",
+			Email: "Your e-mail:",
+			Subject: "Subject:",
+			Text: "Message text:"
+		}
+	}
+};
+
 export class FormVm extends c.TemplatedControl {
 	Name = ko.observable( "" );
 	Email = ko.observable( "" );
@@ -22,21 +47,23 @@ export class FormVm extends c.TemplatedControl {
 	Sent = ko.observable( false );
 	DoneText = new text.TextView( { id: 'Feedback.QuestionSent' } );
 	PromptText = new text.TextView( { id: 'Feedback.QuestionPrompt' });
+	Strings = this._args.lang === 'en' ? Strings.en : Strings.ru;
 
-	constructor( private _args?: { simplified?: boolean } ) {
+	constructor( private _args?: { simplified?: boolean; lang?: string } ) {
 		super( Template );
 	}
 
 	Send() {
-		if ( !this.Name() || !this.Email() || !this.Subject() ) {
-			this.InfoBox.Error( "Пожалуйста заполните все обязательные поля." );
+		if ( !this.Email() || ( !this.Simplified && (!this.Name() || !this.Subject()) ) ) {
+			this.InfoBox.Error( this.Strings.Error_EmptyFields );
+			return;
 		}
 
 		var data: server.FeedbackQuestion = {
 			Name: this.Name(), Email: this.Email(), Subject: this.Subject(), Text: this.Text()
 		};
 
-		this.InfoBox.Info( "Вопрос отправляется..." );
+		this.InfoBox.Info( this.Strings.SendingRequest );
 		c.Api.Post( Ajax.Send, data, this.IsSending, this.InfoBox.Error, () => {
 			this.InfoBox.Clear();
 			this.Sent( true );

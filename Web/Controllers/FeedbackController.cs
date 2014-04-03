@@ -22,10 +22,10 @@ namespace Mut.Controllers
 
 		[Export]
 		private static readonly IMarkdownCustomModule MarkdownTag = MarkdownCustomModule.Create(
-			"feedback-form", new[] { "simple" },
+			"feedback-form", new[] { "simple", "lang" },
 			args => new ClassRef {
 				Class = "FormVm", Module = "BL/feedback/questionForm",
-				Arguments = new { simplified = !args.ValueOrDefault( "simple" ).NullOrEmpty() }
+				Arguments = new { simplified = !args.ValueOrDefault( "simple" ).NullOrEmpty(), lang = args.ValueOrDefault( "lang" ) }
 			} );
 
 		[HttpPost]

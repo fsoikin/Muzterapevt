@@ -6,20 +6,19 @@
 	<div data-bind="control: PromptText"></div>
 
 	<div class="field col3 required" data-bind="visible: !Simplified">
-		<label>Ваше Имя:</label>
+		<label data-bind="text: Strings.Prompt.Name"></label>
 		<input type="text" data-bind="value: Name" />
 	</div><div class="field col3 required">
-		<label>Ваш e-mail:</label>
+		<label data-bind="text: Strings.Prompt.Email"></label>
 		<input type="text" data-bind="value: Email" />
 	</div><div class="field col3 required" data-bind="visible: !Simplified">
-		<label>Заголовок:</label>
+		<label data-bind="text: Strings.Prompt.Subject"></label>
 		<input type="text" data-bind="value: Subject" />
 	</div>
 	<div class="field">
-		<label>Сообщение:</label>
+		<label data-bind="text: Strings.Prompt.Text"></label>
 		<textarea data-bind="value: Text"></textarea>
 	</div>
 
-	<button data-bind="click: Send, disabled: IsSending">Отправить</button>
-	<!-- ko control: InfoBox --><!-- /ko -->
+	<button data-bind="click: Send, disabled: IsSending, text: Strings.Send"></button>
 </div>
