@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+	<PropertyGroup>
+		<DeployTarget Condition="'$(DeployTarget)' == ''">Azure</DeployTarget>
+		<PowerShell Condition="'$(PowerShell)' == ''">%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShell>
+	</PropertyGroup>
+
+	<Target Name="Build">
+		<Exec Command="$(PowerShell) -ExecutionPolicy Unrestricted -NonInteractive -Command &quot;&amp; { .\ModifyConfigs.ps1 -DeployTarget $(DeployTarget) -SmtpServer $(SmtpServer) -SmtpUser $(SmtpUser) -SmtpPassword $(SmtpPassword) }	&quot;" />
+		<MSBuild Projects="..\Web\Web.csproj" Properties="AutoParameterizationWebConfigConnectionStrings=false" />
+	</Target>
+
+	<Target Name="Clean">
+		<Delete Files="..\Web\web_settings.config;..\Web\log4net.config;..\Web\web_smtp.config" />
+		<MSBuild Projects="..\Web\Web.csproj" Targets="Clean" />
+	</Target>
+	
+</Project>
