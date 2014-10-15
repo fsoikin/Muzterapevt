@@ -29,8 +29,8 @@ namespace Mut.Controllers
 		{
 			return PageUI.PageModel( url )
 				.Select( model => View( "~/Views/Page.cshtml", model ) as ActionResult )
-				.Or( () => url.NullOrEmpty() ? EmptyView() : Redirect( "~/" ) )
 				.LogErrors( Log.Error )
+				.Or( () => url.NullOrEmpty() ? EmptyView() : Redirect( "~/" ) )
 				.Value;
 		}
 
