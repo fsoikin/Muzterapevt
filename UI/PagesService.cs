@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Objects.SqlClient;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using erecruit.Composition;
@@ -35,7 +36,7 @@ namespace Mut
 					.Select( p => p.Url + '/' )
 					.Select( pr => {
 						var len = pr.Length;
-						return Expr.Create( ( Page p ) => p.Url.StartsWith( pr ) && SqlFunctions.CharIndex( "/", p.Url.Substring( len ) ) <= 0 );
+						return Expr.Create( ( Page p ) => p.Url.StartsWith( pr ) && !p.Url.Substring( len ).Contains( "/" ) );
 					} )
 					.Fold( Expression.OrElse )
 				);
