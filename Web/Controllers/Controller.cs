@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Mvc.Async;
 using erecruit.Composition;
 using erecruit.Mvc.Mixins;
 using log4net;
@@ -10,7 +11,7 @@ using Mut.UI;
 
 namespace Mut.Controllers
 {
-	public class Controller : System.Web.Mvc.Controller
+	public class Controller : System.Web.Mvc.AsyncController
 	{
 		[Import]
 		public IAuthService Auth { get; set; }
@@ -22,6 +23,7 @@ namespace Mut.Controllers
 		public TextUI Text { get; set; }
 		[Import]
 		public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public ISiteService Site { get; set; }
 
 		protected override void OnException( ExceptionContext filterContext ) {
 			this.Log.Error( filterContext.Exception );
@@ -38,7 +40,8 @@ namespace Mut.Controllers
 				Left = Text.TextModel( "Layout.Left" ),
 				Right = Text.TextModel( "Layout.Right" ),
 				TopRight = Text.TextModel( "Layout.TopRight" ),
-				CurrentUser = Auth.CurrentActor
+				CurrentUser = Auth.CurrentActor,
+				DefaultTitle = Site.CurrentSiteFriendlyName
 			};
 
 			base.OnActionExecuting( filterContext );
@@ -54,7 +57,7 @@ namespace Mut.Controllers
 			return new MixinControllerActionInvoker();
 		}
 
-		public class MixinControllerActionInvoker : ControllerActionInvoker
+		public class MixinControllerActionInvoker : AsyncControllerActionInvoker
 		{
 			protected override ControllerDescriptor GetControllerDescriptor( ControllerContext controllerContext ) {
 				return new AggregateControllerDescriptor( this.GetType(),
