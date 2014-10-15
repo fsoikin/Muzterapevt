@@ -45,7 +45,7 @@ export interface IVirtualControl extends IControl {
 }
 
 export function enumToString<TEnum>(theEnum: TEnum, value: TEnum): string {
-	return (<any>theEnum)[value];
+	return (<any>theEnum)[<any>value];
 }
 
 export function mapEnum<TEnum>( obj: TEnum): NameValuePair<TEnum>[]{
