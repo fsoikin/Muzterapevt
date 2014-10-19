@@ -1,0 +1,21 @@
+﻿@{
+	Layout = "~/Views/_Layout.cshtml";
+	LayoutModel model = ViewBag.LayoutModel;
+}
+
+@section Top {
+	@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
+	<div class="banner" title="Muzterapevt.RU">&nbsp;</div>
+	<div class="bannerb">
+		<a class="logo" href="@Url.Content("~/")"><img src="@Url.Content( "~/Content/img/logo.png" )" /></a>
+		@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
+	</div>
+}
+@section LeftSidebar {
+	@RenderSection( "LeftSidebar", false )
+}
+@section Footer {
+	@Html.Partial( "~/Views/_Footer.cshtml", new FooterModel { Layout = ViewBag.LayoutModel, SiteName = "" } )
+}
+
+@RenderBody()

@@ -280,6 +280,15 @@
     <Content Include="__Themes\Musicarium\css\template-style.min.css">
       <DependentUpon>template-style.css</DependentUpon>
     </Content>
+    <Content Include="__Themes\StillBirthday\css\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\StillBirthday\css\template-style.css">
+      <DependentUpon>template-style.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\StillBirthday\img\logo.png" />
+    <Content Include="__Themes\StillBirthday\img\template\banner.jpg" />
+    <Content Include="__Themes\StillBirthday\img\template\bgd.png" />
     <Content Include="__Themes\_\css\bl.css">
       <DependentUpon>bl.less</DependentUpon>
     </Content>
@@ -321,6 +330,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Subscription\Verify.cshtml" />
+    <Content Include="__Themes\StillBirthday\css\common.less" />
+    <Content Include="__Themes\StillBirthday\css\template-style.less" />
+    <Content Include="Views\_Layout_StillBirthday.cshtml" />
     <None Include="__Themes\_\js\Templates\Login.less" />
     <None Include="__Themes\_\js\BL\Widgets\Templates\subscription.less" />
     <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.css">

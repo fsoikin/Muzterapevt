@@ -1,0 +1,140 @@
+.container {
+  border: 2px solid black;
+}
+body {
+  background: #DDDDDD !important;
+}
+.Loading {
+  background: white;
+  opacity: 0.7;
+}
+.Loading:before {
+  content: '.';
+  color: transparent;
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-image: url('../img/spinner.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+input[type=text] {
+  border: 1px solid silver;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  font-size: 18pt;
+  margin: 0;
+  padding: 7px 5px;
+  background: #FEFEFA;
+}
+textarea {
+  border: 1px solid silver;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 5px;
+  height: 60%;
+}
+label {
+  margin-top: 10px;
+  display: block;
+}
+label:first-child {
+  margin-top: 0;
+}
+button,
+input[type=submit] {
+  padding: .4em 1em;
+  vertical-align: middle;
+  background: #C1FFC5 !important;
+  border: 1px solid #d3d3d3;
+  font-weight: normal;
+  color: #555555;
+  display: inline-block;
+  position: relative;
+  margin-right: .1em;
+  text-decoration: none !important;
+  cursor: pointer;
+  text-align: center;
+  overflow: visible;
+  font-size: 13pt;
+  border-radius: 4px;
+}
+button:hover,
+input[type=submit]:hover {
+  background: #A5FFC0 !important;
+  border: 1px solid #999999;
+  color: #212121;
+}
+button.warning,
+input[type=submit].warning {
+  background: #FFC3BC !important;
+}
+button.warning:hover,
+input[type=submit].warning:hover {
+  background: #FF9399 !important;
+}
+button.icon-ok:before,
+input[type=submit].icon-ok:before {
+  position: relative;
+  display: inline-block;
+  left: -6px;
+  top: -1px;
+  width: 12px;
+  height: 12px;
+  background-image: url("jQuery/images/ui-icons_888888_256x240.png");
+  background-repeat: no-repeat;
+  background-position: -64px -144px;
+  content: 'x';
+  color: transparent;
+}
+button.icon-no:before,
+input[type=submit].icon-no:before {
+  position: relative;
+  display: inline-block;
+  left: -6px;
+  top: -1px;
+  width: 12px;
+  height: 12px;
+  background-image: url("jQuery/images/ui-icons_888888_256x240.png");
+  background-repeat: no-repeat;
+  background-position: -80px -128px;
+  content: 'x';
+  color: transparent;
+}
+.message-box {
+  padding: 5px;
+  background-color: #BFD8FF;
+  z-index: 1000000;
+  border-bottom: 1px solid #aaaaaa;
+  margin-bottom: 10px;
+}
+.message-box.invisible {
+  display: none !important;
+}
+.message-box.error {
+  background-color: #ff6464;
+  color: #ffffff;
+}
+.message-box.warning {
+  background-color: #fefe72;
+}
+.message-box.fixed,
+.fixed-message-box > .message-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.message-box .dismiss {
+  float: right;
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+  background: transparent url("jQuery/images/ui-icons_888888_256x240.png") no-repeat center center;
+  background-position: -32px -192px;
+  cursor: pointer;
+}
