@@ -13,16 +13,11 @@ namespace Mut.Controllers
 {
 	public class Controller : System.Web.Mvc.AsyncController
 	{
-		[Import]
-		public IAuthService Auth { get; set; }
-		[Import]
-		public ILog Log { get; set; }
-		[Import]
-		public ITopMenuUI TopMenu { get; set; }
-		[Import]
-		public TextUI Text { get; set; }
-		[Import]
-		public IUnitOfWork UnitOfWork { get; set; }
+		[Import] public IAuthService Auth { get; set; }
+		[Import] public ILog Log { get; set; }
+		[Import] public ITopMenuUI TopMenu { get; set; }
+		[Import] public TextUI Text { get; set; }
+		[Import] public IUnitOfWork UnitOfWork { get; set; }
 		[Import] public ISiteService Site { get; set; }
 
 		protected override void OnException( ExceptionContext filterContext ) {

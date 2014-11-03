@@ -1,0 +1,149 @@
+.container {
+	border: 2px solid black;
+}
+
+body {
+	background: #DDDDDD !important;
+}
+
+.Loading {
+	&:before {
+		content: '.';
+		color: transparent;
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		background-image: url('../img/spinner.gif');
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	background: white;
+	opacity: 0.7;
+}
+
+.inputborder() {
+		border: 1px solid silver;
+	border-radius: 4px;
+}
+
+input[type=text] {
+	.inputborder();
+	display: block;
+	width: 100%;
+	font-size: 18pt;
+	margin: 0;
+	padding: 7px 5px;
+	background: #FEFEFA;
+}
+
+textarea {
+	.inputborder();
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 5px;
+	height: 60%;
+}
+
+label {
+	margin-top: 10px;
+	display: block;
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+button, input[type=submit] {
+	padding: .4em 1em;
+	vertical-align: middle;
+	background: #C1FFC5 !important;
+	border: 1px solid #d3d3d3;
+	font-weight: normal;
+	color: #555555;
+	display: inline-block;
+	position: relative;
+	margin-right: .1em;
+	text-decoration: none !important;
+	cursor: pointer;
+	text-align: center;
+	overflow: visible;
+	font-size: 13pt;
+	border-radius: 4px;
+
+	&:hover {
+		background: #A5FFC0 !important;
+		border: 1px solid #999999;
+		color: #212121;
+	}
+
+	&.warning {
+		background: #FFC3BC !important;
+
+		&:hover {
+			background: #FF9399 !important;
+		}
+	}
+
+	.icon( @position ) {
+		position: relative;
+		display: inline-block;
+		left: -6px;
+		top: -1px;
+		width: 12px;
+		height: 12px;
+		background-image: url("jQuery/images/ui-icons_888888_256x240.png");
+		background-repeat: no-repeat;
+		background-position: @position;
+		content: 'x';
+		color: transparent;
+	}
+
+	&.icon-ok:before {
+		.icon( -64px -144px );
+	}
+
+	&.icon-no:before {
+		.icon( -80px -128px );
+	}
+}
+
+.message-box {
+	padding: 5px;
+	background-color: #BFD8FF;
+	z-index: 1000000;
+	border-bottom: 1px solid #aaaaaa;
+	margin-bottom: 10px;
+
+	&.invisible {
+		display: none !important;
+	}
+
+	&.error {
+			background-color: #ff6464;
+			color: #ffffff;
+	}
+
+	&.warning {
+		background-color: #fefe72;
+	}
+
+	&.fixed, .fixed-message-box > & {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.dismiss {
+		float: right;
+		margin-left: 5px;
+		width: 16px;
+		height: 16px;
+		background: transparent url("jQuery/images/ui-icons_888888_256x240.png") no-repeat center center;
+		background-position: -32px -192px;
+		cursor: pointer;
+	}
+}
