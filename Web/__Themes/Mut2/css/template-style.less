@@ -1,4 +1,6 @@
-@ribbon: #F36207;
+@ribbon: desaturate( lighten( #903a04, 5% ), 10% );
+@ribbon_pale: desaturate( lighten( @ribbon, 40% ), 50% );
+@ribbon_hover: lighten( desaturate( @ribbon_pale, 10% ), 20% );
 
 * {
 	-moz-box-sizing: border-box;
@@ -6,32 +8,38 @@
 	box-sizing: border-box;
 }
 
+.toptop { 
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 36px;
+	background: #f2f2f7;
+	border-bottom: white;
+	box-shadow: silver 1px 1px;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 	font: 100% "Trebuchet MS", verdana, arial, sans-serif;
 	color: #666;
-	background: #003250 url(../img/template/bgd.png) center repeat;
 }
 
 .container {
 	width: 1040px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 20px;
-	padding: 20px;
+	margin-top: 44px;
 	line-height: 1.2em;
 	color: #666;
-	background: #f2f2f5;
 
 	/*CENTRE CONTENT*/
 	> .content {
 		font-size: 12px;
 		color: black;
 		padding: 5px;
-		margin-left: 205px;
-		margin-right: 205px;
-		background: #f7f7f7;
+		margin-right: 305px;
 		text-align: justify;
 	}
 }
@@ -45,14 +53,17 @@ body {
 	display: inline-block;
 	vertical-align: top;
 	margin: 10px 0 10px 20px;
-	border-left: 5px @ribbon solid;
+	border-left: 5px @ribbon_pale solid;
 }
 .bannerb {
 	height: 125px;
 	display: inline-block;
 	float: right;
 
-	> a > img {width: 120px;}
+	> a > img {
+		width: 136px;
+		z-index: -10;
+	}
 }
 
 /*TOP SCROLLBAR*/
@@ -70,8 +81,18 @@ div.scroll {
 /*TOP NAVIGATION*/
 .navcontainer {
 	width: 100%;
-	min-height: 28px;
-	background: @ribbon;
+	min-height: 44px;
+	background: white;
+	border-top: 3px solid @ribbon;
+	border-bottom: 5px solid @ribbon;
+	border-left: 1px solid @ribbon_pale;
+	border-right: 1px solid @ribbon_pale;
+	z-index: 10;
+
+	&:first-child {
+		background: @ribbon;
+		min-height: 28px;
+	}
 
 	> ul.menu {
 		height: 100%;
@@ -89,6 +110,11 @@ div.scroll {
 
 		> li {
 			display: inline-block;
+			vertical-align: middle;
+			height: 36px;
+			border-left: 1px solid @ribbon_pale;
+
+			&:first-child {border-left: none;}
 
 			> a {
 				min-width: 80px;
@@ -96,16 +122,16 @@ div.scroll {
 				-ms-text-overflow: ellipsis;
 				-o-text-overflow: ellipsis;
 				text-overflow: ellipsis;
-				padding: 0.2em 1em;
-				background: @ribbon;
-				color: #fff;
+				padding: 8px 1em;
+				color: black;
 				text-decoration: none;
-				border-left: 1px solid #fff;
+//				border-left: 1px solid #fff;
 				width: 100%;
+				height: 100%;
+				vertical-align: middle;
 
 				&:hover {
-					background: #036;
-					color: #fff;
+					background: @ribbon_hover;
 				}
 			}
 
@@ -122,13 +148,7 @@ div.scroll {
 }
 /*LEFT CONTENT*/
 .sidebar {
-	font-size: 12px;
-	float: left;
-	width: 180px;
-	margin: 0 5px 0 0;
-	padding: 5px;
-	color: #666;
-	background: #f2f2f5;
+	display: none;
 }
 
 .sidenav {
@@ -155,20 +175,25 @@ div.scroll {
 	font-size: 12px;
 	color: #666;
 	float: right;
-	width: 180px;
-	margin: 0 0 0 5px;
-	padding: 5px;
-	background: #f2f2f5;
+	width: 280px;
+	margin: 0 0 0 24px;
+	padding: 5px 5px 5px 10px;
 	text-align: justify;
+	border-left: 1px solid @ribbon_pale;
 }
 
 /*FOOTER*/
 .footer {
 	clear: both;
-	padding: 5px;
+	padding: 12px;
 	margin-top: 15px;
+	height: 44px;
 	color: #bbd2e0;
 	background: @ribbon;
+	vertical-align: middle;
+	position:fixed;
+	bottom: 0;
+	width: 1040px;
 }
 
 	.footer a:link, .footer a:visited {
@@ -198,7 +223,7 @@ h1 {
 h2 {
 	padding-left: 5px;
 	font: bold 1em verdana, arial, tahoma, sans-serif;
-	color: #ef7329;
+	color: @ribbon;
 	background: inherit;
 }
 

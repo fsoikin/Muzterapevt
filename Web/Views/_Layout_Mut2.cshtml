@@ -5,6 +5,7 @@
 
 @section Top {
 	@Html.Partial( "~/Views/TopMenu.cshtml", model.SecondTopMenu )
+	<div class="toptop"></div>
 	<div class="bannerwrapper">
 		<div class="banner" title="Muzterapevt.RU">
 			@Html.Partial( "~/Views/Text.cshtml", model.TopRight )
@@ -18,7 +19,17 @@
 	@RenderSection( "LeftSidebar", false )
 }
 @section Footer {
-	@Html.Partial( "~/Views/_Footer.cshtml", new FooterModel { Layout = ViewBag.LayoutModel, SiteName = "Музтерапевт.Ру" } )
+
+	<div class="right">
+		<a class="link-facebook" href="https://www.facebook.com/groups/muzterapevt/">Facebook</a>
+		<a class="link-vk" href="http://vk.com/muzterapevtru">ВКонтакте</a> |
+		<a href="mailto:muzterapevt@gmail.com">e-mail</a> |
+		@if ( !model.CurrentUser.IsAuthenticated ) { <a href="#" class="autobind" data-controller="LoginButton, Login">login</a> }
+		else { <a href="@Url.Action( (Mut.Controllers.LoginController c) => c.Logout( Request.Url.ToString() ) )">logout</a> }
+	</div>
+
+	<a href="@Url.Content("~/")">Музтерапевт.Ру</a> |
+	&copy; 2013-2014 Alisa Apreleva<br />
 }
 
 @RenderBody()

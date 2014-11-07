@@ -18,6 +18,7 @@
 .container .navcontainer .sub-menu {
   overflow: visible;
   position: absolute;
+  background: white;
 }
 .container .navcontainer .sub-menu > .menu {
   min-height: 30px;

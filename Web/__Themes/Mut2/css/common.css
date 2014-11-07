@@ -1,10 +1,4 @@
-.container {
-  border: 2px solid black;
-}
-body {
-  background: #DDDDDD !important;
-}
-.Loading {
+﻿.Loading {
   background: white;
   opacity: 0.7;
 }
@@ -137,4 +131,21 @@ input[type=submit].icon-no:before {
   background: transparent url("jQuery/images/ui-icons_888888_256x240.png") no-repeat center center;
   background-position: -32px -192px;
   cursor: pointer;
+}
+.footer .right {
+  float: right;
+}
+.footer a.link-facebook {
+  display: inline-block;
+  color: transparent;
+  width: 19px;
+  height: 19px;
+  background-image: url('../img/icons/facebook.png');
+}
+.footer a.link-vk {
+  display: inline-block;
+  color: transparent;
+  width: 19px;
+  height: 19px;
+  background-image: url('../img/icons/vk.png');
 }
