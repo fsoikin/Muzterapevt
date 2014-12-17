@@ -8,6 +8,7 @@
 
 	<Target Name="Build">
 		<Exec Command="$(PowerShell) -ExecutionPolicy Unrestricted -NonInteractive -Command &quot;&amp; { .\ModifyConfigs.ps1 -DeployTarget $(DeployTarget) -SmtpServer $(SmtpServer) -SmtpUser $(SmtpUser) -SmtpPassword $(SmtpPassword) }	&quot;" />
+		<Exec Command="nuget restore ..\Muzterapevt.sln" />
 		<MSBuild Projects="..\Web\Web.csproj" Properties="AutoParameterizationWebConfigConnectionStrings=false;TransformWebConfigEnabled=false" />
 	</Target>
 
