@@ -1,0 +1,9 @@
+.Playlist .Index {
+  color: gray;
+}
+.Playlist .Name > * {
+  display: inline-block;
+}
+.Playlist .Name .Length {
+  margin-left: 5px;
+}

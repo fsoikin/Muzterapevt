@@ -1,0 +1,29 @@
+﻿.jp-audio { border: 1px solid black; background: white; }
+.jp-audio > * { display: inline-block; }
+.jp-audio .jp-controls { padding: 3px 0 0 3px; }
+.jp-audio .jp-controls > a { display: inline-block; width: 15px; height: 15px; border: 1px solid black; background: #EEEEEE; text-decoration: none; }
+.jp-audio .jp-current-time, .jp-audio .jp-duration { vertical-align: top; margin-top: 6px; font-size: 8pt; }
+
+.jp-audio .jp-controls > a.jp-play:before, 
+.jp-audio .jp-controls > a.jp-pause:before {
+	position: relative;
+	top: -6px;
+	left: 1px;
+}
+.jp-audio .jp-controls > a.jp-play:before {
+	content: '▶';
+	font-size: 95%;
+}
+.jp-audio .jp-controls > a.jp-pause:before {
+	content: '▐▐';
+	font-size: 40%;
+}
+
+.jp-audio .jp-progress { width: 200px; height: 10px; vertical-align: top; margin-top: 8px; background: #EEEEEE; }
+.jp-audio.short .jp-progress { width: 100px; }
+.jp-audio.no-progress .jp-progress { display: none; }
+.jp-audio.no-progress .jp-current-time, .jp-audio.no-progress .jp-duration { display: none; }
+
+.jp-audio .jp-progress * { height: 100% }
+.jp-audio .jp-progress .jp-seek-bar { background: #DDDDDD; }
+.jp-audio .jp-progress .jp-play-bar { background: #CCCCCC; }

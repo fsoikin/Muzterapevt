@@ -234,8 +234,12 @@
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.0.2.13022\lib\portable-windows8+net40+sl5+windowsphone8\Validation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\PlaylistMarkdown.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Controllers\SiteService.cs" />
@@ -268,6 +272,8 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <None Include="bower.json" />
+    <None Include="gruntfile.js" />
     <Content Include="__Themes\Musicarium\css\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
@@ -345,12 +351,20 @@
     <Content Include="__Themes\Mut2\css\common.less" />
     <Content Include="__Themes\Mut2\css\template-style.less" />
     <Content Include="Views\_Layout_Mut2.cshtml" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\Playlist.css" />
+    <Content Include="__Themes\_\js\BL\Widgets\Templates\Playlist.less" />
+    <None Include="package.json" />
     <None Include="__Themes\_\js\Templates\Login.less" />
     <None Include="__Themes\_\js\BL\Widgets\Templates\subscription.less" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\audioPlayer.ts" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\playlist.ts" />
     <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.css">
       <DependentUpon>subscription.less</DependentUpon>
     </Content>
     <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.html" />
+    <Content Include="__Themes\_\js\External\jQuery.jPlayer\audioplayer.css" />
+    <Content Include="__Themes\_\js\External\jQuery.jPlayer\Jplayer.swf" />
+    <Content Include="__Themes\_\js\External\jQuery.jPlayer\jquery.jplayer.min.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.binding.min.js" />
     <Content Include="__Themes\_\js\External\Rx\rx.dom.js" />
@@ -525,7 +539,6 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="__Themes\_\img\icons\" />
   </ItemGroup>
   <ItemGroup>

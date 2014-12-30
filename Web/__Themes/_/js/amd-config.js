@@ -14,7 +14,8 @@ require.config( {
 		'css': '../require/css',
 		'normalize': '../require/normalize',
 
-		'select2': 'External/Select2/select2_locale_ru'
+		'select2': 'External/Select2/select2_locale_ru',
+		'jquery.jplayer': 'External/jquery.jplayer/jquery.jplayer.min'
 	},
 
 	deps: [
@@ -35,7 +36,8 @@ require.config( {
 	},
 
 	shim: {
-		'select2': ['jQuery', 'css!External/Select2/select2.css', 'External/Select2/select2.min']
+		'select2': ['jQuery', 'css!External/Select2/select2.css', 'External/Select2/select2.min'],
+		'jquery.jplayer': ['jQuery', 'css!External/jquery.jplayer/audioplayer.css']
 	},
 
 	packages: [
