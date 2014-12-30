@@ -98,7 +98,7 @@ namespace Mut
 		}
 
 		public MarkdownNodeDefinition<MarkdownParseArgs> BBImageTag() {
-			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "img", false, new[] { "", "width", "height" },
+			return new MarkdownParser<MarkdownParseArgs>().ComplexTag( "img", false, new[] { "", "width", "height", "float" },
 				( ctx, attrs, inners ) => {
 					var width = attrs.ValueOrDefault( "width" ).ToIntOrNull();
 					var height = attrs.ValueOrDefault( "height" ).ToIntOrNull();
@@ -107,8 +107,10 @@ namespace Mut
 						width == null && height == null ? ctx.AttachmentMixin.Action( m => m.Img( path ) ) :
 						width != null ? ctx.AttachmentMixin.Action( m => m.ScaleW( path, width.Value ) ) :
 						/* height != null */ ctx.AttachmentMixin.Action( m => m.ScaleH( path, height.Value ) );
+					var flt = attrs.ValueOrDefault( "float" );
+					if ( !flt.NullOrEmpty() ) flt = "style=\"float: " + flt + "\"";
 
-					return string.Format( "<img src='{0}' />", url );
+					return string.Format( "<img src='{0}' {1}/>", url, flt );
 				} );
 		}
 
