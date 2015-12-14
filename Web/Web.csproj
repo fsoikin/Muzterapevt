@@ -34,7 +34,8 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -273,6 +274,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <None Include="bower.json" />
+    <None Include="compilerconfig.json" />
+    <Content Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </Content>
     <None Include="gruntfile.js" />
     <Content Include="__Themes\Musicarium\css\common.css">
       <DependentUpon>common.less</DependentUpon>
@@ -351,11 +356,26 @@
     <Content Include="__Themes\Mut2\css\common.less" />
     <Content Include="__Themes\Mut2\css\template-style.less" />
     <Content Include="Views\_Layout_Mut2.cshtml" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Moderator.min.css">
+      <DependentUpon>Moderator.css</DependentUpon>
+    </Content>
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Search.css">
+      <DependentUpon>Search.less</DependentUpon>
+    </Content>
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Search.html" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Search.min.css">
+      <DependentUpon>Search.css</DependentUpon>
+    </Content>
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Specialist.min.css">
+      <DependentUpon>Specialist.css</DependentUpon>
+    </Content>
     <Content Include="__Themes\_\js\BL\Widgets\Templates\Playlist.css" />
     <Content Include="__Themes\_\js\BL\Widgets\Templates\Playlist.less" />
     <None Include="package.json" />
+    <Content Include="__Themes\_\js\BL\Specialist\Templates\Search.less" />
     <None Include="__Themes\_\js\Templates\Login.less" />
     <None Include="__Themes\_\js\BL\Widgets\Templates\subscription.less" />
+    <TypeScriptCompile Include="__Themes\_\js\BL\Specialist\search.ts" />
     <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\audioPlayer.ts" />
     <TypeScriptCompile Include="__Themes\_\js\BL\Widgets\playlist.ts" />
     <Content Include="__Themes\_\js\BL\Widgets\Templates\subscription.css">

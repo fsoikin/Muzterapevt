@@ -1,0 +1,70 @@
+﻿<div class="specialist-search">
+	<!-- ko control: InfoBox --><!-- /ko -->
+
+	<div>
+		<div class="field">
+			<label>Ключевые слова:</label>
+			<input type="text" data-bind="value: Keywords, valueUpdate: 'keyup'" />
+		</div>
+		<div class="field">
+			<label>В регионах:</label>
+			<div data-bind="control: Regions"></div>
+		</div>
+		<button type="submit" data-bind="click: Search">Найти</button>
+	</div>
+
+	<div data-bind="visible: ShowPrompt">
+
+	</div>
+	<div data-bind="visible: ShowNothingFound">
+		Никого не найдено
+	</div>
+	<div data-bind="visible: IsLoading">
+		Поиск в процессе...
+	</div>
+
+	<div class="list" data-bind="visible: ShowList, foreach: Specialists">
+		<div class="specialist">
+			<img class="photo" data-bind="attr: { src: photoUrl }, visible: photoUrl" />
+			<div class="name">
+				<div class="first" data-bind="text: firstName"></div>
+				<div class="patronymic" data-bind="text: patronymicName"></div>
+				<div class="last" data-bind="text: lastName"></div>
+			</div>
+			<div class="location">
+				<label>Где</label>
+				<span class="city" data-bind="text: city, visible: city"></span>
+				<span class="regions" data-bind="text: (regions||[]).join(', ')"></span>
+			</div>
+			<div class="organization" data-bind="visible: organization">
+				<label>Место работы (организация)</label>
+				<span data-bind="text: organization"></span>
+			</div>
+			<div class="profession" data-bind="visible: profession || professionDescription">
+				<span data-bind="text: profession"></span>
+				<div data-bind="text: professionDescription"></div>
+			</div>
+			<div class="specialization" data-bind="visible: specialization || specializationDescription">
+				<label data-bind="visible: specialization">Специализация</label>
+				<span data-bind="text: specialization"></span>
+				<div data-bind="text: specializationDescription"></div>
+			</div>
+			<div class="education" data-bind="visible: formalEducation || musicTherapyEducation">
+				<label>Образование</label>
+				<span data-bind="visible: formalEducation, text: formalEducation"></span>
+				<div data-bind="text: musicTherapyEducation"></div>
+			</div>
+			<div class="experience" data-bind="visible: experience || experienceDescription">
+				<label data-bind="visible: experience">Опыт рыботы</label>
+				<span data-bind="text: experience"></span>
+				<div data-bind="text: experienceDescription"></div>
+			</div>
+			<div class="contacts">
+				<div class="email" data-bind="text: email, visible: email"></div>
+				<div class="phone" data-bind="text: phone, visible: phone"></div>
+				<a class="url" data-bind="text: url, attr: { href: url }, visible: url"></a>
+			</div>
+		</div>
+	</div>
+
+</div>

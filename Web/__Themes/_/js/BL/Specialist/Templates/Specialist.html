@@ -16,18 +16,20 @@
 		<input type="text" data-bind="value: PatronymicName" />
 	</div>
 	<div class="field required">
-		<label>Город(a):</label>
-		<input type="text" data-bind="value: City" />
-	</div>
-	<div class="field required">
-		<label>Страна(ы):</label>
-		<div data-bind="control: Country">&nbsp;</div>
-	</div>
-	<div class="field">
-		<label>Организация:</label>
-		<div data-bind="control: Organization">&nbsp;</div>
+		<label>Электронная почта (e-mail) для связи с Вами:</label>
+		<input type="text" data-bind="value: ContactEmail" />
+		<span class="sublabel">Этот адрес не будет выложен в открытый доступ. Нам просто нужен способ с Вами связаться, если возникнет необходимость что-либо уточнить.</span>
 	</div>
 
+	<div class="field required">
+		<label>Регион(ы):</label>
+		<div data-bind="control: Regions">&nbsp;</div>
+	</div>
+	<div class="field required">
+		<label>Город:</label>
+		<input type="text" data-bind="value: City" />
+	</div>
+	
 	<div class="field required glue-to-next">
 		<label>Вы:</label>
 		<div data-bind="control: Profession">&nbsp;</div>
@@ -38,19 +40,57 @@
 	</div>
 
 	<div class="field required glue-to-next">
-		<label>Специализация:</label>
-		<div data-bind="control: Specialization">&nbsp;</div>
+		<label>Образование:</label>
+		<input type="text" data-bind="value: FormalEducation" />
+	</div>
+	<div class="field required glue-to-next">
+		<label>Проходили ли вы подготовку по терапевтическому использованию музыки? Если да, то когда и где?</label>
+		<input type="text" data-bind="value: MusicTherapyEducation" />
+	</div>
+	<div class="field required glue-to-next">
+		<label>Опыт работы в области терапевтического использования музыки:</label>
+		<div data-bind="control: ExperienceBrackets">&nbsp;</div>
 	</div>
 	<div class="field">
-		<label>Если Вашей специализации нет в списке, расскажите о ней подробнее:</label>
+		<label>Подробнее:</label>
+		<textarea data-bind="value: ExperienceDescription"></textarea>
+	</div>
+
+	<div class="field required glue-to-next">
+		<label>Специализация:</label>
+		<div data-bind="control: Specialization">&nbsp;</div>
+		<span class="sublabel">С кем Вы работаете?</span>
+	</div>
+	<div class="field">
+		<label>Подробнее:</label>
 		<textarea data-bind="value: SpecializationDescription"></textarea>
+		<span class="sublabel">Напишите подробнее о Вашей специализации, методах работы, музыкальных инструментах, которые Вы используете.</span>
+	</div>
+
+	<div class="field">
+		<label>Место работы (организация):</label>
+		<div data-bind="control: Organization">&nbsp;</div>
 	</div>
 
 	<div class="field required">
 		<label>Краткое резюме:</label>
 		<textarea data-bind="value: Resume"></textarea>
+		<span class="sublabel">Расскажите о своем опыте работы в области терапевтического использования музыки.</span>
 	</div>
 
+	<h2>Контакты для публикации на сайте:</h2>
+	<div class="field">
+		<label>Электронная почта (e-mail):</label>
+		<input type="text" data-bind="value: PublicEmail" />
+	</div>
+	<div class="field">
+		<label>Телефон:</label>
+		<input type="text" data-bind="value: PublicPhone" />
+	</div>
+	<div class="field">
+		<label>Ссылка на сайт:</label>
+		<input type="text" data-bind="value: Url" />
+	</div>
 	<div class="field photo">
 		<label>Фотография:</label>
 		<button data-bind="visible: !Uploader.IsUploading(), click: UploadPhoto">Выбрать фотографию</button>
@@ -58,27 +98,18 @@
 		<!-- ko if: PhotoVisual --><div class="visual" data-bind="control: PhotoVisual"></div><!-- /ko -->
 	</div>
 
-	<div class="field">
-		<label>Электронная почта (e-mail):</label>
-		<input type="text" data-bind="value: Email" />
-		<div class="checkbox">
-			<input type="checkbox" data-bind="value: IsEmailPublic" />
-			<label>Сделать ваш e-mail доступным для всех пользователей.</label>
-		</div>
+	<h2>Подтвердите своё согласие:</h2>
+	<div class="field required">
+		<label>
+			<input type="checkbox" data-bind="checked: ConsentToPersonalDataProcessing" />
+			Согласен на обработку персональных данных
+		</label>
 	</div>
-
-	<div class="field">
-		<label>Телефон:</label>
-		<input type="text" data-bind="value: Phone" />
-		<div class="checkbox">
-			<input type="checkbox" data-bind="value: IsPhonePublic" />
-			<label>Сделать ваш телефон доступным для всех пользователей.</label>
-		</div>
-	</div>
-
-	<div class="field">
-		<label>Ссылка на сайт:</label>
-		<input type="text" data-bind="value: Url" />
+	<div class="field required">
+		<label>
+			<input type="checkbox" data-bind="checked: AgreeWithEthicalGuidelines" />
+			Согласен с <a href="http://psyrus.ru/rpo/documentation/ethics.php">положениями Этического кодекса психолога</a>
+		</label>
 	</div>
 
 	<button data-bind="click: Send, disabled: IsSending">Отослать заявку</button>

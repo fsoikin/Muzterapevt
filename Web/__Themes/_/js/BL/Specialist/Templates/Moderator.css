@@ -1,54 +1,49 @@
 ﻿.specialist-moderator > .specialist {
-    position: relative;
-    margin-bottom: 20px;
-    padding: 5px;
-    overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+  padding: 5px;
+  overflow: hidden;
 }
-
 .specialist-moderator > .specialist:after {
-    clear: left;
-    content: ' ';
-    display: block;
+  clear: left;
+  content: ' ';
+  display: block;
 }
-
 .specialist-moderator > .specialist:hover {
-    background: #f3f3f3;
+  background: #f3f3f3;
 }
-
+.specialist-moderator > .specialist > div > label {
+  display: inline-block;
+  font-weight: bold;
+}
+.specialist-moderator > .specialist > div > label:after {
+  content: ': ';
+}
 .specialist-moderator > .specialist > img {
-    float: left;
-    margin-right: 10px;
-    margin-bottom: 10px;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
-
 .specialist-moderator > .specialist > .name {
-    display: inline-block;
-    font-weight: bold;
-    margin-right: 15px;
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 15px;
 }
-
 .specialist-moderator > .specialist > .name > div {
-    display: inline-block;
-    margin-right: 0.2em;
+  display: inline-block;
+  margin-right: 0.2em;
 }
-
 .specialist-moderator > .specialist > .location {
-    display: inline-block;
+  display: inline-block;
 }
-
-.specialist-moderator > .specialist > .location > .city:after {
-    content: ', ';
-}
-
 .specialist-moderator > .specialist > .buttons {
-    float: right;
-    width: 150px;
-    display: inline-block;
+  float: right;
+  width: 150px;
+  display: inline-block;
 }
-
 .specialist-moderator > .specialist > .buttons > button {
-    width: 100%;
-    display: block;
-    text-align: left;
-    padding-left: 40px;
+  width: 100%;
+  display: block;
+  text-align: left;
+  padding-left: 40px;
 }

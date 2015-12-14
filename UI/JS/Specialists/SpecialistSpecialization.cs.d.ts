@@ -2,5 +2,6 @@
 	interface SpecialistSpecialization {
 		Id: number;
 		Name: string;
+		IsNull: boolean;
 	}
 }

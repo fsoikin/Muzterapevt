@@ -126,6 +126,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Region.cs" />
     <Compile Include="Entities\Subscription.cs" />
     <Compile Include="Entities\EmailServiceConfig.cs" />
     <Compile Include="Entities\Email.cs" />
@@ -138,6 +139,12 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\005_Added_Email.sql" />
+    <Content Include="Migrations\018_Reorder_Lookups.sql" />
+    <Content Include="Migrations\017_Add_Experience_Brackets.sql" />
+    <Content Include="Migrations\016_Refactor_Email_and_Phone.sql" />
+    <Content Include="Migrations\015_Add_IsNull.sql" />
+    <Content Include="Migrations\014_Insert_Regions.sql" />
+    <Content Include="Migrations\013_Added_Region.sql" />
     <Content Include="Migrations\012_Added_Subscriptions.sql" />
     <Content Include="Migrations\011_Added_Site_FriendlyName.sql" />
     <Content Include="Migrations\010_Added_SiteId.sql" />

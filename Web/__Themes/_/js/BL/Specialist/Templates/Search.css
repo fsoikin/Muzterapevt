@@ -1,0 +1,55 @@
+﻿.specialist-search .field {
+  width: 95%;
+  margin-bottom: 10px;
+}
+.specialist-search .field > div {
+  width: 100%;
+}
+.specialist-search .specialist {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 5px;
+  overflow: hidden;
+}
+.specialist-search .specialist:after {
+  clear: left;
+  content: ' ';
+  display: block;
+}
+.specialist-search .specialist:hover {
+  background: #f3f3f3;
+}
+.specialist-search .specialist > div > label {
+  display: inline-block;
+  font-weight: bold;
+}
+.specialist-search .specialist > div > label:after {
+  content: ': ';
+}
+.specialist-search .specialist > img {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.specialist-search .specialist > .name {
+  font-weight: bold;
+  margin-right: 15px;
+  font-size: 140%;
+}
+.specialist-search .specialist > .name > div {
+  display: inline-block;
+}
+.specialist-search .specialist > .location {
+  display: block;
+}
+.specialist-search .specialist > .buttons {
+  float: right;
+  width: 150px;
+  display: inline-block;
+}
+.specialist-search .specialist > .buttons > button {
+  width: 100%;
+  display: block;
+  text-align: left;
+  padding-left: 40px;
+}

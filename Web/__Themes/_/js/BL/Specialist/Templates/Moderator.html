@@ -3,34 +3,49 @@
 
 	<!-- ko foreach: Specialists -->
 	<div class="specialist">
-		<img class="photo" data-bind="attr: { src: PhotoUrl }, visible: PhotoUrl" />
+		<img class="photo" data-bind="attr: { src: photoUrl }, visible: photoUrl" />
 		<div class="buttons">
 			<button class="icon-ok" data-bind="click: $parent.Approve">Approve</button>
 			<button class="icon-no" data-bind="click: $parent.Archive">Hide</button>
 			<button class="icon-no warning" data-bind="click: $parent.Delete">Delete</button>
 		</div>
 		<div class="name">
-			<div class="first" data-bind="text: FirstName"></div>
-			<div class="patronymic" data-bind="text: PatronymicName"></div>
-			<div class="last" data-bind="text: LastName"></div>
+			<div class="first" data-bind="text: firstName"></div>
+			<div class="patronymic" data-bind="text: patronymicName"></div>
+			<div class="last" data-bind="text: lastName"></div>
 		</div>
 		<div class="location">
-			<span class="city" data-bind="text: City"></span>
-			<span class="country" data-bind="text: (Countries||[]).join(', ')"></span>
+			<span class="country" data-bind="text: (regions||[]).join(', ')"></span>
 		</div>
-		<div class="organization" data-bind="text: Organization"></div>
+		<div class="organization" data-bind="text: organization"></div>
 		<div class="profession">
-			<span data-bind="text: Profession"></span>
-			<div data-bind="text: ProfessionDescription"></div>
+			<label>Кто</label>
+			<span data-bind="text: profession"></span>
+			<div data-bind="text: professionDescription"></div>
 		</div>
 		<div class="specialization">
-			<span data-bind="text: Specialization"></span>
-			<div data-bind="text: SpecializationDescription"></div>
+			<label>Специализация</label>
+			<span data-bind="text: specialization"></span>
+			<div data-bind="text: specializationDescription"></div>
+		</div>
+		<div>
+			<label>Образование</label>
+			<span data-bind="text: formalEducation"></span>
+		</div>
+		<div>
+			<label>Подготовка к МТ</label>
+			<span data-bind="text: musicTherapyEducation"></span>
+		</div>
+		<div class="experience">
+			<label>Опыт работы</label>
+			<span data-bind="text: experience"></span>
+			<div data-bind="text: experienceDescription"></div>
 		</div>
 		<div class="contacts">
-			<div class="email" data-bind="text: Email"></div>
-			<div class="phone" data-bind="text: Phone"></div>
-			<a class="url" data-bind="text: Url, attr: { href: Url }"></a>
+			<div class="email" data-bind="text: contactEmail"></div>
+			<div class="email" data-bind="text: publicEmail"></div>
+			<div class="phone" data-bind="text: publicPhone"></div>
+			<a class="url" data-bind="text: url, attr: { href: url }"></a>
 		</div>
 	</div>
 	<!-- /ko -->

@@ -1,5 +1,14 @@
-﻿.specialist-moderator {
-	> .specialist {
+﻿.specialist-search {
+	.field {
+		width: 95%;
+		margin-bottom: 10px;
+
+		> div {
+			width: 100%;
+		}
+	}
+
+	.specialist {
 		position: relative;
 		margin-bottom: 20px;
 		padding: 5px;
@@ -14,7 +23,7 @@
 		&:hover {
 			background: #f3f3f3;
 		}
-
+		
 		> div {
 			> label {
 				display: inline-block;
@@ -30,18 +39,14 @@
 		}
 
 		> .name {
-			display: inline-block;
+			> div {display: inline-block;}
 			font-weight: bold;
 			margin-right: 15px;
-
-			> div {
-				display: inline-block;
-				margin-right: 0.2em;
-			}
+			font-size: 140%;
 		}
 
 		> .location {
-			display: inline-block;
+			display: block;
 		}
 
 		> .buttons {

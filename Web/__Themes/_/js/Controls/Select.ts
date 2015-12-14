@@ -173,5 +173,5 @@ class MultiSelect<T> extends SelectBase<T> {
 
 interface Select2QueryOptions {
 	term: string;
-	callback( data: { results: any[]; } );
+	callback<T>( data: { results: T[]; text?( t: T ): string; });
 }

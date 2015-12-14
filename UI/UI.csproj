@@ -141,6 +141,10 @@
     <Compile Include="Infrastructure\TypeScriptModuleAttribute.cs" />
     <Compile Include="JS\Feedback\FeedbackQuestion.cs" />
     <Compile Include="JS\Page\PageReorderRequest.cs" />
+    <Compile Include="JS\Specialists\Region.cs" />
+    <Compile Include="JS\Specialists\SpecialistExperienceBracket.cs" />
+    <Compile Include="JS\Specialists\SpecialistSearchRequest.cs" />
+    <Compile Include="JS\Specialists\SpecialistPublicView.cs" />
     <Compile Include="JS\Specialists\SpecialistView.cs" />
     <Compile Include="JS\Specialists\SpecialistSpecialization.cs" />
     <Compile Include="JS\Specialists\SpecialistProfession.cs" />
@@ -213,11 +217,23 @@
     <TypeScriptCompile Include="JS\Specialists\Organization.cs.d.ts">
       <DependentUpon>Organization.cs</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\Region.cs.d.ts">
+      <DependentUpon>Region.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistExperienceBracket.cs.d.ts">
+      <DependentUpon>SpecialistExperienceBracket.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Specialists\SpecialistProfession.cs.d.ts">
       <DependentUpon>SpecialistProfession.cs</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistPublicView.cs.d.ts">
+      <DependentUpon>SpecialistPublicView.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Specialists\SpecialistRegistrationRequest.cs.d.ts">
       <DependentUpon>SpecialistRegistrationRequest.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="JS\Specialists\SpecialistSearchRequest.cs.d.ts">
+      <DependentUpon>SpecialistSearchRequest.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="JS\Specialists\SpecialistSpecialization.cs.d.ts">
       <DependentUpon>SpecialistSpecialization.cs</DependentUpon>

@@ -1,55 +1,53 @@
-﻿.specialist-registration .field {
-    width: 95%;
-    margin-bottom: 10px;
+﻿.specialist-registration h2 {
+  margin-top: 2em;
+  font-size: 150%;
 }
-
+.specialist-registration .field {
+  width: 95%;
+  margin-bottom: 20px;
+}
 .specialist-registration .field.glue-to-next {
-    margin-bottom: 0;
+  margin-bottom: 10px;
 }
-
 .specialist-registration .field > div {
-    width: 100%;
+  width: 100%;
 }
-
 .specialist-registration .field.col3 {
-    display: inline-block;
-    width: 31%;
-    margin-right: 1%;
+  display: inline-block;
+  width: 31%;
+  margin-right: 1%;
 }
-
 .specialist-registration .field.required > label:after {
-    content: '*';
-    color: red;
+  content: '*';
+  color: red;
 }
-
+.specialist-registration .field > .sublabel {
+  font-size: 90%;
+  color: silver;
+  display: block;
+}
 .specialist-registration .field.photo > label,
 .specialist-registration .field.photo > button {
-    display: inline-block;
+  display: inline-block;
 }
-
 .specialist-registration .field.photo > .visual {
-    display: block;
-    width: auto;
+  display: block;
+  width: auto;
 }
-
 .specialist-registration .field.photo > .visual > .attachment-picture {
-    display: inline-block;
+  display: inline-block;
 }
-
 .specialist-registration .field.photo > .visual > .attachment-picture > label {
-    display: none;
+  display: none;
 }
-
 .specialist-registration .field > .checkbox {
-    white-space: nowrap;
+  white-space: nowrap;
 }
-
 .specialist-registration .field > .checkbox > input,
 .specialist-registration .field > .checkbox > label {
-    display: inline-block;
+  display: inline-block;
 }
-
 .specialist-registration .field > .checkbox > label {
-    position: relative;
-    top: -2px;
+  position: relative;
+  top: -2px;
 }

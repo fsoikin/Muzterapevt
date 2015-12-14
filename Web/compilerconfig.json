@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "__Themes/_/js/BL/Specialist/Templates/Search.css",
+    "inputFile": "__Themes/_/js/BL/Specialist/Templates/Search.less"
+  },
+  {
+    "outputFile": "__Themes/_/js/BL/Specialist/Templates/Specialist.css",
+    "inputFile": "__Themes/_/js/BL/Specialist/Templates/Specialist.less"
+  },
+  {
+    "outputFile": "__Themes/_/js/BL/Specialist/Templates/Moderator.css",
+    "inputFile": "__Themes/_/js/BL/Specialist/Templates/Moderator.less"
+  }
+]

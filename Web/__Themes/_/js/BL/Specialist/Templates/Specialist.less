@@ -1,10 +1,15 @@
 ﻿.specialist-registration {
+	h2 { 
+		margin-top: 2em;
+		font-size: 150%;
+	}
+
 	.field {
 		width: 95%;
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 
 		&.glue-to-next {
-			margin-bottom: 0;
+			margin-bottom: 10px;
 		}
 
 		> div {
@@ -20,6 +25,12 @@
 		&.required > label:after {
 			content: '*';
 			color: red;
+		}
+
+		> .sublabel {
+			font-size: 90%;
+			color: silver;
+			display: block;
 		}
 
 		&.photo {

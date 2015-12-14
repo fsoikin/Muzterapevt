@@ -29,7 +29,7 @@ export class ListVm extends c.TemplatedControl {
 
 	_action = ( prompt: string, url: string ) => ( s: server.SpecialistView ) => {
 		this.InfoBox.Info( prompt );
-		c.Api.Post( url, { id: s.Id }, this.IsSaving, this.InfoBox.Error, () => {
+		c.Api.Post( url, { id: s.id }, this.IsSaving, this.InfoBox.Error, () => {
 			this.InfoBox.Clear();
 			this.Specialists.remove( s );
 		} );

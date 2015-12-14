@@ -1,0 +1,2 @@
+﻿update dbo.SpecialistProfessions set [Order] = (select max([Order]) from dbo.SpecialistProfessions)+1 where [IsNull] = 1
+update dbo.SpecialistSpecializations set [Order] = (select max([Order]) from dbo.SpecialistSpecializations)+1 where [IsNull] = 1

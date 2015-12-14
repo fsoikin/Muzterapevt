@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using erecruit.Composition;
 using Name.Files;
 
@@ -12,20 +10,25 @@ namespace Mut.Data
 		public int Id { get; set; }
 		public bool Approved { get; set; }
 		public bool Ignored { get; set; }
+
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string PatronymicName { get; set; }
-		public string City { get; set; }
+
+		public string ContactEmail { get; set; }
+		public string PublicEmail { get; set; }
+
+		public string ContactPhone { get; set; }
+		public string PublicPhone { get; set; }
+
 		public string Resume { get; set; }
-		public string Email { get; set; }
-		public bool IsEmailPublic { get; set; }
-		public string Phone { get; set; }
-		public bool IsPhonePublic { get; set; }
 		public string Url { get; set; }
 		public File Photo { get; set; }
 
 		public virtual Organization Organization { get; set; }
-		public virtual ICollection<Country> Countries { get; set; }
+
+		public string City { get; set; }
+		public virtual ICollection<Region> Regions { get; set; }
 
 		public virtual SpecialistProfession Profession { get; set; }
 		public string ProfessionDescription { get; set; }
@@ -33,8 +36,13 @@ namespace Mut.Data
 		public virtual SpecialistSpecialization Specialization { get; set; }
 		public string SpecializationDescription { get; set; }
 
+		public virtual SpecialistExperienceBracket Experience { get; set; }
+		public string ExperienceDescription { get; set; }
+		public string FormalEducation { get; set; }
+		public string MusicTherapyEducation { get; set; }
+
 		public Specialist() {
-			this.Countries = new HashSet<Country>();
+			this.Regions = new HashSet<Region>();
 		}
 
 		[Export]
@@ -44,7 +52,8 @@ namespace Mut.Data
 				var s = b.Entity<Specialist>();
 				s.HasRequired( x => x.Specialization ).WithMany();
 				s.HasRequired( x => x.Profession ).WithMany();
-				s.HasMany( x => x.Countries ).WithMany();
+				s.HasRequired( x => x.Experience ).WithMany();
+				s.HasMany( x => x.Regions ).WithMany();
 				s.HasOptional( x => x.Organization ).WithMany();
 			}
 		}
@@ -53,6 +62,7 @@ namespace Mut.Data
 	public class SpecialistProfession
 	{
 		public int Id { get; set; }
+		public bool IsNull { get; set; }
 		public int Order { get; set; }
 		public string Name { get; set; }
 	}
@@ -60,6 +70,15 @@ namespace Mut.Data
 	public class SpecialistSpecialization
 	{
 		public int Id { get; set; }
+		public bool IsNull { get; set; }
+		public int Order { get; set; }
+		public string Name { get; set; }
+	}
+
+	public class SpecialistExperienceBracket
+	{
+		public int Id { get; set; }
+		public bool IsNull { get; set; }
 		public int Order { get; set; }
 		public string Name { get; set; }
 	}
