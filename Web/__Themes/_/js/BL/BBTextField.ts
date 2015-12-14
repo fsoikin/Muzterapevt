@@ -61,7 +61,7 @@ export class BBTextFieldVm implements c.IControl {
 		var br = getBr( txtarea );
 		if ( br == "ie" ) {
 			txtarea.focus();
-			var range = document.selection.createRange();
+			var range = ieCreateRange();
 			range.moveStart( 'character', -txtarea.value.length );
 			return range.text.length;
 		} else if ( br == "ff" ) {
@@ -76,7 +76,7 @@ export class BBTextFieldVm implements c.IControl {
 		var br = getBr( txtarea );
 		if ( br == "ie" ) {
 			txtarea.focus();
-			var range = document.selection.createRange();
+			var range = ieCreateRange();
 			range.moveStart( 'character', -txtarea.value.length );
 			range.moveStart( 'character', pos );
 			range.moveEnd( 'character', 0 );
@@ -90,5 +90,16 @@ export class BBTextFieldVm implements c.IControl {
 }
 
 function getBr( txtarea: HTMLTextAreaElement ) {
-	return ( txtarea.selectionStart || txtarea.selectionStart == 0 ) ? "ff" : document.selection ? "ie" : null;
+	return ( txtarea.selectionStart || txtarea.selectionStart == 0 ) ? "ff" : (<any>document).selection ? "ie" : null;
+}
+
+interface Range {
+	moveStart( by: string, len: number ): void;
+	moveEnd( by: string, len: number ): void;
+	select(): void;
+	text: string;
+}
+
+function ieCreateRange(): Range {
+	return ( <any>document ).selection.createRange();
 }

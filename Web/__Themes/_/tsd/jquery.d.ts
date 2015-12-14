@@ -421,8 +421,8 @@ interface JQuery {
     clearQueue(queueName?: string): JQuery;
 
     data(key: string, value: any): JQuery;
+    data( key?: string ): any;
     data(obj: { [key: string]: any; }): JQuery;
-    data(key?: string): any;
 
     dequeue(queueName?: string): JQuery;
 

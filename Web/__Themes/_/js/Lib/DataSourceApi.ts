@@ -149,7 +149,6 @@ export module create {
 			Items: ko.observableArray( items ),
 			GetId: ( i: er.NameValuePair<T> ) => i.Value,
 			ToString: ( i: er.NameValuePair<T> ) => i.Name,
-			CanLookup: false,
 			HasPartialItems: false,
 			Lookup: () => rx.Observable.empty<er.NameValuePair<T>[]>()
 		};

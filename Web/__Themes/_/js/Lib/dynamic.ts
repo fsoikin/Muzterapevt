@@ -89,7 +89,7 @@ var req = ( () => {
 	return function ( deps: linqjs.IEnumerable<string>, cb: Function ) {
 		var loaded = deps.select( d => loadedModules[d] );
 		if( loaded.all( d => !!d ) ) cb.apply( this, loaded.toArray() );
-		else require( deps.toArray(), () => {
+		else require( deps.toArray(), function() {
 			loaded = deps.zip( arguments, ( d, r ) => ( loadedModules[d] = r, r ) );
 			cb.apply( this, loaded.toArray() );
 		});
