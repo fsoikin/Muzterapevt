@@ -2,6 +2,8 @@
 #load "Git.fsx"
 open Fake
 
+printfn "%A" <| hasBuildParam "Clean"
+
 type Deployment = 
   { url: string; username: string; passwordKey: string; localDir: string }
   with 
@@ -55,9 +57,16 @@ let deploy deployment =
   Git.Branches.pushBranch deployment.localDir deployment.pushUrl branch
 
 
+Target "Start" <| fun _ -> ()
+
 Target "Build" <| fun _ ->
   !! "*.sln"
   |> MSBuild "" "Build" ["Configuration", configuration]
+  |> Log "Build output: "
+
+Target "Clean" <| fun _ ->
+  !! "*.sln"
+  |> MSBuild "" "Clean" ["Configuration", configuration]
   |> Log "Build output: "
 
 Target "NugetRestore" <| fun _ ->
@@ -71,7 +80,10 @@ Target "DeployTest" <| fun _ -> deploy testDeployment
 Target "DeployProd" <| fun _ -> deploy prodDeployment
 
 
-"NugetRestore" ==> "Build"
+"Start"
+  =?> ("Clean", hasBuildParam "Clean")
+  ==> "NugetRestore" 
+  ==> "Build"
 
 "Build" ==> "PackageTest"
 "Build" ==> "PackageProd"
