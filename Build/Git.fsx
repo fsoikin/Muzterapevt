@@ -1,4 +1,4 @@
-#r "tools/FAKE/tools/FakeLib.dll"
+#r "../tools/FAKE/tools/FakeLib.dll"
 open Fake
 
 type RemoteMode = Fetch | Push

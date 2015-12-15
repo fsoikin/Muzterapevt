@@ -1,4 +1,4 @@
-#r "tools/FAKE/tools/FakeLib.dll"
+#r "../tools/FAKE/tools/FakeLib.dll"
 #load "Git.fsx"
 open Fake
 
