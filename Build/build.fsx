@@ -60,16 +60,24 @@ Target "Build" <| fun _ ->
   |> MSBuild "" "Build" ["Configuration", configuration]
   |> Log "Build output: "
 
+Target "NugetRestore" <| fun _ ->
+  "Muzterapevt.sln"
+  |> RestoreMSSolutionPackages id
+
 Target "PackageTest" <| fun _ -> deploymentPackage testDeployment
 Target "PackageProd" <| fun _ -> deploymentPackage prodDeployment
 
 Target "DeployTest" <| fun _ -> deploy testDeployment
 Target "DeployProd" <| fun _ -> deploy prodDeployment
 
+
+"NugetRestore" ==> "Build"
+
 "Build" ==> "PackageTest"
 "Build" ==> "PackageProd"
 
 "PackageTest" ==> "DeployTest"
 "PackageProd" ==> "DeployProd"
+
 
 RunTargetOrDefault "Build"
