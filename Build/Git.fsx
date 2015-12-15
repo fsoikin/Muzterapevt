@@ -21,7 +21,9 @@ let getRemoteName repoDir matchUrl =
 
 let hasRemote repoDir matchUrl = Option.isSome <| getRemoteName repoDir matchUrl
 
-let createRepoIfNotExists dir url =
+let createRepoIfNotExists dir url userEmail userName =
   if not <| directoryExists dir then
     CreateDir dir
     Git.Repository.clone (DirectoryName dir) url (filename dir)
+    Git.CommandHelper.gitCommandf dir "config user.email %s" userEmail
+    Git.CommandHelper.gitCommandf dir "config user.name %s" userName

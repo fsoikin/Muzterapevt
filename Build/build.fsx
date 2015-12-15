@@ -2,8 +2,6 @@
 #load "Git.fsx"
 open Fake
 
-printfn "%A" <| hasBuildParam "Clean"
-
 type Deployment = 
   { url: string; username: string; passwordKey: string; localDir: string }
   with 
@@ -14,6 +12,9 @@ type Deployment =
 let prodDeployment = { url = "muzterapevt.scm.azurewebsites.net:443/muzterapevt.git"; localDir = "./deploy/prod"; username = "name"; passwordKey = "ProdDeployPassword" }
 let testDeployment = { url = "mut-test.scm.azurewebsites.net:443/mut-test.git"; localDir = "./deploy/test"; username = "name"; passwordKey = "TestDeployPassword" }
 
+let gitUserEmail = getBuildParam "GitUserEmail"
+let gitUserName = getBuildParam "GitUserName"
+
 let fullName f = try FullName f with _ -> ""
 let configuration = getBuildParamOrDefault "Configuration" "Release"
 let failIfNone msg = function | Some v -> v | None -> failwith msg
@@ -21,7 +22,7 @@ let failIfNone msg = function | Some v -> v | None -> failwith msg
 
 let deploymentPackage deployment =
   let { localDir = dir; url = url } = deployment
-  Git.createRepoIfNotExists dir deployment.pushUrl
+  Git.createRepoIfNotExists dir deployment.pushUrl gitUserEmail gitUserName
 
   if not <| Git.hasRemote dir deployment.matchesUrl then
     failwith (sprintf "Directory %s exists, but is either not a git repo or does not have a remote of %s" dir url)
