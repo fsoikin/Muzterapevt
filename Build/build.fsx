@@ -21,13 +21,13 @@ let failIfNone msg = function | Some v -> v | None -> failwith msg
 
 let deploymentPackage deployment =
   let { localDir = dir; url = url } = deployment
-  Git.createRepoIfNotExists dir url
-
-  let branch = Git.Information.getBranchName deployment.localDir
-  Git.Branches.pull dir deployment.pushUrl branch
+  Git.createRepoIfNotExists dir deployment.pushUrl
 
   if not <| Git.hasRemote dir deployment.matchesUrl then
     failwith (sprintf "Directory %s exists, but is either not a git repo or does not have a remote of %s" dir url)
+
+  let branch = Git.Information.getBranchName deployment.localDir
+  Git.Branches.pull dir deployment.pushUrl branch
 
   let files = 
     !! "Web/bin/*.dll"
