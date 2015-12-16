@@ -9,3 +9,5 @@ if ($Bootstrap) {
 }
 
 & Invoke-Expression "tools\FAKE\tools\Fake.exe Build\build.fsx $(if ($Target) { "target=$Target" }) $Args"
+
+Write-Host "FAKE exit code: $LastExitCode"
