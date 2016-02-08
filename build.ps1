@@ -8,6 +8,6 @@ if ($Bootstrap) {
   & "tools\nuget.exe" "install" "FAKE" "-OutputDirectory" "tools" "-ExcludeVersion"
 }
 
-& Invoke-Expression "tools\FAKE\tools\Fake.exe Build\build.fsx $(if ($Target) { "target=$Target" }) $Args"
+& Invoke-Expression "tools\FAKE\tools\Fake.exe Build\build.fsx $(if ($Target) { "target=$Target" }) $Args" 2>&1
 
 Write-Host "FAKE exit code: $LastExitCode"
