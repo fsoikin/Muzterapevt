@@ -1,11 +1,13 @@
 ﻿if object_id('dbo.Specialist_Profession') is null
 	create table dbo.Specialist_Profession (
+		Id int identity constraint PK_Specialist_Profession primary key,
 		Specialist_Id int not null constraint FK_Specialist_Profession_Specialist references dbo.Specialists,
-		Profession_Id int not null constraint FK_Specialist_Profession_Profession references dbo.SpecialistProfessions
+		Profession_Id int not null constraint FK_Specialist_Profession_Profession references dbo.SpecialistProfessions,
 	)
 
 if object_id('dbo.Specialist_Specialization') is null
 	create table dbo.Specialist_Specialization (
+		Id int identity constraint PK_Specialist_Specialization primary key,
 		Specialist_Id int not null constraint FK_Specialist_Specialization_Specialist references dbo.Specialists,
 		Specialization_Id int not null constraint FK_Specialist_Specialization_Specialization references dbo.SpecialistSpecializations
 	)
