@@ -42,12 +42,15 @@ namespace Mut.Controllers
 		[HttpPost]
 		public IJsonResponse<unit> Send( [JsonRequestBody] JS.SpecialistRegistrationRequest request ) {
 			var res = from req in request.MaybeDefined()
-								
+
 								where Maybe.Holds( !req.firstName.NullOrEmpty() ).OrFail( "Имя не указано." )
 								where Maybe.Holds( !req.lastName.NullOrEmpty() ).OrFail( "Отчество не указано." )
 								where Maybe.Holds( !req.city.NullOrEmpty() ).OrFail( "Город не указан." )
 								where Maybe.Holds( !req.resume.NullOrEmpty() ).OrFail( "Краткое резюме не заполнено." )
 								where Maybe.Holds( !req.regions.NullOrEmpty() ).OrFail( "Укажите хотя бы один регион." )
+
+								let professionIDs = req.professions.EmptyIfNull()
+								let specializationIDs = req.specializations.EmptyIfNull()
 
 								from created in Specialists.Add( new Specialist {
 									Approved = false,
@@ -66,10 +69,10 @@ namespace Mut.Controllers
 									Organization = req.organization.NullOrEmpty() ? null :
 										Organizations.All.FirstOrDefault( x => x.Name == req.organization ) ?? Organizations.Add( new Organization { Name = req.organization } ),
 
-									Profession = Professions.Find( req.profession ),
+									Professions = Professions.All.Where( p => professionIDs.Contains( p.Id ) ).ToList(),
 									ProfessionDescription = req.professionDescription,
 
-									Specialization = Specializations.Find( req.specialization ),
+									Specializations = Specializations.All.Where( s => specializationIDs.Contains( s.Id ) ).ToList(),
 									SpecializationDescription = req.specializationDescription,
 
 									Experience = ExperienceBrackets.Find( req.experience ),
@@ -80,9 +83,9 @@ namespace Mut.Controllers
 									Photo = Files.Find( req.photo )
 								} )
 
-								where Maybe.Holds( created.Regions.EmptyIfNull().Any() ).OrFail( "Регион не указана." )
-								where Maybe.Holds( created.Profession != null ).OrFail( "Профессия не указана." )
-								where Maybe.Holds( created.Specialization != null ).OrFail( "Специализация не указана." )
+								where Maybe.Holds( created.Regions.EmptyIfNull().Any() ).OrFail( "Регион не указан." )
+								where Maybe.Holds( !created.Professions.NullOrEmpty() ).OrFail( "Профессия не указана." )
+								where Maybe.Holds( !created.Specializations.NullOrEmpty() ).OrFail( "Специализация не указана." )
 
 								from _ in Maybe.Do( UnitOfWork.Commit )
 								select unit.Default;
@@ -113,9 +116,9 @@ namespace Mut.Controllers
 													publicPhone = s.PublicPhone,
 													city = s.City,
 													organization = s.Organization == null ? null : s.Organization.Name,
-													profession = s.Profession.Name,
+													profession = string.Join( ", ", s.Professions.Select( p => p.Name ) ),
 													professionDescription = s.ProfessionDescription,
-													specialization = s.Specialization.Name,
+													specialization = string.Join( ", ", s.Specializations.Select( sp => sp.Name ) ),
 													specializationDescription = s.SpecializationDescription,
 													experience = s.Experience.Name,
 													experienceDescription = s.ExperienceDescription,
@@ -212,10 +215,8 @@ namespace Mut.Controllers
 
 		static Expression<Func<Specialist, string>>[] _lookupProperties = new Expression<Func<Specialist, string>>[] {
 			s => s.FirstName, s => s.LastName, s => s.PatronymicName,
-			s => s.Profession.Name, s => s.ProfessionDescription,
-			s => s.Specialization.Name, s => s.SpecializationDescription,
-			s => s.ExperienceDescription,
-			s => s.FormalEducation, s => s.MusicTherapyEducation,
+			s => s.ProfessionDescription, s => s.SpecializationDescription,
+			s => s.ExperienceDescription, s => s.FormalEducation, s => s.MusicTherapyEducation,
 			s => s.Resume, s => s.City
 		};
 
@@ -241,8 +242,15 @@ namespace Mut.Controllers
 
 			var keywordsExpr = (
 				from word in kws
-				from prop in _lookupProperties
-				select prop.Compose( s => s.Contains( word ) ))
+
+				let containsWord = (
+					from prop in _lookupProperties
+					select prop.Compose( s => s.Contains( word ) ))
+					.Fold( Expression.OrElse )
+					.Or( s => s.Specializations.Any( sp => sp.Name.Contains( word ) ) )
+					.Or( s => s.Professions.Any( p => p.Name.Contains( word ) ) )
+
+				select containsWord )
 				.Fold( Expression.OrElse );
 
 			return all.Where( keywordsExpr );
@@ -259,8 +267,8 @@ namespace Mut.Controllers
 					s,
 					Regions = s.Regions.Select( r => r.Name ),
 					Organization = s.Organization.Name,
-					Specialization = s.Specialization.IsNull ? null : s.Specialization.Name,
-					Profession = s.Profession.IsNull ? null : s.Profession.Name,
+					Specializations = s.Specializations.Select( sp => sp.Name ),
+					Professions = s.Professions.Select( p => p.Name ),
 					Experience = s.Experience.IsNull ? null : s.Experience.Name,
 					PhotoPath = s.Photo.FilePath
 				} )
@@ -276,9 +284,9 @@ namespace Mut.Controllers
 					city = s.s.City,
 					organization = s.Organization,
 
-					specialization = s.Specialization,
+					specialization = string.Join( ", ", s.Specializations ),
 					specializationDescription = s.s.SpecializationDescription,
-					profession = s.Profession,
+					profession = string.Join( ", ", s.Professions ),
 					professionDescription = s.s.ProfessionDescription,
 					experience = s.Experience,
 					experienceDescription = s.s.ExperienceDescription,

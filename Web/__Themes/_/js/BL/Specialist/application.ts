@@ -39,9 +39,9 @@ export class ApplicationVm extends c.TemplatedControl {
 	City = ko.observable( "" );
 
 	Organization = sel.CreateSelect( Ds.orgs(), addTermOptions );
-	Regions = sel.CreateMultiSelect( Ds.regions() );
-	Profession = sel.CreateSelect( Ds.professions() );
-	Specialization = sel.CreateSelect( Ds.specializations() );
+	Regions = sel.CreateMultiSelect(Ds.regions());
+	Professions = sel.CreateMultiSelect(Ds.professions());
+	Specializations = sel.CreateMultiSelect( Ds.specializations() );
 	ExperienceBrackets = sel.CreateSelect( Ds.experienceBrackets() );
 
 	ProfessionDescription = ko.observable( "" );
@@ -69,13 +69,15 @@ export class ApplicationVm extends c.TemplatedControl {
 	}
 
 	Send() {
-		if ( !this.Regions.SelectedItems().length ||
-			!this.Profession.SelectedId() ||
-			!this.Specialization.SelectedId() ||
+		if (!this.Regions.SelectedItems().length ||
+			!this.Professions.SelectedIds().length ||
+			!this.Specializations.SelectedIds().length ||
+			!this.ExperienceBrackets.SelectedId() ||
 			!this.FirstName() ||
 			!this.LastName() ||
 			!this.Resume() ) {
-			this.InfoBox.Error( "Пожалуйста заполните все обязательные поля." );
+			this.InfoBox.Error("Пожалуйста заполните все обязательные поля.");
+			return;
 		}
 
 		this.InfoBox.Info( "Загружаем фотографию..." );
@@ -91,9 +93,9 @@ export class ApplicationVm extends c.TemplatedControl {
 					city: this.City(),
 					regions: this.Regions.SelectedIds(),
 
-					profession: this.Profession.SelectedId(),
+					professions: this.Professions.SelectedIds(),
 					professionDescription: this.ProfessionDescription(),
-					specialization: this.Specialization.SelectedId(),
+					specializations: this.Specializations.SelectedIds(),
 					specializationDescription: this.SpecializationDescription(),
 					experience: this.ExperienceBrackets.SelectedId(),
 					experienceDescription: this.ExperienceDescription(),

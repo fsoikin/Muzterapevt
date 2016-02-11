@@ -30,10 +30,10 @@ namespace Mut.Data
 		public string City { get; set; }
 		public virtual ICollection<Region> Regions { get; set; }
 
-		public virtual SpecialistProfession Profession { get; set; }
+		public virtual ICollection<SpecialistProfession> Professions { get; set; }
 		public string ProfessionDescription { get; set; }
 	
-		public virtual SpecialistSpecialization Specialization { get; set; }
+		public virtual ICollection<SpecialistSpecialization> Specializations { get; set; }
 		public string SpecializationDescription { get; set; }
 
 		public virtual SpecialistExperienceBracket Experience { get; set; }
@@ -43,6 +43,8 @@ namespace Mut.Data
 
 		public Specialist() {
 			this.Regions = new HashSet<Region>();
+			this.Professions = new HashSet<SpecialistProfession>();
+			this.Specializations = new HashSet<SpecialistSpecialization>();
 		}
 
 		[Export]
@@ -50,8 +52,8 @@ namespace Mut.Data
 		{
 			public void Map( DbModelBuilder b ) {
 				var s = b.Entity<Specialist>();
-				s.HasRequired( x => x.Specialization ).WithMany();
-				s.HasRequired( x => x.Profession ).WithMany();
+				s.HasMany( x => x.Specializations ).WithMany().Map( m => m.ToTable( "Specialist_Specialization" ).MapLeftKey( "Specialist_Id").MapRightKey( "Specialization_Id" ) );
+				s.HasMany( x => x.Professions ).WithMany().Map( m => m.ToTable( "Specialist_Profession" ).MapLeftKey( "Specialist_Id" ).MapRightKey( "Profession_Id" ) );
 				s.HasRequired( x => x.Experience ).WithMany();
 				s.HasMany( x => x.Regions ).WithMany();
 				s.HasOptional( x => x.Organization ).WithMany();

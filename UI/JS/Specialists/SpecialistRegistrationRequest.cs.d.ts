@@ -12,9 +12,9 @@
 		resume: string;
 		city: string;
 		regions: number[];
-		profession: number;
+		professions: number[];
 		professionDescription: string;
-		specialization: number;
+		specializations: number[];
 		specializationDescription: string;
 		experience: number;
 		experienceDescription: string;

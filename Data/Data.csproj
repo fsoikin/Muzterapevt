@@ -139,6 +139,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Page.cs" />
     <Content Include="Migrations\005_Added_Email.sql" />
+    <Content Include="Migrations\019_SpecializationMultipleChoices.sql" />
     <Content Include="Migrations\018_Reorder_Lookups.sql" />
     <Content Include="Migrations\017_Add_Experience_Brackets.sql" />
     <Content Include="Migrations\016_Refactor_Email_and_Phone.sql" />
