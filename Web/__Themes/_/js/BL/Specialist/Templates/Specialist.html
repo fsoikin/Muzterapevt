@@ -1,5 +1,8 @@
 ﻿<div class="specialist-registration-done" data-bind="control: DoneText, visible: Sent">
 </div>
+<div data-bind="visible: IsSending">
+	<!-- ko control: InfoBox --><!-- /ko -->
+</div>
 <div class="specialist-registration" data-bind="visible: !Sent() && !IsSending()">
 	<!-- ko control: InfoBox --><!-- /ko -->
 

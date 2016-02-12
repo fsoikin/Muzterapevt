@@ -116,9 +116,7 @@ namespace Mut.Controllers
 													publicPhone = s.PublicPhone,
 													city = s.City,
 													organization = s.Organization == null ? null : s.Organization.Name,
-													profession = string.Join( ", ", s.Professions.Select( p => p.Name ) ),
 													professionDescription = s.ProfessionDescription,
-													specialization = string.Join( ", ", s.Specializations.Select( sp => sp.Name ) ),
 													specializationDescription = s.SpecializationDescription,
 													experience = s.Experience.Name,
 													experienceDescription = s.ExperienceDescription,
@@ -129,6 +127,8 @@ namespace Mut.Controllers
 												}
 												select new {
 													v,
+													Professions = s.Professions.Select( p => p.Name ),
+													Specializations = s.Specializations.Select( sp => sp.Name ),
 													Regions = s.Regions.Select( c => c.Name ),
 													PhotoPath = s.Photo.FilePath
 												}
@@ -136,6 +136,8 @@ namespace Mut.Controllers
 								.Do( x => {
 									x.v.regions = x.Regions.ToArray();
 									x.v.photoUrl = GetPhotoUrl( x.PhotoPath );
+									x.v.profession = string.Join( ", ", x.Professions );
+									x.v.specialization = string.Join( ", ", x.Specializations );
 								} )
 								.Select( x => x.v )
 							)
