@@ -35,12 +35,12 @@ namespace Mut.Controllers
 
 		static string ProtectToEmail( string value ) {
 			if ( value.NullOrEmpty() ) return null;
-			return Encoding.UTF8.GetString( MachineKey.Protect( Encoding.UTF8.GetBytes( value ) ) );
+			return Convert.ToBase64String( MachineKey.Protect( Encoding.UTF8.GetBytes( value ) ) );
 		}
 
 		static string UnprotectToEmail( string value ) {
 			if ( value.NullOrEmpty() ) return null;
-			return Encoding.UTF8.GetString( MachineKey.Unprotect( Encoding.UTF8.GetBytes( value ) ) );
+			return Encoding.UTF8.GetString( MachineKey.Unprotect( Convert.FromBase64String( value ) ) );
 		}
 
 		[HttpPost]
