@@ -1,0 +1,12 @@
+﻿alter table dbo.Specialist_Profession drop constraint FK_Specialist_Profession_Specialist
+alter table dbo.Specialist_Profession drop constraint FK_Specialist_Profession_Profession
+
+alter table dbo.Specialist_Specialization drop constraint FK_Specialist_Specialization_Specialist
+alter table dbo.Specialist_Specialization drop constraint FK_Specialist_Specialization_Specialization
+Go
+
+alter table dbo.Specialist_Profession add constraint FK_Specialist_Profession_Specialist foreign key(Specialist_Id) references dbo.Specialists on delete cascade
+alter table dbo.Specialist_Profession add constraint FK_Specialist_Profession_Profession foreign key(Profession_Id) references dbo.SpecialistProfessions on delete cascade
+
+alter table dbo.Specialist_Specialization add constraint FK_Specialist_Specialization_Specialist foreign key(Specialist_Id) references dbo.Specialists on delete cascade
+alter table dbo.Specialist_Specialization add constraint FK_Specialist_Specialization_Specialization foreign key(Specialization_Id) references dbo.SpecialistSpecializations on delete cascade
