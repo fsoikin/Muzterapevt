@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using erecruit.Composition;
-using Mut.UI;
-
-namespace Mut.JS
+﻿namespace Mut.JS
 {
 	public class FeedbackQuestion
 	{
-		public string Name { get; set; }
-		public string Email { get; set; }
-		public string Subject { get; set; }
-		public string Text { get; set; }
+		public string name { get; set; }
+		public string email { get; set; }
+		public string subject { get; set; }
+		public string text { get; set; }
+		public string toEmail { get; set; }
 	}
 }

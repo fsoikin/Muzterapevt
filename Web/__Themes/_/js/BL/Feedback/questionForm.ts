@@ -49,7 +49,7 @@ export class FormVm extends c.TemplatedControl {
 	PromptText = new text.TextView( { id: 'Feedback.QuestionPrompt' });
 	Strings = this._args.lang === 'en' ? Strings.en : Strings.ru;
 
-	constructor( private _args?: { simplified?: boolean; lang?: string } ) {
+	constructor(private _args?: { simplified?: boolean; lang?: string; toEmail?: string } ) {
 		super( Template );
 	}
 
@@ -60,7 +60,8 @@ export class FormVm extends c.TemplatedControl {
 		}
 
 		var data: server.FeedbackQuestion = {
-			Name: this.Name(), Email: this.Email(), Subject: this.Subject(), Text: this.Text()
+			name: this.Name(), email: this.Email(), subject: this.Subject(), text: this.Text(),
+			toEmail: this._args && this._args.toEmail
 		};
 
 		this.InfoBox.Info( this.Strings.SendingRequest );

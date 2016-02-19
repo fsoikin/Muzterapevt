@@ -1,8 +1,9 @@
 ﻿declare module server {
 	interface FeedbackQuestion {
-		Name: string;
-		Email: string;
-		Subject: string;
-		Text: string;
+		name: string;
+		email: string;
+		subject: string;
+		text: string;
+		toEmail: string;
 	}
 }
