@@ -54,7 +54,7 @@ namespace Mut.Controllers
 					.Or( () => "feedback@muzterapevt.ru" )
 
 				from _ in Maybe.Do( () => Emails.SendEmail( new Email {
-					FromName = req.name, FromEmail = req.email, Subject = req.subject,
+					FromName = req.name, Subject = req.subject,
 					ToEmail = toEmail,
 					Body = string.Format( @"<h2>Вопрос с {4}</h2><hr>
 						<br><b>Моё имя</b>: {0}
