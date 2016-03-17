@@ -31,8 +31,6 @@ export class SearchVm extends c.TemplatedControl {
 		super(Template.Root);
 		c.Api.Post(Ajax.Regions, null, this.IsLoading, this.InfoBox.Error,
 			(rs: server.Region[]) => this.Regions((rs || []).map(r => new RegionVm(r, this.Search))));
-
-		c.Api.AbsoluteUrl("
 	}
 
 	Search = (r: RegionVm) => {
