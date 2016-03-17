@@ -184,13 +184,13 @@ namespace Mut.Controllers
 			return Maybe.Eval( () => {
 					var regionsLookup = Regions
 						.All
-						.Select( r => new { r.ID, r.Name, ParentID = (int?)r.Parent.ID } )
+						.Select( r => new { r.ID, r.Name, ParentID = (int?)r.Parent.ID, Count = r.Specialists.Count } )
 						.ToLookup( r => r.ParentID );
 
 					Func<int?, JS.Region[]> getChildrenOf = null;
 					getChildrenOf = Func.Create( ( int? parentID ) =>
 							regionsLookup[parentID]
-							.Select( r => new JS.Region { Id = r.ID, Name = r.Name, children = getChildrenOf( r.ID ) } )
+							.Select( r => new JS.Region { Id = r.ID, Name = r.Name, children = getChildrenOf( r.ID ), totalSpecialists = r.Count } )
 							.ToArray() );
 
 					return getChildrenOf( null );
@@ -286,9 +286,9 @@ namespace Mut.Controllers
 					city = s.s.City,
 					organization = s.Organization,
 
-					specialization = string.Join( ", ", s.Specializations ),
+					specialization = string.Join( ", ", s.Specializations.Distinct() ),
 					specializationDescription = s.s.SpecializationDescription,
-					profession = string.Join( ", ", s.Professions ),
+					profession = string.Join( ", ", s.Professions.Distinct() ),
 					professionDescription = s.s.ProfessionDescription,
 					experience = s.Experience,
 					experienceDescription = s.s.ExperienceDescription,

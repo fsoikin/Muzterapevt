@@ -344,12 +344,15 @@
       <DependentUpon>Text.less</DependentUpon>
     </Content>
     <Content Include="__Themes\_\css\Text.less" />
+    <Content Include="__Themes\_\img\icons\facebook.png" />
+    <Content Include="__Themes\_\img\icons\vk.png" />
     <Content Include="__Themes\_\img\login\facebook.jpg" />
     <Content Include="__Themes\_\img\login\google.jpg" />
     <Content Include="__Themes\_\img\login\livejournal.jpg" />
     <Content Include="__Themes\_\img\login\yahoo.jpg" />
     <Content Include="__Themes\_\img\login\yandex.jpg" />
     <Content Include="__Themes\Mut\img\logo.png" />
+    <Content Include="__Themes\_\img\specialist-no-photo.png" />
     <Content Include="__Themes\_\js\BL\Feedback\Templates\questionForm.css">
       <DependentUpon>questionForm.less</DependentUpon>
     </Content>
@@ -571,9 +574,7 @@
       <DependentUpon>LoginResultModel.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="__Themes\_\img\icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>

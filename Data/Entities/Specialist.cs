@@ -55,7 +55,7 @@ namespace Mut.Data
 				s.HasMany( x => x.Specializations ).WithMany().Map( m => m.ToTable( "Specialist_Specialization" ).MapLeftKey( "Specialist_Id").MapRightKey( "Specialization_Id" ) );
 				s.HasMany( x => x.Professions ).WithMany().Map( m => m.ToTable( "Specialist_Profession" ).MapLeftKey( "Specialist_Id" ).MapRightKey( "Profession_Id" ) );
 				s.HasRequired( x => x.Experience ).WithMany();
-				s.HasMany( x => x.Regions ).WithMany();
+				s.HasMany( x => x.Regions ).WithMany( x => x.Specialists );
 				s.HasOptional( x => x.Organization ).WithMany();
 			}
 		}

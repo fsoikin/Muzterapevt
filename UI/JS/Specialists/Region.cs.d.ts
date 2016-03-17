@@ -3,5 +3,6 @@
 		Id: number;
 		Name: string;
 		children: server.Region[];
+		totalSpecialists: number;
 	}
 }

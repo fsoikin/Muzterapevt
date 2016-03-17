@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using erecruit.Composition;
 
 namespace Mut.Data
@@ -9,6 +10,11 @@ namespace Mut.Data
 		public virtual Region Parent { get; set; }
 		public string ShortName { get; set; }
 		public string Name { get; set; }
+		public virtual ICollection<Specialist> Specialists { get; set; }
+
+		public Region() {
+			this.Specialists = new HashSet<Specialist>();
+		}
 
 		[Export]
 		class Mapping : IModelMapping

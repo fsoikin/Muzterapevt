@@ -7,16 +7,14 @@ import infoBox = require( "../../Controls/InfoBox" );
 import sel = require( "../../Controls/Select" );
 import dsApi = require( "../../Lib/DataSourceApi" );
 
-var Ds = {
-	regions: dsApi.create.fromServer<server.Region>( "specialist/regions" )
-};
-
 var Ajax = {
-	Search: "specialist/search"
+	Search: "specialist/search",
+	Regions: "specialist/regions"
 };
 
 export class SearchVm extends c.TemplatedControl {
-	Regions = sel.CreateMultiSelect( Ds.regions() );
+	Regions = ko.observableArray<RegionVm>();
+	SelectedRegion = ko.observable<RegionVm>();
 	Keywords = ko.observable( "" );
 
 	InfoBox = new infoBox();
@@ -30,15 +28,49 @@ export class SearchVm extends c.TemplatedControl {
 	ShowNothingFound = ko.computed(() => !this.IsLoading() && this.TriedToSearch() && !this.Specialists().length );
 
 	constructor() {
-		super( Template );
+		super(Template.Root);
+		c.Api.Post(Ajax.Regions, null, this.IsLoading, this.InfoBox.Error,
+			(rs: server.Region[]) => this.Regions((rs || []).map(r => new RegionVm(r, this.Search))));
+
+		c.Api.AbsoluteUrl("
 	}
-	
-	Search() {
-		var req: server.SpecialistSearchRequest = { regions: this.Regions.SelectedIds(), keywords: this.Keywords() };
+
+	Search = (r: RegionVm) => {
+		this.SelectedRegion(r);
+		if (!r) return;
+
+		var ids = r.SelfAndChildrenRecursive().map(x => x.Id);
+		var req: server.SpecialistSearchRequest = { regions: ids, keywords: this.Keywords() };
 		c.Api.Post( Ajax.Search, req, this.IsLoading, this.InfoBox.Error, this.Specialists );
 		this.TriedToSearch( true );
 		this.InfoBox.Clear();
 	}
 }
 
-var Template = $( require( "text!./Templates/Search.html" ) );
+class RegionVm extends c.TemplatedControl {
+	Name = this._model.Name;
+	Id = this._model.Id;
+	Children = (this._model.children || []).map(r => new RegionVm(r, this._select));
+	Visible = this._model.totalSpecialists > 0 || this.Children.some(c => c.Visible);
+
+	constructor(private _model: server.Region, private _select: (r: RegionVm) => void) {
+		super(Template.Region);
+	}
+
+	Select() {
+		this._select(this);
+	}
+
+	SelfAndChildrenRecursive() {
+		var r: RegionVm[] = [this];
+		this.Children.forEach(
+			c => r.push( ... c.SelfAndChildrenRecursive() ));
+		return r;
+	}
+}
+
+module Template {
+	var t = $(require("text!./Templates/Search.html"));
+	export var Root = t.filter(".PART_Root");
+	export var Region = t.filter(".PART_Region");
+}

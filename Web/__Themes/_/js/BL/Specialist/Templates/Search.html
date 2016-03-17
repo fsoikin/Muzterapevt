@@ -1,16 +1,8 @@
-﻿<div class="specialist-search">
+﻿<div class="specialist-search PART_Root">
 	<!-- ko control: InfoBox --><!-- /ko -->
 
-	<div>
-		<div class="field">
-			<label>Ключевые слова:</label>
-			<input type="text" data-bind="value: Keywords, valueUpdate: 'keyup'" />
-		</div>
-		<div class="field">
-			<label>В регионах:</label>
-			<div data-bind="control: Regions"></div>
-		</div>
-		<button type="submit" data-bind="click: Search">Найти</button>
+	<div data-bind="foreach: Regions" class="regionList">
+		<div data-bind="control: $data"></div>
 	</div>
 
 	<div data-bind="visible: ShowPrompt">
@@ -19,52 +11,40 @@
 	<div data-bind="visible: ShowNothingFound">
 		Никого не найдено
 	</div>
-	<div data-bind="visible: IsLoading">
-		Поиск в процессе...
-	</div>
 
 	<div class="list" data-bind="visible: ShowList, foreach: Specialists">
 		<div class="specialist">
-			<img class="photo" data-bind="attr: { src: photoUrl }, visible: photoUrl" />
+			<img class="photo" data-bind="attr: { src: photoUrl }, css: { empty: !photoUrl }" />
 			<div class="name">
-				<div class="first" data-bind="text: firstName"></div>
-				<div class="patronymic" data-bind="text: patronymicName"></div>
-				<div class="last" data-bind="text: lastName"></div>
+				<div class="f last" data-bind="text: lastName"></div>
+				<div class="f first" data-bind="text: firstName"></div>
+				<div class="f patronymic" data-bind="text: patronymicName"></div>
 			</div>
-			<div class="location">
-				<label>Где</label>
-				<span class="city" data-bind="text: city, visible: city"></span>
-				<span class="regions" data-bind="text: (regions||[]).join(', ')"></span>
-			</div>
-			<div class="organization" data-bind="visible: organization">
-				<label>Место работы (организация)</label>
-				<span data-bind="text: organization"></span>
-			</div>
-			<div class="profession" data-bind="visible: profession || professionDescription">
-				<span data-bind="text: profession"></span>
-				<div data-bind="text: professionDescription"></div>
-			</div>
-			<div class="specialization" data-bind="visible: specialization || specializationDescription">
-				<label data-bind="visible: specialization">Специализация</label>
-				<span data-bind="text: specialization"></span>
-				<div data-bind="text: specializationDescription"></div>
-			</div>
-			<div class="education" data-bind="visible: formalEducation || musicTherapyEducation">
-				<label>Образование</label>
-				<span data-bind="visible: formalEducation, text: formalEducation"></span>
-				<div data-bind="text: musicTherapyEducation"></div>
-			</div>
-			<div class="experience" data-bind="visible: experience || experienceDescription">
-				<label data-bind="visible: experience">Опыт рыботы</label>
-				<span data-bind="text: experience"></span>
-				<div data-bind="text: experienceDescription"></div>
-			</div>
-			<div class="contacts">
-				<div class="email" data-bind="text: email, visible: email"></div>
-				<div class="phone" data-bind="text: phone, visible: phone"></div>
-				<a class="url" data-bind="text: url, attr: { href: url }, visible: url"></a>
+			<div class="f education" data-bind="visible: formalEducation, text: formalEducation"/>
+			<div class="f mtEducation" data-bind="visible: musicTherapyEducation, text: musicTherapyEducation" />
+			<div class="f experience" data-bind="visible: experience, text: experience" />
+			<div class="f specialization" data-bind="visible: specialization, text: specialization" />
+			<div class="f specializationDescription" data-bind="visible: specializationDescription, text: specializationDescription" />
+			<div class="f organization" data-bind="visible: organization, text: organization" />
+			<div class="f resume" data-bind="visible: resume, text: resume" />
+
+			<div class="f contacts" data-bind="visible: email || phone || url">
+				<div class="f email" data-bind="text: email, visible: email"></div>
+				<div class="f phone" data-bind="text: phone, visible: phone"></div>
+				<a class="f url" data-bind="text: url, attr: { href: url }, visible: url"></a>
 			</div>
 		</div>
 	</div>
 
+	<div class="loadingContainer" data-bind="css: { show: IsLoading }">
+		<div class="blockerBackground"></div>
+		<div class="loadingSpinner"></div>
+	</div>
+</div>
+
+<div class="PART_Region region" data-bind="if: Visible, visible: Visible">
+	<a data-bind="text: Name, click: Select" href="#"></a>
+	<div data-bind="foreach: Children" class="children">
+		<div data-bind="control: $data"></div>
+	</div>
 </div>
