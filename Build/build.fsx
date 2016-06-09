@@ -36,6 +36,7 @@ let deploymentPackage deployment =
     ++ "Web/Global.asax"
     ++ "Web/Views/**/*.cshtml"
     ++ "Web/Views/Web.config"
+    ++ "Web/Web.config"
     ++ "Web/__Themes/**/*.js"
     ++ "Web/__Themes/**/*.html"
     ++ "Web/__Themes/**/*.css"
